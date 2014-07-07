@@ -80,6 +80,7 @@
 		D4091AFD196AB67B00F109F1 /* ofxSyphonServer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ofxSyphonServer.mm; sourceTree = "<group>"; };
 		D4091AFE196AB67B00F109F1 /* ofxSyphonServerDirectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSyphonServerDirectory.h; sourceTree = "<group>"; };
 		D4091AFF196AB67B00F109F1 /* ofxSyphonServerDirectory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ofxSyphonServerDirectory.mm; sourceTree = "<group>"; };
+		D4091B2B196AF5B900F109F1 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		D459997219534A5B0071B3E3 /* PQMTClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = PQMTClient.a; sourceTree = "<group>"; };
 		D459997319534A5B0071B3E3 /* PQMTClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PQMTClient.h; sourceTree = "<group>"; };
 		D459997519534A5B0071B3E3 /* ofxPQLabs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxPQLabs.cpp; sourceTree = "<group>"; };
@@ -292,6 +293,7 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
+				D4091B2B196AF5B900F109F1 /* .gitignore */,
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
