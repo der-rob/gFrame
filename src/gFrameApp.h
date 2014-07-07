@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxPQLabs.h"
+#include "ofxSyphon.h"
 
 class gFrameApp : public ofBaseApp{
 	public:
@@ -19,7 +20,10 @@ class gFrameApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
     
+    
     ofxPQLabs touchFrame;
+    ofxSyphonServer syphonMainOut;
+    
     //vectors containing point data
     //mouse
     vector<ofVec3f> points_m;

@@ -6,6 +6,9 @@ void gFrameApp::setup(){
     ofSetFrameRate(60);
     ofSetVerticalSync(true);
     ofBackground(82,70,86);
+    
+    //Syphon stuff
+    syphonMainOut.setName("gFrame Main Out");
 
     touchFrame.connect("127.0.0.1");
     ofAddListener(touchFrame.touchEventDispatcher, this, &gFrameApp::onTouchPoint);
@@ -43,7 +46,9 @@ void gFrameApp::draw(){
             ofLine(points_f[i][j-1].x, points_f[i][j-1].y, points_f[i][j].x, points_f[i][j].y);
         }
     }
-
+    
+    //syphon
+    syphonMainOut.publishScreen();
 }
 
 //--------------------------------------------------------------
