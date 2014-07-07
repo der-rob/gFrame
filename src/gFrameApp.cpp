@@ -97,6 +97,7 @@ void gFrameApp::dragEvent(ofDragInfo dragInfo){
 void gFrameApp::onTouchPoint(TouchPointEvent &event) {
     ofVec3f framePoint(event.touchPoint.x,event.touchPoint.y,0);
     
+    //sort points by touch id
     int id = event.touchPoint.id;
     points_f[id].push_back(framePoint);
 }
