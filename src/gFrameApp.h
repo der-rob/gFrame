@@ -3,12 +3,14 @@
 #include "ofMain.h"
 #include "ofxPQLabs.h"
 #include "ofxSyphon.h"
+#include "ofxDmx.h"
 
 class gFrameApp : public ofBaseApp{
 	public:
 		void setup();
 		void update();
 		void draw();
+        void exit();
 		
 		void keyPressed(int key);
 		void keyReleased(int key);
@@ -20,17 +22,27 @@ class gFrameApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
     
-    
+    //frame and point data
     ofxPQLabs touchFrame;
-    ofxSyphonServer syphonMainOut;
-    
-    
+    void onTouchPoint(TouchPointEvent &event);
+
     //vectors containing point data
-    //mouse
+    //mouse for easier testing
     vector<ofVec3f> points_m;
     //local frame
     vector< vector<ofVec3f> > points_f;
     
-    void onTouchPoint(TouchPointEvent &event);
+    //DMX
+    ofxDmx dmx;
+    ofColor colorFromPoint(ofVec3f thePoint);
+    void setLEDColor(ofColor ledColor);
+    ofColor LEDstripColor;
+    
+    
+    //Syphon output
+    ofxSyphonServer syphonMainOut;
+    
+    
+        
 
 };

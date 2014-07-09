@@ -19,11 +19,24 @@ void gFrameApp::setup(){
         vector<ofVec3f> vec;
         points_f.push_back(vec);
     }
+    
+    //DMX for controlling RGB LED Strips
+    dmx.connect(0);
+    setLEDColor(ofColor::fromHsb(0,255,10));
+    
+    
 
+}
+void gFrameApp::exit(){
+    dmx.clear();
+    //dmx.update();
+    dmx.disconnect();
 }
 
 //--------------------------------------------------------------
 void gFrameApp::update(){
+    setLEDColor(LEDstripColor);
+    ofBackground(LEDstripColor);
 
 }
 
@@ -65,6 +78,7 @@ void gFrameApp::keyReleased(int key){
 void gFrameApp::mouseMoved(int x, int y){
     ofVec3f mousePoint(x,y,0);
     points_m.push_back(mousePoint);
+    LEDstripColor.set(colorFromPoint(mousePoint));
 
 }
 
@@ -105,4 +119,26 @@ void gFrameApp::onTouchPoint(TouchPointEvent &event) {
     //sort points by touch id
     int id = event.touchPoint.id;
     points_f[id].push_back(framePoint);
+}
+
+void gFrameApp::setLEDColor(ofColor color){
+    int r,g,b;
+    r = (int)color.r;
+    g = (int)color.g;
+    b = (int)color.b;
+    ///cout << r << " " << g << " " << b << endl;
+    //dmx channels are 2, 3 & 4
+    dmx.setLevel(2, g);     //green
+    dmx.setLevel(3, r);     //red
+    dmx.setLevel(4, b);     //blue
+    dmx.update();
+}
+
+ofColor gFrameApp::colorFromPoint(ofVec3f thePoint) {
+    float hue = ofMap(thePoint.x, 0, ofGetWidth(), 0,255);
+    float sat = ofMap(thePoint.y, 0, ofGetHeight(), 0,255);
+    ofColor theColor = ofColor::fromHsb(hue, sat, 255);
+    cout << hue << " " << sat << endl;
+
+    return theColor;
 }
