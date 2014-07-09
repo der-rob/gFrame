@@ -28,8 +28,7 @@ void gFrameApp::setup(){
 
 }
 void gFrameApp::exit(){
-    dmx.clear();
-    //dmx.update();
+    setLEDColor(ofColor::black);
     dmx.disconnect();
 }
 
@@ -119,6 +118,8 @@ void gFrameApp::onTouchPoint(TouchPointEvent &event) {
     //sort points by touch id
     int id = event.touchPoint.id;
     points_f[id].push_back(framePoint);
+    
+    LEDstripColor.set(colorFromPoint(framePoint));
 }
 
 void gFrameApp::setLEDColor(ofColor color){
@@ -126,7 +127,6 @@ void gFrameApp::setLEDColor(ofColor color){
     r = (int)color.r;
     g = (int)color.g;
     b = (int)color.b;
-    ///cout << r << " " << g << " " << b << endl;
     //dmx channels are 2, 3 & 4
     dmx.setLevel(2, g);     //green
     dmx.setLevel(3, r);     //red
@@ -137,7 +137,7 @@ void gFrameApp::setLEDColor(ofColor color){
 ofColor gFrameApp::colorFromPoint(ofVec3f thePoint) {
     float hue = ofMap(thePoint.x, 0, ofGetWidth(), 0,255);
     float sat = ofMap(thePoint.y, 0, ofGetHeight(), 0,255);
-    ofColor theColor = ofColor::fromHsb(hue, sat, 255);
+    ofColor theColor = ofColor::fromHsb(hue, sat, 200);
     cout << hue << " " << sat << endl;
 
     return theColor;

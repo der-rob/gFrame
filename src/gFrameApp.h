@@ -41,8 +41,4 @@ class gFrameApp : public ofBaseApp{
     
     //Syphon output
     ofxSyphonServer syphonMainOut;
-    
-    
-        
-
 };

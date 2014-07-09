@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
+		BBAB23CB13894F3D00AA2426 /* GLUT.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		D4091B04196AB67B00F109F1 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4091AF3196AB67B00F109F1 /* Syphon.framework */; };
 		D4091B05196AB67B00F109F1 /* SyphonNameboundClient.m in Sources */ = {isa = PBXBuildFile; fileRef = D4091AF6196AB67B00F109F1 /* SyphonNameboundClient.m */; };
 		D4091B06196AB67B00F109F1 /* ofxSyphonClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = D4091AFB196AB67B00F109F1 /* ofxSyphonClient.mm */; };
 		D4091B07196AB67B00F109F1 /* ofxSyphonServer.mm in Sources */ = {isa = PBXBuildFile; fileRef = D4091AFD196AB67B00F109F1 /* ofxSyphonServer.mm */; };
 		D4091B08196AB67B00F109F1 /* ofxSyphonServerDirectory.mm in Sources */ = {isa = PBXBuildFile; fileRef = D4091AFF196AB67B00F109F1 /* ofxSyphonServerDirectory.mm */; };
-		D4091B0F196AB69C00F109F1 /* Syphon.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D4091AF3196AB67B00F109F1 /* Syphon.framework */; };
+		D4091B0F196AB69C00F109F1 /* Syphon.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = D4091AF3196AB67B00F109F1 /* Syphon.framework */; };
 		D459997819534A5B0071B3E3 /* PQMTClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D459997219534A5B0071B3E3 /* PQMTClient.a */; };
 		D459997919534A5B0071B3E3 /* ofxPQLabs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D459997519534A5B0071B3E3 /* ofxPQLabs.cpp */; };
 		D4605411196C52650040C381 /* ofxDmx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D460540B196C52650040C381 /* ofxDmx.cpp */; };
@@ -55,15 +55,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		E4C2427710CC5ABF004149E2 /* CopyFiles */ = {
+		E4C2427710CC5ABF004149E2 /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D4091B0F196AB69C00F109F1 /* Syphon.framework in CopyFiles */,
-				BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */,
+				D4091B0F196AB69C00F109F1 /* Syphon.framework in Copy Files */,
+				BBAB23CB13894F3D00AA2426 /* GLUT.framework in Copy Files */,
 			);
+			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -361,7 +362,7 @@
 				E4B69B580A3A1756003C02F2 /* Sources */,
 				E4B69B590A3A1756003C02F2 /* Frameworks */,
 				E4B6FFFD0C3F9AB9008CF71C /* ShellScript */,
-				E4C2427710CC5ABF004149E2 /* CopyFiles */,
+				E4C2427710CC5ABF004149E2 /* Copy Files */,
 			);
 			buildRules = (
 			);
