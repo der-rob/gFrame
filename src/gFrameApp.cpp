@@ -46,7 +46,7 @@ void gFrameApp::update(){
     
     setLEDColor(localPenColor);
     
-    ofBackground(localPenColor);
+    ofBackground(LEDstripColor);
 }
 
 //--------------------------------------------------------------

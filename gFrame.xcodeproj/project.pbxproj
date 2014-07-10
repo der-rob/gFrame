@@ -141,6 +141,7 @@
 		D4605483196DC7480040C381 /* ofxOscReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOscReceiver.h; sourceTree = "<group>"; };
 		D4605484196DC7480040C381 /* ofxOscSender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxOscSender.cpp; sourceTree = "<group>"; };
 		D4605485196DC7480040C381 /* ofxOscSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOscSender.h; sourceTree = "<group>"; };
+		D4E4AD2D196F3D5300ECA630 /* gFrame_layout_2.touchosc */ = {isa = PBXFileReference; lastKnownFileType = file; path = gFrame_layout_2.touchosc; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E45BE9710E8CC7DD009D7055 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
 		E45BE9720E8CC7DD009D7055 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
@@ -457,6 +458,14 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		D4E4AD2C196F3D5300ECA630 /* touchosc */ = {
+			isa = PBXGroup;
+			children = (
+				D4E4AD2D196F3D5300ECA630 /* gFrame_layout_2.touchosc */,
+			);
+			path = touchosc;
+			sourceTree = "<group>";
+		};
 		E4328144138ABC890047C5CB /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -484,6 +493,7 @@
 				E4EEC9E9138DF44700A80321 /* openFrameworks */,
 				BB4B014C10F69532006C3DED /* addons */,
 				E45BE5980E8CC70C009D7055 /* frameworks */,
+				D4E4AD2C196F3D5300ECA630 /* touchosc */,
 				E4B69B5B0A3A1756003C02F2 /* gFrameDebug.app */,
 			);
 			sourceTree = "<group>";
