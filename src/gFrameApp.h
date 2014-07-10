@@ -4,6 +4,7 @@
 #include "ofxPQLabs.h"
 #include "ofxSyphon.h"
 #include "ofxDmx.h"
+#include "ofxOsc.h"
 
 class gFrameApp : public ofBaseApp{
 	public:
@@ -38,7 +39,15 @@ class gFrameApp : public ofBaseApp{
     void setLEDColor(ofColor ledColor);
     ofColor LEDstripColor;
     
+    //OSC
+    ofxOscReceiver receiver;
+    void oscUpdate();
     
     //Syphon output
     ofxSyphonServer syphonMainOut;
+    
+    //drawing parameter
+    ofParameterGroup localDrawingParameters;
+    ofParameter<int> localPenWidth;
+    ofParameter<ofColor> localPenColor;
 };

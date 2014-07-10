@@ -24,6 +24,13 @@ void gFrameApp::setup(){
     dmx.connect(0);
     setLEDColor(ofColor::fromHsb(0,255,10));
     
+    //OSC
+    receiver.setup(8000);
+    
+    //drawing parameters
+    localDrawingParameters.setName("Local drawing parameters");
+    localDrawingParameters.add(localPenColor.set("local pencolor", ofColor::brown));
+    localDrawingParameters.add(localPenWidth.set("local penwidth", 10));
     
 
 }
@@ -34,14 +41,18 @@ void gFrameApp::exit(){
 
 //--------------------------------------------------------------
 void gFrameApp::update(){
-    setLEDColor(LEDstripColor);
-    ofBackground(LEDstripColor);
-
+    
+    oscUpdate();
+    
+    setLEDColor(localPenColor);
+    
+    ofBackground(localPenColor);
 }
 
 //--------------------------------------------------------------
 void gFrameApp::draw(){
     //draw mouse
+    ofSetColor(localPenColor.get());
     for(unsigned int i = 1; i < points_m.size(); i++)
     {
         ofCircle(points_m[i].x, points_m[i].y, 10);
@@ -141,4 +152,16 @@ ofColor gFrameApp::colorFromPoint(ofVec3f thePoint) {
     cout << hue << " " << sat << endl;
 
     return theColor;
+}
+
+void gFrameApp::oscUpdate() {
+    while (receiver.hasWaitingMessages())
+    {
+        ofxOscMessage m;
+        receiver.getNextMessage(&m);
+        if (m.getAddress() == "/1/push_red") localPenColor = ofColor::red;
+        else if (m.getAddress() == "/1/push_green") localPenColor = ofColor::green;
+        else if (m.getAddress() == "/1/push_blue") localPenColor = ofColor::blue;
+        
+    }
 }
