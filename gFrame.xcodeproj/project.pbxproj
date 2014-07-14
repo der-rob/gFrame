@@ -97,6 +97,12 @@
 		D4091AFE196AB67B00F109F1 /* ofxSyphonServerDirectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSyphonServerDirectory.h; sourceTree = "<group>"; };
 		D4091AFF196AB67B00F109F1 /* ofxSyphonServerDirectory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ofxSyphonServerDirectory.mm; sourceTree = "<group>"; };
 		D4091B2B196AF5B900F109F1 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		D42292881973E92B007A533C /* ofxTuio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuio.h; sourceTree = "<group>"; };
+		D42292891973E92B007A533C /* ofxTuioClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuioClient.h; sourceTree = "<group>"; };
+		D422928A1973E92B007A533C /* ofxTuioContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuioContainer.h; sourceTree = "<group>"; };
+		D422928B1973E92B007A533C /* ofxTuioCursor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuioCursor.h; sourceTree = "<group>"; };
+		D422928C1973E92B007A533C /* ofxTuioObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuioObject.h; sourceTree = "<group>"; };
+		D422928D1973E92B007A533C /* ofxTuioPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuioPoint.h; sourceTree = "<group>"; };
 		D459997219534A5B0071B3E3 /* PQMTClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = PQMTClient.a; sourceTree = "<group>"; };
 		D459997319534A5B0071B3E3 /* PQMTClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PQMTClient.h; sourceTree = "<group>"; };
 		D459997519534A5B0071B3E3 /* ofxPQLabs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxPQLabs.cpp; sourceTree = "<group>"; };
@@ -198,6 +204,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				D42292731973E92B007A533C /* ofxTuio */,
 				D460545B196DC7480040C381 /* ofxOsc */,
 				D46053EA196C52640040C381 /* ofxDmx */,
 				D4091AD4196AB67B00F109F1 /* ofxSyphon */,
@@ -298,6 +305,28 @@
 				D4091AFD196AB67B00F109F1 /* ofxSyphonServer.mm */,
 				D4091AFE196AB67B00F109F1 /* ofxSyphonServerDirectory.h */,
 				D4091AFF196AB67B00F109F1 /* ofxSyphonServerDirectory.mm */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		D42292731973E92B007A533C /* ofxTuio */ = {
+			isa = PBXGroup;
+			children = (
+				D42292871973E92B007A533C /* src */,
+			);
+			name = ofxTuio;
+			path = ../../../addons/ofxTuio;
+			sourceTree = "<group>";
+		};
+		D42292871973E92B007A533C /* src */ = {
+			isa = PBXGroup;
+			children = (
+				D42292881973E92B007A533C /* ofxTuio.h */,
+				D42292891973E92B007A533C /* ofxTuioClient.h */,
+				D422928A1973E92B007A533C /* ofxTuioContainer.h */,
+				D422928B1973E92B007A533C /* ofxTuioCursor.h */,
+				D422928C1973E92B007A533C /* ofxTuioObject.h */,
+				D422928D1973E92B007A533C /* ofxTuioPoint.h */,
 			);
 			path = src;
 			sourceTree = "<group>";

@@ -10,14 +10,28 @@ void gFrameApp::setup(){
     //Syphon stuff
     syphonMainOut.setName("gFrame Main Out");
 
+    //mutlitouch frame setup
     touchFrame.connect("127.0.0.1");
     ofAddListener(touchFrame.touchEventDispatcher, this, &gFrameApp::onTouchPoint);
+    
+    //TUIO setup
+    tuioClient.start(3333);
+    ofAddListener(tuioClient.cursorAdded,this,&gFrameApp::tuioAdded);
+	ofAddListener(tuioClient.cursorRemoved,this,&gFrameApp::tuioRemoved);
+	ofAddListener(tuioClient.cursorUpdated,this,&gFrameApp::tuioUpdated);
+    
     
     //ensure that points_f is not empty but filled with empty vectors
     for (int i =0; i<12;i++)
     {
         vector<ofVec3f> vec;
         points_f.push_back(vec);
+    }
+    //same for points_t
+    for (int i =0; i<12;i++)
+    {
+        vector<ofVec2f> vec;
+        points_t.push_back(vec);
     }
     
     //DMX for controlling RGB LED Strips
@@ -43,10 +57,9 @@ void gFrameApp::exit(){
 void gFrameApp::update(){
     
     oscUpdate();
+    tuioClient.getMessage();
     
-    setLEDColor(localPenColor);
-    
-    ofBackground(LEDstripColor);
+    //setLEDColor(localPenColor);
 }
 
 //--------------------------------------------------------------
@@ -67,6 +80,16 @@ void gFrameApp::draw(){
         {
             ofCircle(points_f[i][j].x, points_f[i][j].y, 10);
             ofLine(points_f[i][j-1].x, points_f[i][j-1].y, points_f[i][j].x, points_f[i][j].y);
+        }
+    }
+    
+    //draw TUIO
+    for(unsigned int i = 0; i < points_t.size(); i++)
+    {
+        for (int j = 1;j< points_t[i].size(); j++)
+        {
+            ofCircle(points_t[i][j].x, points_t[i][j].y, 10);
+            ofLine(points_t[i][j-1].x, points_t[i][j-1].y, points_t[i][j].x, points_t[i][j].y);
         }
     }
     
@@ -149,8 +172,6 @@ ofColor gFrameApp::colorFromPoint(ofVec3f thePoint) {
     float hue = ofMap(thePoint.x, 0, ofGetWidth(), 0,255);
     float sat = ofMap(thePoint.y, 0, ofGetHeight(), 0,255);
     ofColor theColor = ofColor::fromHsb(hue, sat, 200);
-    cout << hue << " " << sat << endl;
-
     return theColor;
 }
 
@@ -162,6 +183,24 @@ void gFrameApp::oscUpdate() {
         if (m.getAddress() == "/1/push_red") localPenColor = ofColor::red;
         else if (m.getAddress() == "/1/push_green") localPenColor = ofColor::green;
         else if (m.getAddress() == "/1/push_blue") localPenColor = ofColor::blue;
-        
     }
+}
+
+void gFrameApp::tuioAdded(ofxTuioCursor &cursor) {
+    int id = cursor.getFingerId();
+    ofVec2f TUIOpoint = ofVec2f(cursor.getX(), cursor.getY());
+    cout << TUIOpoint << endl;
+    points_t[id].push_back(TUIOpoint);
+}
+
+void gFrameApp::tuioUpdated(ofxTuioCursor &cursor) {
+    int id = cursor.getFingerId();
+    ofVec2f TUIOpoint = ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight());
+    cout << TUIOpoint << endl;
+    points_t[id].push_back(TUIOpoint);
+    
+}
+
+void gFrameApp::tuioRemoved(ofxTuioCursor &cursor) {
+
 }

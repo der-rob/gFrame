@@ -5,6 +5,7 @@
 #include "ofxSyphon.h"
 #include "ofxDmx.h"
 #include "ofxOsc.h"
+#include "ofxTuio.h"
 
 class gFrameApp : public ofBaseApp{
 	public:
@@ -32,6 +33,16 @@ class gFrameApp : public ofBaseApp{
     vector<ofVec3f> points_m;
     //local frame
     vector< vector<ofVec3f> > points_f;
+    //tuio points for testing without touchframe
+    vector< vector<ofVec2f> > points_t;
+    
+    //TUIO support
+    ofxTuioClient   tuioClient;
+    void	tuioAdded(ofxTuioCursor & tuioCursor);
+	void	tuioRemoved(ofxTuioCursor & tuioCursor);
+	void	tuioUpdated(ofxTuioCursor & tuioCursor);
+    
+    
     
     //DMX
     ofxDmx dmx;
