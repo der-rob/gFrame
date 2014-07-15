@@ -1,11 +1,24 @@
 #pragma once
 
+#define LOCALFRAME 1
+#define REMOTEFRAME 2
+#define TUIO 3
+#define MOUSE 4
+
 #include "ofMain.h"
 #include "ofxPQLabs.h"
 #include "ofxSyphon.h"
 #include "ofxDmx.h"
 #include "ofxOsc.h"
 #include "ofxTuio.h"
+
+typedef struct {
+    ofVec2f loc;
+    int point_id;
+    float lifetime;
+    ofColor color;
+    int type;
+} gPoint;
 
 class gFrameApp : public ofBaseApp{
 	public:
@@ -30,6 +43,9 @@ class gFrameApp : public ofBaseApp{
 
     //vectors containing point data
     //mouse for easier testing
+    //vector containing ALL points
+    vector <gPoint>  all_points;
+    float timeTolive;
     vector<ofVec3f> points_m;
     //local frame
     vector< vector<ofVec3f> > points_f;
@@ -42,11 +58,8 @@ class gFrameApp : public ofBaseApp{
 	void	tuioRemoved(ofxTuioCursor & tuioCursor);
 	void	tuioUpdated(ofxTuioCursor & tuioCursor);
     
-    
-    
     //DMX
     ofxDmx dmx;
-    ofColor colorFromPoint(ofVec3f thePoint);
     void setLEDColor(ofColor ledColor);
     ofColor LEDstripColor;
     
@@ -62,3 +75,5 @@ class gFrameApp : public ofBaseApp{
     ofParameter<int> localPenWidth;
     ofParameter<ofColor> localPenColor;
 };
+
+

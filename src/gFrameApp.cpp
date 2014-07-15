@@ -20,6 +20,8 @@ void gFrameApp::setup(){
 	ofAddListener(tuioClient.cursorRemoved,this,&gFrameApp::tuioRemoved);
 	ofAddListener(tuioClient.cursorUpdated,this,&gFrameApp::tuioUpdated);
     
+    //general Point setup
+    timeTolive = 5.0;
     
     //ensure that points_f is not empty but filled with empty vectors
     for (int i =0; i<12;i++)
@@ -27,6 +29,7 @@ void gFrameApp::setup(){
         vector<ofVec3f> vec;
         points_f.push_back(vec);
     }
+    
     //same for points_t
     for (int i =0; i<12;i++)
     {
@@ -43,7 +46,7 @@ void gFrameApp::setup(){
     
     //drawing parameters
     localDrawingParameters.setName("Local drawing parameters");
-    localDrawingParameters.add(localPenColor.set("local pencolor", ofColor::brown));
+    localDrawingParameters.add(localPenColor.set("local pencolor", ofColor::white));
     localDrawingParameters.add(localPenWidth.set("local penwidth", 10));
     
 
@@ -59,37 +62,30 @@ void gFrameApp::update(){
     oscUpdate();
     tuioClient.getMessage();
     
+    //calculating time to life
+    for(unsigned int i = 1; i < all_points.size(); i++)
+    {
+        {
+            all_points[i].lifetime -= 0.01;
+
+        }
+    }
+    
     //setLEDColor(localPenColor);
 }
 
 //--------------------------------------------------------------
 void gFrameApp::draw(){
-    //draw mouse
-    ofSetColor(localPenColor.get());
-    for(unsigned int i = 1; i < points_m.size(); i++)
+    //draw all
+    for(unsigned int i = 1; i < all_points.size(); i++)
     {
-        ofCircle(points_m[i].x, points_m[i].y, 10);
-        ofLine(points_m[i-1].x, points_m[i-1].y, points_m[i].x, points_m[i].y);
-    }
-    
-    
-    //draw local frame
-    for(unsigned int i = 0; i < points_f.size(); i++)
-    {
-        for (int j = 1;j< points_f[i].size(); j++)
         {
-            ofCircle(points_f[i][j].x, points_f[i][j].y, 10);
-            ofLine(points_f[i][j-1].x, points_f[i][j-1].y, points_f[i][j].x, points_f[i][j].y);
-        }
-    }
-    
-    //draw TUIO
-    for(unsigned int i = 0; i < points_t.size(); i++)
-    {
-        for (int j = 1;j< points_t[i].size(); j++)
-        {
-            ofCircle(points_t[i][j].x, points_t[i][j].y, 10);
-            ofLine(points_t[i][j-1].x, points_t[i][j-1].y, points_t[i][j].x, points_t[i][j].y);
+            if (all_points[i].lifetime >= 0.0)
+            {
+                ofSetColor(all_points[i].color, ofMap(all_points[i].lifetime, 0.0, timeTolive, 0, 255));
+                ofCircle(all_points[i].loc.x, all_points[i].loc.y, 5);
+                ofLine(all_points[i-1].loc.x, all_points[i-1].loc.y, all_points[i].loc.x, all_points[i].loc.y);
+            }
         }
     }
     
@@ -109,10 +105,13 @@ void gFrameApp::keyReleased(int key){
 
 //--------------------------------------------------------------
 void gFrameApp::mouseMoved(int x, int y){
-    ofVec3f mousePoint(x,y,0);
-    points_m.push_back(mousePoint);
-    LEDstripColor.set(colorFromPoint(mousePoint));
-
+    gPoint the_point;
+    the_point.loc = ofVec2f(x,y);
+    the_point.point_id = 0;
+    the_point.color = localPenColor;
+    the_point.type = MOUSE;
+    the_point.lifetime = timeTolive;
+    all_points.push_back(the_point);
 }
 
 //--------------------------------------------------------------
@@ -147,13 +146,13 @@ void gFrameApp::dragEvent(ofDragInfo dragInfo){
 
 //--------------------------------------------------------------
 void gFrameApp::onTouchPoint(TouchPointEvent &event) {
-    ofVec3f framePoint(event.touchPoint.x,event.touchPoint.y,0);
-    
-    //sort points by touch id
-    int id = event.touchPoint.id;
-    points_f[id].push_back(framePoint);
-    
-    LEDstripColor.set(colorFromPoint(framePoint));
+    gPoint the_point;
+    the_point.loc = ofVec2f(event.touchPoint.x, event.touchPoint.y);
+    the_point.point_id = event.touchPoint.id;
+    the_point.color = localPenColor;
+    the_point.type = LOCALFRAME;
+    the_point.lifetime = timeTolive;
+    all_points.push_back(the_point);
 }
 
 void gFrameApp::setLEDColor(ofColor color){
@@ -168,13 +167,6 @@ void gFrameApp::setLEDColor(ofColor color){
     dmx.update();
 }
 
-ofColor gFrameApp::colorFromPoint(ofVec3f thePoint) {
-    float hue = ofMap(thePoint.x, 0, ofGetWidth(), 0,255);
-    float sat = ofMap(thePoint.y, 0, ofGetHeight(), 0,255);
-    ofColor theColor = ofColor::fromHsb(hue, sat, 200);
-    return theColor;
-}
-
 void gFrameApp::oscUpdate() {
     while (receiver.hasWaitingMessages())
     {
@@ -187,18 +179,26 @@ void gFrameApp::oscUpdate() {
 }
 
 void gFrameApp::tuioAdded(ofxTuioCursor &cursor) {
-    int id = cursor.getFingerId();
-    ofVec2f TUIOpoint = ofVec2f(cursor.getX(), cursor.getY());
-    cout << TUIOpoint << endl;
-    points_t[id].push_back(TUIOpoint);
+    gPoint the_point;
+    the_point.loc = ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight());
+    the_point.point_id = cursor.getFingerId();
+    the_point.color = localPenColor;
+    the_point.type = TUIO;
+    the_point.lifetime = timeTolive;
+    all_points.push_back(the_point);
+    
+    //points_t[id].push_back(TUIOpoint);
+    
 }
 
 void gFrameApp::tuioUpdated(ofxTuioCursor &cursor) {
-    int id = cursor.getFingerId();
-    ofVec2f TUIOpoint = ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight());
-    cout << TUIOpoint << endl;
-    points_t[id].push_back(TUIOpoint);
-    
+    gPoint the_point;
+    the_point.loc = ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight());
+    the_point.point_id = cursor.getFingerId();
+    the_point.color = localPenColor;
+    the_point.type = TUIO;
+    the_point.lifetime = timeTolive;
+    all_points.push_back(the_point);
 }
 
 void gFrameApp::tuioRemoved(ofxTuioCursor &cursor) {
