@@ -18,6 +18,7 @@ typedef struct {
     float lifetime;
     ofColor color;
     int type;
+    int style;
 } gPoint;
 
 class gFrameApp : public ofBaseApp{
@@ -45,12 +46,7 @@ class gFrameApp : public ofBaseApp{
     //mouse for easier testing
     //vector containing ALL points
     vector <gPoint>  all_points;
-    float timeTolive;
-    vector<ofVec3f> points_m;
-    //local frame
-    vector< vector<ofVec3f> > points_f;
-    //tuio points for testing without touchframe
-    vector< vector<ofVec2f> > points_t;
+    float timeToDie;
     
     //TUIO support
     ofxTuioClient   tuioClient;
@@ -62,6 +58,13 @@ class gFrameApp : public ofBaseApp{
     ofxDmx dmx;
     void setLEDColor(ofColor ledColor);
     ofColor LEDstripColor;
+    void start_pulsing();
+    void stop_pulsing();
+    
+    bool LED_pulsing;
+    int LED_pulsing_time;
+    float LED_level;
+    float last_points_time;
     
     //OSC
     ofxOscReceiver receiver;

@@ -5,8 +5,10 @@ void gFrameApp::setup(){
     //just set up the openFrameworks stuff
     ofSetFrameRate(60);
     ofSetVerticalSync(true);
-    ofBackground(82,70,86);
-    
+    //ofBackground(82,70,86);
+    ofBackground(ofColor::black);
+    //ofBackground(ofColor::white);
+    ofSetWindowShape(840, 540);
     //Syphon stuff
     syphonMainOut.setName("gFrame Main Out");
 
@@ -21,25 +23,15 @@ void gFrameApp::setup(){
 	ofAddListener(tuioClient.cursorUpdated,this,&gFrameApp::tuioUpdated);
     
     //general Point setup
-    timeTolive = 5.0;
-    
-    //ensure that points_f is not empty but filled with empty vectors
-    for (int i =0; i<12;i++)
-    {
-        vector<ofVec3f> vec;
-        points_f.push_back(vec);
-    }
-    
-    //same for points_t
-    for (int i =0; i<12;i++)
-    {
-        vector<ofVec2f> vec;
-        points_t.push_back(vec);
-    }
+    timeToDie = 5.0;
     
     //DMX for controlling RGB LED Strips
     dmx.connect(0);
     setLEDColor(ofColor::fromHsb(0,255,10));
+    LED_pulsing = true;
+    LED_pulsing_time = 2000; //in milliseconds
+    LED_level = 0.0;
+    
     
     //OSC
     receiver.setup(8000);
@@ -63,29 +55,49 @@ void gFrameApp::update(){
     tuioClient.getMessage();
     
     //calculating time to life
-    for(unsigned int i = 1; i < all_points.size(); i++)
+    //todo: sort point by type
+    for(int i = 1; i < all_points.size(); i++)
     {
+        all_points[i].lifetime += 0.01;
+        if (all_points[i].lifetime > 5.0 )
         {
-            all_points[i].lifetime -= 0.01;
-
+            all_points.erase(all_points.begin() + i);
         }
     }
     
-    //setLEDColor(localPenColor);
+    //check how long no point has been added
+    
+    if (ofGetElapsedTimeMillis() - last_points_time > 500) start_pulsing();
+    //fix needed: there is a jump in lumiosity when changing from full brightness while drawing to pulsing mode
+    
+    
+    if (LED_pulsing)
+    {
+        //create triangle wave
+        int time = abs(((int)ofGetElapsedTimeMillis() % (LED_pulsing_time*2)) - LED_pulsing_time);
+        LED_level = ofMap(time, 0, LED_pulsing_time, 0.05, 0.6);
+    }
+    
+    setLEDColor(localPenColor);
 }
 
 //--------------------------------------------------------------
 void gFrameApp::draw(){
     //draw all
-    for(unsigned int i = 1; i < all_points.size(); i++)
+
+    for(int i = 1; i < all_points.size(); i++)
     {
         {
             if (all_points[i].lifetime >= 0.0)
             {
-                ofSetColor(all_points[i].color, ofMap(all_points[i].lifetime, 0.0, timeTolive, 0, 255));
-                ofCircle(all_points[i].loc.x, all_points[i].loc.y, 5);
-                ofLine(all_points[i-1].loc.x, all_points[i-1].loc.y, all_points[i].loc.x, all_points[i].loc.y);
+                ofSetColor(all_points[i].color, ofMap(all_points[i].lifetime, timeToDie, 0.0, 0, 255));
+                ofCircle(all_points[i].loc.x, all_points[i].loc.y, 2);
+                //ofLine(all_points[i-1].loc.x, all_points[i-1].loc.y, all_points[i].loc.x, all_points[i].loc.y);
             }
+            /*else
+                //erase the first element in the vector, it is supposed to have lifetime < 0
+                all_points.erase(all_points.begin());
+        */
         }
     }
     
@@ -110,8 +122,11 @@ void gFrameApp::mouseMoved(int x, int y){
     the_point.point_id = 0;
     the_point.color = localPenColor;
     the_point.type = MOUSE;
-    the_point.lifetime = timeTolive;
+    the_point.lifetime = 0;
     all_points.push_back(the_point);
+    
+    stop_pulsing();
+    last_points_time = ofGetElapsedTimeMillis();
 }
 
 //--------------------------------------------------------------
@@ -147,23 +162,31 @@ void gFrameApp::dragEvent(ofDragInfo dragInfo){
 //--------------------------------------------------------------
 void gFrameApp::onTouchPoint(TouchPointEvent &event) {
     gPoint the_point;
-    the_point.loc = ofVec2f(event.touchPoint.x, event.touchPoint.y);
-    the_point.point_id = event.touchPoint.id;
+    int x = ofMap(event.touchPoint.x, 0, 1680, 0, ofGetWidth());
+    int y = ofMap(event.touchPoint.y, 0, 1080, 0, ofGetHeight());
+    the_point.loc = ofVec2f(x, y);
+    the_point.point_id = (int)event.touchPoint.id;
     the_point.color = localPenColor;
     the_point.type = LOCALFRAME;
-    the_point.lifetime = timeTolive;
+    the_point.lifetime = 0;
     all_points.push_back(the_point);
+    
+    //stop pulsing LEDs
+    stop_pulsing();
+    last_points_time = ofGetElapsedTimeMillis();
 }
 
 void gFrameApp::setLEDColor(ofColor color){
     int r,g,b;
-    r = (int)color.r;
-    g = (int)color.g;
-    b = (int)color.b;
+    float fr = 0,fg = 0,fb = 0;
+    r = (int)color.r; fr = (float)r * LED_level;
+    g = (int)color.g; fg = (float)g * LED_level;
+    b = (int)color.b; fb = (float)b * LED_level;
+    //cout << fr << " " << fg << " " << fb << endl;
     //dmx channels are 2, 3 & 4
-    dmx.setLevel(2, g);     //green
-    dmx.setLevel(3, r);     //red
-    dmx.setLevel(4, b);     //blue
+    dmx.setLevel(2, (int)fg);     //green
+    dmx.setLevel(3, (int)fr);     //red
+    dmx.setLevel(4, (int)fb);     //blue
     dmx.update();
 }
 
@@ -184,9 +207,11 @@ void gFrameApp::tuioAdded(ofxTuioCursor &cursor) {
     the_point.point_id = cursor.getFingerId();
     the_point.color = localPenColor;
     the_point.type = TUIO;
-    the_point.lifetime = timeTolive;
+    the_point.lifetime = 0;
     all_points.push_back(the_point);
     
+    stop_pulsing();
+    last_points_time = ofGetElapsedTimeMillis();
     //points_t[id].push_back(TUIOpoint);
     
 }
@@ -197,10 +222,23 @@ void gFrameApp::tuioUpdated(ofxTuioCursor &cursor) {
     the_point.point_id = cursor.getFingerId();
     the_point.color = localPenColor;
     the_point.type = TUIO;
-    the_point.lifetime = timeTolive;
+    the_point.lifetime = 0.0;
     all_points.push_back(the_point);
+    
+    stop_pulsing();
+    last_points_time = ofGetElapsedTimeMillis();
 }
 
 void gFrameApp::tuioRemoved(ofxTuioCursor &cursor) {
 
+}
+
+void gFrameApp::start_pulsing() {
+    LED_level = 0.0;
+    LED_pulsing =true;
+}
+
+void gFrameApp::stop_pulsing() {
+    LED_pulsing = false;
+    LED_level = 1.0;
 }
