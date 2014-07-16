@@ -56,8 +56,9 @@ class gFrameApp : public ofBaseApp{
     
     //DMX
     ofxDmx dmx;
-    void setLEDColor(ofColor ledColor);
     ofColor LEDstripColor;
+    float upper_pulsing_limit, lower_pulsing_limit;
+    void setLEDColor(ofColor ledColor);
     void start_pulsing();
     void stop_pulsing();
     

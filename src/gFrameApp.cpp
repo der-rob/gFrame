@@ -31,6 +31,8 @@ void gFrameApp::setup(){
     LED_pulsing = true;
     LED_pulsing_time = 2000; //in milliseconds
     LED_level = 0.0;
+    upper_pulsing_limit = 0.6;
+    lower_pulsing_limit = 0.05;
     
     
     //OSC
@@ -65,17 +67,25 @@ void gFrameApp::update(){
         }
     }
     
+    
+    //create triangle wave for pulsing led lights
+    int time = abs(((int)ofGetElapsedTimeMillis() % (LED_pulsing_time*2)) - LED_pulsing_time);
+    
     //check how long no point has been added
-    
-    if (ofGetElapsedTimeMillis() - last_points_time > 500) start_pulsing();
-    //fix needed: there is a jump in lumiosity when changing from full brightness while drawing to pulsing mode
-    
+    if (ofGetElapsedTimeMillis() - last_points_time > 500 && !LED_pulsing)
+    {
+        LED_level -= 0.01;
+        float new_level = ofMap(time, 0, LED_pulsing_time, lower_pulsing_limit, upper_pulsing_limit);
+        cout << new_level << " " << LED_level << endl;
+        if (LED_level - new_level < 0)
+            start_pulsing();
+    }
     
     if (LED_pulsing)
     {
-        //create triangle wave
-        int time = abs(((int)ofGetElapsedTimeMillis() % (LED_pulsing_time*2)) - LED_pulsing_time);
-        LED_level = ofMap(time, 0, LED_pulsing_time, 0.05, 0.6);
+        
+        //int time = abs(((int)ofGetElapsedTimeMillis() % (LED_pulsing_time*2)) - LED_pulsing_time);
+        LED_level = ofMap(time, 0, LED_pulsing_time, lower_pulsing_limit, upper_pulsing_limit);
     }
     
     setLEDColor(localPenColor);
@@ -94,10 +104,6 @@ void gFrameApp::draw(){
                 ofCircle(all_points[i].loc.x, all_points[i].loc.y, 2);
                 //ofLine(all_points[i-1].loc.x, all_points[i-1].loc.y, all_points[i].loc.x, all_points[i].loc.y);
             }
-            /*else
-                //erase the first element in the vector, it is supposed to have lifetime < 0
-                all_points.erase(all_points.begin());
-        */
         }
     }
     
@@ -234,7 +240,7 @@ void gFrameApp::tuioRemoved(ofxTuioCursor &cursor) {
 }
 
 void gFrameApp::start_pulsing() {
-    LED_level = 0.0;
+    //LED_level = 0.0;
     LED_pulsing =true;
 }
 
