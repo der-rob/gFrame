@@ -4,7 +4,7 @@
 void gFrameApp::setup(){
     //just set up the openFrameworks stuff
     ofSetFrameRate(60);
-    ofSetVerticalSync(true);
+    //ofSetVerticalSync(true);
     //ofBackground(82,70,86);
     ofBackground(ofColor::black);
     //ofBackground(ofColor::white);
@@ -37,6 +37,7 @@ void gFrameApp::setup(){
     
     //OSC
     receiver.setup(8000);
+    sender.setup("192.168.1.37",9000);
     
     //drawing parameters
     localDrawingParameters.setName("Local drawing parameters");
@@ -54,14 +55,16 @@ void gFrameApp::exit(){
 void gFrameApp::update(){
     
     oscUpdate();
+
     tuioClient.getMessage();
     
-    //calculating time to life
     //todo: sort point by type
+    
+    //calculating time to life
     for(int i = 1; i < all_points.size(); i++)
     {
         all_points[i].lifetime += 0.01;
-        if (all_points[i].lifetime > 5.0 )
+        if (all_points[i].lifetime > timeToDie )
         {
             all_points.erase(all_points.begin() + i);
         }
@@ -201,10 +204,101 @@ void gFrameApp::oscUpdate() {
     {
         ofxOscMessage m;
         receiver.getNextMessage(&m);
-        if (m.getAddress() == "/1/push_red") localPenColor = ofColor::red;
-        else if (m.getAddress() == "/1/push_green") localPenColor = ofColor::green;
-        else if (m.getAddress() == "/1/push_blue") localPenColor = ofColor::blue;
+        if (m.getAddress() == "/color/red") localPenColor = ofColor::red;
+        else if (m.getAddress() == "/color/green") localPenColor = ofColor::green;
+        else if (m.getAddress() == "/color/blue") localPenColor = ofColor::blue;
+        else if (m.getAddress() == "/color/yellow") localPenColor = ofColor::yellow;
+        else if (m.getAddress() == "/color/purple") localPenColor = ofColor::purple;
+        else if (m.getAddress() == "/color/pink") localPenColor = ofColor::pink;
+        //settings tab
+        else if (m.getAddress() == "/settings/timetolive") timeToDie = m.getArgAsFloat(0);
+        else if (m.getAddress() == "/settings/pulsing_limits/2") upper_pulsing_limit = m.getArgAsFloat(0);
+        else if (m.getAddress() == "/settings/pulsing_limits/1") lower_pulsing_limit = m.getArgAsFloat(0);
+        else if (m.getAddress() == "/settings/push_clear") all_points.clear();
     }
+    
+    
+    if (ofGetElapsedTimef() - last_ipad_update_time > 0.04) {
+        oscupdate_interface();
+        last_ipad_update_time = ofGetElapsedTimef();
+    }
+}
+
+void gFrameApp::oscupdate_interface() {
+    ofxOscMessage update;
+    
+    //red
+    update.clear();
+    update.setAddress("/color/red");
+    if ((ofColor)localPenColor == ofColor::red) update.addFloatArg(1);
+    else update.addFloatArg(0);
+    sender.sendMessage(update);
+    
+    //green
+    update.clear();
+    update.setAddress("/color/green");
+    if ((ofColor)localPenColor == ofColor::green) update.addFloatArg(1);
+    else update.addFloatArg(0);
+    sender.sendMessage(update);
+    
+    //blue
+    update.clear();
+    update.setAddress("/color/blue");
+    if ((ofColor)localPenColor == ofColor::blue) update.addFloatArg(1);
+    else update.addFloatArg(0);
+    sender.sendMessage(update);
+    
+    //yellow
+    update.clear();
+    update.setAddress("/color/yellow");
+    if ((ofColor)localPenColor == ofColor::yellow) update.addFloatArg(1);
+    else update.addFloatArg(0);
+    sender.sendMessage(update);
+    
+    //purple
+    update.clear();
+    update.setAddress("/color/purple");
+    if ((ofColor)localPenColor == ofColor::purple) update.addFloatArg(1);
+    else update.addFloatArg(0);
+    sender.sendMessage(update);
+    
+    //pink
+    update.clear();
+    update.setAddress("/color/pink");
+    if ((ofColor)localPenColor == ofColor::pink) update.addFloatArg(1);
+    else update.addFloatArg(0);
+    sender.sendMessage(update);
+    
+    //timetolive
+    update.clear();
+    update.setAddress("/settings/timetolive");
+    update.addFloatArg(timeToDie);
+    sender.sendMessage(update);
+    update.clear();
+    update.setAddress("/settings/label_ttl");
+    update.addStringArg(ofToString(timeToDie));
+    sender.sendMessage(update);
+    
+    //pulsing limits
+    update.clear();
+    update.setAddress("/settings/label_upl");
+    update.addStringArg(ofToString(upper_pulsing_limit));
+    sender.sendMessage(update);
+    
+    update.clear();
+    update.setAddress("/settings/pulsing_limits/2");
+    update.addFloatArg(upper_pulsing_limit);
+    sender.sendMessage(update);
+    
+    update.clear();
+    update.setAddress("/settings/pulsing_limits/1");
+    update.addFloatArg(lower_pulsing_limit);
+    sender.sendMessage(update);
+    
+    update.clear();
+    update.setAddress("/settings/label_lpl");
+    update.addStringArg(ofToString(lower_pulsing_limit));
+    sender.sendMessage(update);
 }
 
 void gFrameApp::tuioAdded(ofxTuioCursor &cursor) {

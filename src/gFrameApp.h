@@ -69,7 +69,10 @@ class gFrameApp : public ofBaseApp{
     
     //OSC
     ofxOscReceiver receiver;
+    ofxOscSender sender;
     void oscUpdate();
+    void oscupdate_interface();
+    float last_ipad_update_time = 0;
     
     //Syphon output
     ofxSyphonServer syphonMainOut;
