@@ -84,9 +84,7 @@ void gFrameApp::update(){
             start_pulsing();
     }
     
-    if (LED_pulsing)
-    {
-        
+    if (LED_pulsing) {
         //int time = abs(((int)ofGetElapsedTimeMillis() % (LED_pulsing_time*2)) - LED_pulsing_time);
         LED_level = ofMap(time, 0, LED_pulsing_time, lower_pulsing_limit, upper_pulsing_limit);
     }
@@ -104,6 +102,7 @@ void gFrameApp::draw(){
             if (all_points[i].lifetime >= 0.0)
             {
                 ofSetColor(all_points[i].color, ofMap(all_points[i].lifetime, timeToDie, 0.0, 0, 255));
+                ofLine(all_points[i-1].loc, all_points[i].loc);
                 ofCircle(all_points[i].loc.x, all_points[i].loc.y, 2);
                 //ofLine(all_points[i-1].loc.x, all_points[i-1].loc.y, all_points[i].loc.x, all_points[i].loc.y);
             }
@@ -116,6 +115,13 @@ void gFrameApp::draw(){
 
 //--------------------------------------------------------------
 void gFrameApp::keyPressed(int key){
+    if (key == 'r')
+        localPenColor = ofColor::red;
+    else if (key == 'b')
+        localPenColor = ofColor::blue;
+    else if (key == 'g')
+        localPenColor = ofColor::green;
+        
 
 }
 
