@@ -11,15 +11,7 @@
 #include "ofxDmx.h"
 #include "ofxOsc.h"
 #include "ofxTuio.h"
-
-typedef struct {
-    ofVec2f loc;
-    int point_id;
-    float lifetime;
-    ofColor color;
-    int type;
-    int style;
-} gPoint;
+#include "GPoint.h"
 
 class gFrameApp : public ofBaseApp{
 	public:
@@ -45,7 +37,7 @@ class gFrameApp : public ofBaseApp{
     //vectors containing point data
     //mouse for easier testing
     //vector containing ALL points
-    vector <gPoint>  all_points;
+    vector <GPoint>  all_points;
     float timeToDie;
     
     //TUIO support

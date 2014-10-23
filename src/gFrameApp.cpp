@@ -23,7 +23,7 @@ void gFrameApp::setup(){
 	ofAddListener(tuioClient.cursorUpdated,this,&gFrameApp::tuioUpdated);
     
     //general Point setup
-    timeToDie = 5.0;
+    timeToDie = 5000;
     
     //DMX for controlling RGB LED Strips
     dmx.connect(0);
@@ -63,8 +63,8 @@ void gFrameApp::update(){
     //calculating time to life
     for(int i = 1; i < all_points.size(); i++)
     {
-        all_points[i].lifetime += 0.01;
-        if (all_points[i].lifetime > timeToDie )
+//        all_points[i].lifetime += 0.01;
+        if (ofGetElapsedTimeMillis() - all_points[i].getTimestamp() > timeToDie )
         {
             all_points.erase(all_points.begin() + i);
         }
@@ -99,13 +99,13 @@ void gFrameApp::draw(){
     for(int i = 1; i < all_points.size(); i++)
     {
         {
-            if (all_points[i].lifetime >= 0.0)
-            {
-                ofSetColor(all_points[i].color, ofMap(all_points[i].lifetime, timeToDie, 0.0, 0, 255));
-                ofLine(all_points[i-1].loc, all_points[i].loc);
-                ofCircle(all_points[i].loc.x, all_points[i].loc.y, 2);
+//            if (all_points[i].lifetime >= 0.0)
+//            {
+//                ofSetColor(all_points[i].color, ofMap(all_points[i].getTimestamp(), timeToDie, 0.0, 0, 255));
+//                ofLine(all_points[i-1].loc, all_points[i].loc);
+                ofCircle(all_points[i].getLocation().x, all_points[i].getLocation().y, 2);
                 //ofLine(all_points[i-1].loc.x, all_points[i-1].loc.y, all_points[i].loc.x, all_points[i].loc.y);
-            }
+//            }
         }
     }
     
@@ -132,12 +132,12 @@ void gFrameApp::keyReleased(int key){
 
 //--------------------------------------------------------------
 void gFrameApp::mouseMoved(int x, int y){
-    gPoint the_point;
-    the_point.loc = ofVec2f(x,y);
-    the_point.point_id = 0;
-    the_point.color = localPenColor;
-    the_point.type = MOUSE;
-    the_point.lifetime = 0;
+    GPoint the_point;
+    the_point.setLocation(ofVec2f(x,y));
+    the_point.setId(0);
+    the_point.setColor(localPenColor);
+    the_point.setType(MOUSE);
+//    the_point.lifetime = 0;
     all_points.push_back(the_point);
     
     stop_pulsing();
@@ -176,14 +176,14 @@ void gFrameApp::dragEvent(ofDragInfo dragInfo){
 
 //--------------------------------------------------------------
 void gFrameApp::onTouchPoint(TouchPointEvent &event) {
-    gPoint the_point;
+    GPoint the_point;
     int x = ofMap(event.touchPoint.x, 0, 1680, 0, ofGetWidth());
     int y = ofMap(event.touchPoint.y, 0, 1080, 0, ofGetHeight());
-    the_point.loc = ofVec2f(x, y);
-    the_point.point_id = (int)event.touchPoint.id;
-    the_point.color = localPenColor;
-    the_point.type = LOCALFRAME;
-    the_point.lifetime = 0;
+    the_point.setLocation(ofVec2f(x, y));
+    the_point.setId((int)event.touchPoint.id);
+    the_point.setColor(localPenColor);
+    the_point.setType(LOCALFRAME);
+//    the_point.lifetime = 0;
     all_points.push_back(the_point);
     
     //stop pulsing LEDs
@@ -308,27 +308,26 @@ void gFrameApp::oscupdate_interface() {
 }
 
 void gFrameApp::tuioAdded(ofxTuioCursor &cursor) {
-    gPoint the_point;
-    the_point.loc = ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight());
-    the_point.point_id = cursor.getFingerId();
-    the_point.color = localPenColor;
-    the_point.type = TUIO;
-    the_point.lifetime = 0;
+    GPoint the_point;
+    the_point.setLocation(ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight()));
+    the_point.setId(cursor.getFingerId());
+    the_point.setColor(localPenColor);
+    the_point.setType(TUIO);
+//    the_point.lifetime = 0;
     all_points.push_back(the_point);
     
     stop_pulsing();
     last_points_time = ofGetElapsedTimeMillis();
     //points_t[id].push_back(TUIOpoint);
-    
 }
 
 void gFrameApp::tuioUpdated(ofxTuioCursor &cursor) {
-    gPoint the_point;
-    the_point.loc = ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight());
-    the_point.point_id = cursor.getFingerId();
-    the_point.color = localPenColor;
-    the_point.type = TUIO;
-    the_point.lifetime = 0.0;
+    GPoint the_point;
+    the_point.setLocation(ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight()));
+    the_point.setId(cursor.getFingerId());
+    the_point.setColor(localPenColor);
+    the_point.setType(TUIO);
+    //    the_point.lifetime = 0;
     all_points.push_back(the_point);
     
     stop_pulsing();
