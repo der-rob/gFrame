@@ -45,6 +45,17 @@ void GPointList::update(){
         // erase the stroke if it is empty
         if(strokes[i].size() == 0){
             strokes.erase(strokes.begin() + i);
+            
+            // if this vector was the current one for one of the ids, remove it from the currentStrokeForId
+            for(int m = 0; m<currentStrokeForId.size(); m++){
+                if (currentStrokeForId[m] == i) {
+                    currentStrokeForId.erase(currentStrokeForId[m]);
+                }
+                // decrease the following ones by one
+                else if (currentStrokeForId[m] > i){
+                    currentStrokeForId[m]-=1;
+                }
+            }
         }
     }
 }
