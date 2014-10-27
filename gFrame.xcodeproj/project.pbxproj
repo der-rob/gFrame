@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6CA504DB19FA82590091B61A /* GPointList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CA504D919FA82590091B61A /* GPointList.cpp */; };
+		6CEACF3B19F957AD00EB7DE6 /* GPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CEACF3719F957AD00EB7DE6 /* GPoint.cpp */; };
+		6CEACF3C19F957AD00EB7DE6 /* ProfileStyle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CEACF3919F957AD00EB7DE6 /* ProfileStyle.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		D4091B04196AB67B00F109F1 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4091AF3196AB67B00F109F1 /* Syphon.framework */; };
 		D4091B05196AB67B00F109F1 /* SyphonNameboundClient.m in Sources */ = {isa = PBXBuildFile; fileRef = D4091AF6196AB67B00F109F1 /* SyphonNameboundClient.m */; };
@@ -97,6 +100,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6CA504D919FA82590091B61A /* GPointList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GPointList.cpp; sourceTree = "<group>"; };
+		6CA504DA19FA82590091B61A /* GPointList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPointList.h; sourceTree = "<group>"; };
+		6CEACF3719F957AD00EB7DE6 /* GPoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GPoint.cpp; sourceTree = "<group>"; };
+		6CEACF3819F957AD00EB7DE6 /* GPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPoint.h; sourceTree = "<group>"; };
+		6CEACF3919F957AD00EB7DE6 /* ProfileStyle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProfileStyle.cpp; sourceTree = "<group>"; };
+		6CEACF3A19F957AD00EB7DE6 /* ProfileStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileStyle.h; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		D4091AF3196AB67B00F109F1 /* Syphon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Syphon.framework; sourceTree = "<group>"; };
 		D4091AF5196AB67B00F109F1 /* SyphonNameboundClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyphonNameboundClient.h; sourceTree = "<group>"; };
@@ -626,6 +635,12 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				6CEACF3719F957AD00EB7DE6 /* GPoint.cpp */,
+				6CEACF3819F957AD00EB7DE6 /* GPoint.h */,
+				6CA504D919FA82590091B61A /* GPointList.cpp */,
+				6CA504DA19FA82590091B61A /* GPointList.h */,
+				6CEACF3919F957AD00EB7DE6 /* ProfileStyle.cpp */,
+				6CEACF3A19F957AD00EB7DE6 /* ProfileStyle.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* gFrameApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* gFrameApp.h */,
@@ -729,6 +744,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6CA504DB19FA82590091B61A /* GPointList.cpp in Sources */,
 				D4A778C11976A26E005E4026 /* ofxEasingExpo.cpp in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				D4605492196DC7480040C381 /* ofxOscReceiver.cpp in Sources */,
@@ -743,6 +759,7 @@
 				D460548B196DC7480040C381 /* OscOutboundPacketStream.cpp in Sources */,
 				D4605411196C52650040C381 /* ofxDmx.cpp in Sources */,
 				D4A778BD1976A26E005E4026 /* ofxEasingBounce.cpp in Sources */,
+				6CEACF3C19F957AD00EB7DE6 /* ProfileStyle.cpp in Sources */,
 				D4091B06196AB67B00F109F1 /* ofxSyphonClient.mm in Sources */,
 				D4091B05196AB67B00F109F1 /* SyphonNameboundClient.m in Sources */,
 				D460548F196DC7480040C381 /* ofxOscBundle.cpp in Sources */,
@@ -757,6 +774,7 @@
 				D4605490196DC7480040C381 /* ofxOscMessage.cpp in Sources */,
 				D4A778BB1976A26E005E4026 /* ofxEasing.cpp in Sources */,
 				D460548E196DC7480040C381 /* OscTypes.cpp in Sources */,
+				6CEACF3B19F957AD00EB7DE6 /* GPoint.cpp in Sources */,
 				D4091B07196AB67B00F109F1 /* ofxSyphonServer.mm in Sources */,
 				D4605486196DC7480040C381 /* IpEndpointName.cpp in Sources */,
 				D4605491196DC7480040C381 /* ofxOscParameterSync.cpp in Sources */,
