@@ -4,11 +4,10 @@
 void gFrameApp::setup(){
     //just set up the openFrameworks stuff
     ofSetFrameRate(60);
-    //ofSetVerticalSync(true);
-    //ofBackground(82,70,86);
+    ofSetVerticalSync(true);
     ofBackground(ofColor::black);
-    //ofBackground(ofColor::white);
-    ofSetWindowShape(480, 288);
+    ofSetWindowShape(1024, 768);
+    
     //Syphon stuff
     syphonMainOut.setName("gFrame Main Out");
 
@@ -19,11 +18,7 @@ void gFrameApp::setup(){
     //TUIO setup
     tuioClient.start(3333);
     ofAddListener(tuioClient.cursorAdded,this,&gFrameApp::tuioAdded);
-	ofAddListener(tuioClient.cursorRemoved,this,&gFrameApp::tuioRemoved);
 	ofAddListener(tuioClient.cursorUpdated,this,&gFrameApp::tuioUpdated);
-    
-    //general Point setup
-    timeToDie = 500;
     
     //DMX for controlling RGB LED Strips
     dmx.connect(0);
@@ -34,7 +29,6 @@ void gFrameApp::setup(){
     upper_pulsing_limit = 0.6;
     lower_pulsing_limit = 0.05;
     
-    
     //OSC
     receiver.setup(8000);
     sender.setup("192.168.1.37",9000);
@@ -44,12 +38,12 @@ void gFrameApp::setup(){
     localDrawingParameters.add(localPenColor.set("local pencolor", ofColor::white));
     localDrawingParameters.add(localPenWidth.set("local penwidth", 10));
     
-    
     // SETUP LIGHT
     light.enable();
     light.setPointLight();
     light.setPosition(0,-300,0);
     
+    // SETUP OPENGL
     ofEnableDepthTest(); // IMPORTANT!!!
 
 }
@@ -62,24 +56,15 @@ void gFrameApp::exit(){
 void gFrameApp::update(){
     
     stroke_list.update();
-    
     oscUpdate();
-
     tuioClient.getMessage();
     
-    //todo: sort point by type
-    
-    //calculating time to life
-    for(int i = 0; i < all_points.size(); i++)
-    {
-//        all_points[i].lifetime += 0.01;
-        if ((ofGetElapsedTimeMillis()/10) - all_points[i].getTimestamp() > timeToDie )
-        {
-            all_points.erase(all_points.begin() + i);
-        }
-    }
-    
-    
+    // DMX UPDATE
+    dmxUpdate();
+
+}
+
+void gFrameApp::dmxUpdate(){
     //create triangle wave for pulsing led lights
     int time = abs(((int)ofGetElapsedTimeMillis() % (LED_pulsing_time*2)) - LED_pulsing_time);
     
@@ -98,27 +83,12 @@ void gFrameApp::update(){
         LED_level = ofMap(time, 0, LED_pulsing_time, lower_pulsing_limit, upper_pulsing_limit);
     }
     
-//    setLEDColor(localPenColor);
+    setLEDColor(localPenColor);
 }
 
 //--------------------------------------------------------------
 void gFrameApp::draw(){
-    //draw all
-    
-
-//    for(int i = 1; i < all_points.size(); i++)
-//    {
-//        {
-////            if (all_points[i].lifetime >= 0.0)
-////            {
-////                ofSetColor(all_points[i].color, ofMap(all_points[i].getTimestamp(), timeToDie, 0.0, 0, 255));
-////                ofLine(all_points[i-1].loc, all_points[i].loc);
-//                ofCircle(all_points[i].getLocation().x, all_points[i].getLocation().y, 2);
-//                //ofLine(all_points[i-1].loc.x, all_points[i-1].loc.y, all_points[i].loc.x, all_points[i].loc.y);
-////            }
-//        }
-//    }
-    
+   
     for(vector<GPoint> stroke : *stroke_list.getAllStrokes()){
         switch(stroke[0].getStyle()){
             case STYLE_PROFILE:
@@ -143,13 +113,8 @@ void gFrameApp::keyPressed(int key){
         localPenColor = ofColor::blue;
     else if (key == 'g')
         localPenColor = ofColor::green;
-        
-
-}
-
-//--------------------------------------------------------------
-void gFrameApp::keyReleased(int key){
-
+    else if(key == 'c')
+        stroke_list.clear();
 }
 
 //--------------------------------------------------------------
@@ -169,36 +134,6 @@ void gFrameApp::mouseMoved(int x, int y){
 }
 
 //--------------------------------------------------------------
-void gFrameApp::mouseDragged(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void gFrameApp::mousePressed(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void gFrameApp::mouseReleased(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void gFrameApp::windowResized(int w, int h){
-
-}
-
-//--------------------------------------------------------------
-void gFrameApp::gotMessage(ofMessage msg){
-
-}
-
-//--------------------------------------------------------------
-void gFrameApp::dragEvent(ofDragInfo dragInfo){ 
-
-}
-
-//--------------------------------------------------------------
 void gFrameApp::onTouchPoint(TouchPointEvent &event) {
     GPoint the_point;
     int x = ofMap(event.touchPoint.x, 0, 1680, 0, ofGetWidth());
@@ -207,8 +142,8 @@ void gFrameApp::onTouchPoint(TouchPointEvent &event) {
     the_point.setId((int)event.touchPoint.id);
     the_point.setColor(localPenColor);
     the_point.setType(LOCALFRAME);
-//    the_point.lifetime = 0;
-    all_points.push_back(the_point);
+    the_point.setStyle(current_style);
+    stroke_list.add(the_point);
     
     //stop pulsing LEDs
     stop_pulsing();
@@ -241,10 +176,10 @@ void gFrameApp::oscUpdate() {
         else if (m.getAddress() == "/color/purple") localPenColor = ofColor::purple;
         else if (m.getAddress() == "/color/pink") localPenColor = ofColor::pink;
         //settings tab
-        else if (m.getAddress() == "/settings/timetolive") timeToDie = m.getArgAsFloat(0);
+        else if (m.getAddress() == "/settings/timetolive") stroke_list.setLifetime(m.getArgAsFloat(0));
         else if (m.getAddress() == "/settings/pulsing_limits/2") upper_pulsing_limit = m.getArgAsFloat(0);
         else if (m.getAddress() == "/settings/pulsing_limits/1") lower_pulsing_limit = m.getArgAsFloat(0);
-        else if (m.getAddress() == "/settings/push_clear") all_points.clear();
+        else if (m.getAddress() == "/settings/push_clear") stroke_list.clear();
     }
     
     
@@ -302,11 +237,11 @@ void gFrameApp::oscupdate_interface() {
     //timetolive
     update.clear();
     update.setAddress("/settings/timetolive");
-    update.addFloatArg(timeToDie);
+    update.addFloatArg(stroke_list.getLifetime());
     sender.sendMessage(update);
     update.clear();
     update.setAddress("/settings/label_ttl");
-    update.addStringArg(ofToString(timeToDie));
+    update.addStringArg(ofToString(stroke_list.getLifetime()));
     sender.sendMessage(update);
     
     //pulsing limits
@@ -338,13 +273,10 @@ void gFrameApp::tuioAdded(ofxTuioCursor &cursor) {
     the_point.setColor(localPenColor);
     the_point.setType(TUIO);
     the_point.setStyle(current_style);
-//    the_point.lifetime = 0;
     stroke_list.addToNewStroke(the_point);
-//    all_points.push_back(the_point);
     
     stop_pulsing();
     last_points_time = ofGetElapsedTimeMillis();
-    //points_t[id].push_back(TUIOpoint);
 }
 
 void gFrameApp::tuioUpdated(ofxTuioCursor &cursor) {
@@ -354,16 +286,10 @@ void gFrameApp::tuioUpdated(ofxTuioCursor &cursor) {
     the_point.setColor(localPenColor);
     the_point.setType(TUIO);
     the_point.setStyle(current_style);
-    //    the_point.lifetime = 0;
-//    all_points.push_back(the_point);
     stroke_list.add(the_point);
     
     stop_pulsing();
     last_points_time = ofGetElapsedTimeMillis();
-}
-
-void gFrameApp::tuioRemoved(ofxTuioCursor &cursor) {
-
 }
 
 void gFrameApp::start_pulsing() {
