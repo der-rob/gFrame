@@ -61,6 +61,8 @@ void gFrameApp::exit(){
 //--------------------------------------------------------------
 void gFrameApp::update(){
     
+    pointList.update();
+    
     oscUpdate();
 
     tuioClient.getMessage();

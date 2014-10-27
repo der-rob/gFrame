@@ -30,6 +30,25 @@ void GPointList::add(GPoint point){
     }
 }
 
+void GPointList::update(){
+
+    // remove points that have exceeded their lifetime
+    for(int i = 0; i < strokes.size(); i++)
+    {
+        for(int j = 0; j < strokes[i].size(); j++){
+            if ((ofGetElapsedTimeMillis()/10) - strokes[i][j].getTimestamp() > lifetime )
+            {
+                strokes[i].erase(strokes[i].begin() + j);
+            }
+        }
+        
+        // erase the stroke if it is empty
+        if(strokes[i].size() == 0){
+            strokes.erase(strokes.begin() + i);
+        }
+    }
+}
+
 //void GPointList::getStrokesById(int id, vector<vector<GPoint> >* list){
 //    for(vector<GPoint> stroke : strokes){
 //        if(stroke[0].getId() == id){

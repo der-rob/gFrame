@@ -21,13 +21,17 @@
 class GPointList{
 
 public:
+    void update();
+    
     void addToNewStroke(GPoint point);
     void add(GPoint point);
     vector<vector<GPoint> >* getAllStrokes(){return &strokes; };
+    void setLifetime(float lifetime){ this->lifetime = lifetime; }
     
 private:
     vector<vector<GPoint> > strokes;
     map<int, int> currentStrokeForId;
+    float lifetime = 500;
 
 };
 
