@@ -25,8 +25,15 @@ public:
     
     void addToNewStroke(GPoint point);
     void add(GPoint point);
-    vector<vector<GPoint> >* getAllStrokes(){return &strokes; };
+    void clear();
+    
+    // SETTERS
     void setLifetime(float lifetime){ this->lifetime = lifetime; }
+    
+    // GETTERS
+    float getLifetime(){return lifetime;}
+    vector<vector<GPoint> >* getAllStrokes(){return &strokes; };
+
     
 private:
     vector<vector<GPoint> > strokes;

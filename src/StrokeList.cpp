@@ -70,6 +70,11 @@ void StrokeList::update(){
     }
 }
 
+void StrokeList::clear(){
+    strokes.clear();
+    currentStrokeForId.clear();
+}
+
 //void StrokeList::getStrokesById(int id, vector<vector<GPoint> >* list){
 //    for(vector<GPoint> stroke : strokes){
 //        if(stroke[0].getId() == id){
