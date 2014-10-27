@@ -96,7 +96,7 @@ void gFrameApp::update(){
         LED_level = ofMap(time, 0, LED_pulsing_time, lower_pulsing_limit, upper_pulsing_limit);
     }
     
-    setLEDColor(localPenColor);
+//    setLEDColor(localPenColor);
 }
 
 //--------------------------------------------------------------
@@ -118,10 +118,8 @@ void gFrameApp::draw(){
 //    }
     
     for(vector<GPoint> stroke : *pointList.getAllStrokes()){
-        if(stroke[0].getId() == 0)
             profileStyle.render(stroke);
     }
-    
     
     //syphon
     syphonMainOut.publishScreen();

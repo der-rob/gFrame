@@ -31,7 +31,7 @@ public:
     ofVec2f getLocation(){return loc;}
     int getId(){return finger_id;}
     unsigned long getTimestamp(){return timestamp;}
-    ofColor* getColor(){return &color;}
+    ofColor getColor(){return color;}
     int getType(){return type;}
     int getStrokeId(){return stroke_id;}
     

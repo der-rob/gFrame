@@ -106,65 +106,103 @@ void ProfileStyle::draw(){
                 ofVec3f normalBack = ((((point_3 - point_4) / 2) + point_4) - middlePoint).normalize();
                 ofVec3f normalBottom = ((((point_2 - point_3) / 2) + point_3) - middlePoint).normalize();
                 
+                ofFloatColor colorLast = ofFloatColor(
+                                                     ofMap(points[all][cur-1].getColor().r, 0, 255, 0.0, 1.0),
+                                                     ofMap(points[all][cur-1].getColor().g, 0, 255, 0.0, 1.0),
+                                                     ofMap(points[all][cur-1].getColor().b, 0, 255, 0.0, 1.0)
+                                                     );
+                
+                ofFloatColor colorCurrent = ofFloatColor(
+                                                     ofMap(points[all][cur].getColor().r, 0, 255, 0.0, 1.0),
+                                                     ofMap(points[all][cur].getColor().g, 0, 255, 0.0, 1.0),
+                                                     ofMap(points[all][cur].getColor().b, 0, 255, 0.0, 1.0)
+                                                     );
+                
+                
+                
                 // front
                 mesh.addVertex(last_1);
                 mesh.addNormal(normalFront);
+                mesh.addColor(colorLast);
                 mesh.addVertex(last_2);
                 mesh.addNormal(normalFront);
+                mesh.addColor(colorLast);
                 mesh.addVertex(point_1);
                 mesh.addNormal(normalFront);
+                mesh.addColor(colorCurrent);
                 
                 mesh.addVertex(point_1);
                 mesh.addNormal(normalFront);
+                mesh.addColor(colorCurrent);
                 mesh.addVertex(point_2);
                 mesh.addNormal(normalFront);
+                mesh.addColor(colorCurrent);
                 mesh.addVertex(last_2);
                 mesh.addNormal(normalFront);
+                mesh.addColor(colorLast);
                 
                 // top
                 mesh.addVertex(last_1);
                 mesh.addNormal(normalTop);
+                mesh.addColor(colorLast);
                 mesh.addVertex(point_4);
                 mesh.addNormal(normalTop);
+                mesh.addColor(colorCurrent);
                 mesh.addVertex(point_1);
                 mesh.addNormal(normalTop);
+                mesh.addColor(colorLast);
                 
                 mesh.addVertex(last_1);
                 mesh.addNormal(normalTop);
+                mesh.addColor(colorLast);
                 mesh.addVertex(last_4);
                 mesh.addNormal(normalTop);
+                mesh.addColor(colorLast);
                 mesh.addVertex(point_4);
                 mesh.addNormal(normalTop);
+                mesh.addColor(colorCurrent);
                 
                 // back
                 mesh.addVertex(last_4);
                 mesh.addNormal(normalBack);
+                mesh.addColor(colorLast);
                 mesh.addVertex(last_3);
                 mesh.addNormal(normalBack);
+                mesh.addColor(colorLast);
                 mesh.addVertex(point_4);
                 mesh.addNormal(normalBack);
+                mesh.addColor(colorCurrent);
                 
                 mesh.addVertex(last_3);
                 mesh.addNormal(normalBack);
+                mesh.addColor(colorLast);
                 mesh.addVertex(point_3);
                 mesh.addNormal(normalBack);
+                mesh.addColor(colorCurrent);
                 mesh.addVertex(point_4);
                 mesh.addNormal(normalBack);
+                mesh.addColor(colorCurrent);
                 
                 // bottom
                 mesh.addVertex(last_2);
                 mesh.addNormal(normalBottom);
+                mesh.addColor(colorLast);
                 mesh.addVertex(last_3);
                 mesh.addNormal(normalBottom);
+                mesh.addColor(colorLast);
                 mesh.addVertex(point_3);
                 mesh.addNormal(normalBottom);
+                mesh.addColor(colorCurrent);
                 
                 mesh.addVertex(last_2);
                 mesh.addNormal(normalBottom);
+                mesh.addColor(colorLast);
                 mesh.addVertex(point_2);
                 mesh.addNormal(normalBottom);
+                mesh.addColor(colorCurrent);
                 mesh.addVertex(point_3);
                 mesh.addNormal(normalBottom);
+                mesh.addColor(colorCurrent);
                 
                 
                 last_1 = point_1;
@@ -177,7 +215,7 @@ void ProfileStyle::draw(){
                 if(angle > 359) angle = 0;
             }
 
-            ofSetColor(255,15,150);
+//            ofSetColor(255,15,150);
 
             if(fill){
                 mesh.draw();
@@ -190,8 +228,8 @@ void ProfileStyle::draw(){
 }
 
 void ProfileStyle::render(vector<GPoint>& points){
-    int depth = 30;
-    int width = 30;
+    int depth = 10;
+    int width = 10;
     
     GPoint* last_used_point;
     
@@ -257,65 +295,101 @@ void ProfileStyle::render(vector<GPoint>& points){
             ofVec3f normalBack = ((((point_3 - point_4) / 2) + point_4) - middlePoint).normalize();
             ofVec3f normalBottom = ((((point_2 - point_3) / 2) + point_3) - middlePoint).normalize();
             
+            ofFloatColor colorLast = ofFloatColor(
+                                                  ofMap(points[all-1].getColor().r, 0, 255, 0.0, 1.0),
+                                                  ofMap(points[all-1].getColor().g, 0, 255, 0.0, 1.0),
+                                                  ofMap(points[all-1].getColor().b, 0, 255, 0.0, 1.0)
+                                                  );
+            
+            ofFloatColor colorCurrent = ofFloatColor(
+                                                     ofMap(points[all].getColor().r, 0, 255, 0.0, 1.0),
+                                                     ofMap(points[all].getColor().g, 0, 255, 0.0, 1.0),
+                                                     ofMap(points[all].getColor().b, 0, 255, 0.0, 1.0)
+                                                     );           
+            
             // front
             mesh.addVertex(last_1);
             mesh.addNormal(normalFront);
+            mesh.addColor(colorLast);
             mesh.addVertex(last_2);
             mesh.addNormal(normalFront);
+            mesh.addColor(colorLast);
             mesh.addVertex(point_1);
             mesh.addNormal(normalFront);
+            mesh.addColor(colorCurrent);
             
             mesh.addVertex(point_1);
             mesh.addNormal(normalFront);
+            mesh.addColor(colorCurrent);
             mesh.addVertex(point_2);
             mesh.addNormal(normalFront);
+            mesh.addColor(colorCurrent);
             mesh.addVertex(last_2);
             mesh.addNormal(normalFront);
+            mesh.addColor(colorLast);
             
             // top
             mesh.addVertex(last_1);
             mesh.addNormal(normalTop);
+            mesh.addColor(colorLast);
             mesh.addVertex(point_4);
             mesh.addNormal(normalTop);
+            mesh.addColor(colorCurrent);
             mesh.addVertex(point_1);
             mesh.addNormal(normalTop);
+            mesh.addColor(colorLast);
             
             mesh.addVertex(last_1);
             mesh.addNormal(normalTop);
+            mesh.addColor(colorLast);
             mesh.addVertex(last_4);
             mesh.addNormal(normalTop);
+            mesh.addColor(colorLast);
             mesh.addVertex(point_4);
             mesh.addNormal(normalTop);
+            mesh.addColor(colorCurrent);
             
             // back
             mesh.addVertex(last_4);
             mesh.addNormal(normalBack);
+            mesh.addColor(colorLast);
             mesh.addVertex(last_3);
             mesh.addNormal(normalBack);
+            mesh.addColor(colorLast);
             mesh.addVertex(point_4);
             mesh.addNormal(normalBack);
+            mesh.addColor(colorCurrent);
             
             mesh.addVertex(last_3);
             mesh.addNormal(normalBack);
+            mesh.addColor(colorLast);
             mesh.addVertex(point_3);
             mesh.addNormal(normalBack);
+            mesh.addColor(colorCurrent);
             mesh.addVertex(point_4);
             mesh.addNormal(normalBack);
+            mesh.addColor(colorCurrent);
             
             // bottom
             mesh.addVertex(last_2);
             mesh.addNormal(normalBottom);
+            mesh.addColor(colorLast);
             mesh.addVertex(last_3);
             mesh.addNormal(normalBottom);
+            mesh.addColor(colorLast);
             mesh.addVertex(point_3);
             mesh.addNormal(normalBottom);
+            mesh.addColor(colorCurrent);
             
             mesh.addVertex(last_2);
             mesh.addNormal(normalBottom);
+            mesh.addColor(colorLast);
             mesh.addVertex(point_2);
             mesh.addNormal(normalBottom);
+            mesh.addColor(colorCurrent);
             mesh.addVertex(point_3);
             mesh.addNormal(normalBottom);
+            mesh.addColor(colorCurrent);
             
             
             last_1 = point_1;
@@ -327,7 +401,7 @@ void ProfileStyle::render(vector<GPoint>& points){
             angle+=5;
             if(angle > 359) angle = 0;
         }
-            
+        
         ofSetColor(255,15,150);
         
         if(fill){
