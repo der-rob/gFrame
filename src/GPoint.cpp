@@ -10,7 +10,7 @@
 
 
 GPoint::GPoint(){
-    timestamp = ofGetElapsedTimeMillis();
+    timestamp = ofGetElapsedTimeMillis()/10;
     point_id = instance_count;
     instance_count++;
 }

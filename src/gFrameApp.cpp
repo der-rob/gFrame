@@ -23,7 +23,7 @@ void gFrameApp::setup(){
 	ofAddListener(tuioClient.cursorUpdated,this,&gFrameApp::tuioUpdated);
     
     //general Point setup
-    timeToDie = 5000;
+    timeToDie = 500;
     
     //DMX for controlling RGB LED Strips
     dmx.connect(0);
@@ -44,6 +44,13 @@ void gFrameApp::setup(){
     localDrawingParameters.add(localPenColor.set("local pencolor", ofColor::white));
     localDrawingParameters.add(localPenWidth.set("local penwidth", 10));
     
+    
+    // SETUP LIGHT
+    light.enable();
+    light.setPointLight();
+    light.setPosition(0,-300,0);
+    
+    ofEnableDepthTest(); // IMPORTANT!!!
 
 }
 void gFrameApp::exit(){
@@ -61,10 +68,10 @@ void gFrameApp::update(){
     //todo: sort point by type
     
     //calculating time to life
-    for(int i = 1; i < all_points.size(); i++)
+    for(int i = 0; i < all_points.size(); i++)
     {
 //        all_points[i].lifetime += 0.01;
-        if (ofGetElapsedTimeMillis() - all_points[i].getTimestamp() > timeToDie )
+        if ((ofGetElapsedTimeMillis()/10) - all_points[i].getTimestamp() > timeToDie )
         {
             all_points.erase(all_points.begin() + i);
         }
@@ -95,19 +102,24 @@ void gFrameApp::update(){
 //--------------------------------------------------------------
 void gFrameApp::draw(){
     //draw all
+    
 
-    for(int i = 1; i < all_points.size(); i++)
-    {
-        {
-//            if (all_points[i].lifetime >= 0.0)
-//            {
-//                ofSetColor(all_points[i].color, ofMap(all_points[i].getTimestamp(), timeToDie, 0.0, 0, 255));
-//                ofLine(all_points[i-1].loc, all_points[i].loc);
-                ofCircle(all_points[i].getLocation().x, all_points[i].getLocation().y, 2);
-                //ofLine(all_points[i-1].loc.x, all_points[i-1].loc.y, all_points[i].loc.x, all_points[i].loc.y);
-//            }
-        }
-    }
+//    for(int i = 1; i < all_points.size(); i++)
+//    {
+//        {
+////            if (all_points[i].lifetime >= 0.0)
+////            {
+////                ofSetColor(all_points[i].color, ofMap(all_points[i].getTimestamp(), timeToDie, 0.0, 0, 255));
+////                ofLine(all_points[i-1].loc, all_points[i].loc);
+//                ofCircle(all_points[i].getLocation().x, all_points[i].getLocation().y, 2);
+//                //ofLine(all_points[i-1].loc.x, all_points[i-1].loc.y, all_points[i].loc.x, all_points[i].loc.y);
+////            }
+//        }
+//    }
+    
+    
+    profileStyle.render(all_points);
+    
     
     //syphon
     syphonMainOut.publishScreen();

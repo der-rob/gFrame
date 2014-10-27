@@ -12,6 +12,7 @@
 #include "ofxOsc.h"
 #include "ofxTuio.h"
 #include "GPoint.h"
+#include "ProfileStyle.h"
 
 class gFrameApp : public ofBaseApp{
 	public:
@@ -73,6 +74,9 @@ class gFrameApp : public ofBaseApp{
     ofParameterGroup localDrawingParameters;
     ofParameter<int> localPenWidth;
     ofParameter<ofColor> localPenColor;
+    
+    ProfileStyle profileStyle;
+    ofLight light;
 };
 
 
