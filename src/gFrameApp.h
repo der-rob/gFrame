@@ -15,6 +15,9 @@
 #include "ProfileStyle.h"
 #include "StrokeList.h"
 
+
+#define STYLE_PROFILE 0
+
 class gFrameApp : public ofBaseApp{
 	public:
 		void setup();
@@ -79,7 +82,9 @@ class gFrameApp : public ofBaseApp{
     ProfileStyle profileStyle;
     ofLight light;
     
-    StrokeList pointList;
+    StrokeList stroke_list;
+    
+    int current_style = STYLE_PROFILE;
 };
 
 

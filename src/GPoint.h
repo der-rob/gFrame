@@ -26,6 +26,7 @@ public:
     void setColor(ofColor c){ color = c; }
     void setType(int type){this->type = type;}
     void setStrokeId(int stroke_id){this->stroke_id = stroke_id;}
+    void setStyle(int style){ this->style_id = style; }
     
     // getters
     ofVec2f getLocation(){return loc;}
@@ -34,6 +35,7 @@ public:
     ofColor getColor(){return color;}
     int getType(){return type;}
     int getStrokeId(){return stroke_id;}
+    int getStyle(){return style_id;}
     
 private:
     ofVec2f loc;

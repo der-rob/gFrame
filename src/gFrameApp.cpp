@@ -61,7 +61,7 @@ void gFrameApp::exit(){
 //--------------------------------------------------------------
 void gFrameApp::update(){
     
-    pointList.update();
+    stroke_list.update();
     
     oscUpdate();
 
@@ -119,13 +119,13 @@ void gFrameApp::draw(){
 //        }
 //    }
     
-    for(vector<GPoint> stroke : *pointList.getAllStrokes()){
-        switch(stroke[0].getType()){
-            case 0:
+    for(vector<GPoint> stroke : *stroke_list.getAllStrokes()){
+        switch(stroke[0].getStyle()){
+            case STYLE_PROFILE:
                 profileStyle.render(stroke);
                 break;
-            case 1:
-                
+            default:
+                profileStyle.render(stroke);
                 break;
         }
         
@@ -159,9 +159,10 @@ void gFrameApp::mouseMoved(int x, int y){
     the_point.setId(0);
     the_point.setColor(localPenColor);
     the_point.setType(MOUSE);
+    the_point.setStyle(current_style);
 //    the_point.lifetime = 0;
 //    all_points.push_back(the_point);
-    pointList.add(the_point);
+    stroke_list.add(the_point);
     
     stop_pulsing();
     last_points_time = ofGetElapsedTimeMillis();
@@ -336,8 +337,9 @@ void gFrameApp::tuioAdded(ofxTuioCursor &cursor) {
     the_point.setId(cursor.getFingerId());
     the_point.setColor(localPenColor);
     the_point.setType(TUIO);
+    the_point.setStyle(current_style);
 //    the_point.lifetime = 0;
-    pointList.addToNewStroke(the_point);
+    stroke_list.addToNewStroke(the_point);
 //    all_points.push_back(the_point);
     
     stop_pulsing();
@@ -351,9 +353,10 @@ void gFrameApp::tuioUpdated(ofxTuioCursor &cursor) {
     the_point.setId(cursor.getFingerId());
     the_point.setColor(localPenColor);
     the_point.setType(TUIO);
+    the_point.setStyle(current_style);
     //    the_point.lifetime = 0;
 //    all_points.push_back(the_point);
-    pointList.add(the_point);
+    stroke_list.add(the_point);
     
     stop_pulsing();
     last_points_time = ofGetElapsedTimeMillis();
