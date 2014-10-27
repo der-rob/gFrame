@@ -11,71 +11,48 @@
 #include "ofxDmx.h"
 #include "ofxOsc.h"
 #include "ofxTuio.h"
-//#include "GPoint.h"
+#include "GPoint.h"
+#include "ProfileStyle.h"
+#include "StrokeList.h"
 
-typedef struct {
-    ofVec2f loc;
-    int point_id;
-    float lifetime;
-    ofColor color;
-    int type;
-    int style;
-} gPoint;
+
+#define STYLE_PROFILE 0
 
 
 class gFrameApp : public ofBaseApp{
-	public:
-		void setup();
-		void update();
-		void draw();
-        void exit();
-		
-		void keyPressed(int key);
-		void keyReleased(int key);
-		void mouseMoved(int x, int y);
-		void mouseDragged(int x, int y, int button);
-		void mousePressed(int x, int y, int button);
-		void mouseReleased(int x, int y, int button);
-		void windowResized(int w, int h);
-		void dragEvent(ofDragInfo dragInfo);
-    void gotMessage(ofMessage msg);
+
+public:
+    void setup();
+    void update();
+    void draw();
+    void exit();
+    void mouseMoved(int x, int y);
+    void keyPressed(int key);
+    
+    void dmxUpdate();
     
     //frame and point data
-    ofxPQLabs touchFrame;
     void onTouchPoint(TouchPointEvent &event);
-
-    //vectors containing point data
-    //mouse for easier testing
-    //vector containing ALL points
-    vector <gPoint>  all_points;
-    float timeToDie;
     
-    //TUIO support
-    ofxTuioClient   tuioClient;
-    void	tuioAdded(ofxTuioCursor & tuioCursor);
-	void	tuioRemoved(ofxTuioCursor & tuioCursor);
-	void	tuioUpdated(ofxTuioCursor & tuioCursor);
-    
-    //DMX
-    ofxDmx dmx;
-    ofColor LEDstripColor;
-    float upper_pulsing_limit, lower_pulsing_limit;
+    // DMX
     void setLEDColor(ofColor ledColor);
     void start_pulsing();
     void stop_pulsing();
-    
-    bool LED_pulsing;
-    int LED_pulsing_time;
-    float LED_level;
-    float last_points_time;
-    
+
     //OSC
-    ofxOscReceiver receiver;
-    ofxOscSender sender;
     void oscUpdate();
     void oscupdate_interface();
-    float last_ipad_update_time = 0;
+   
+
+private:
     
+    // DRAWING
+    StrokeList stroke_list;
+    int current_style = STYLE_PROFILE;
+    ProfileStyle profileStyle;
+    
+    ofLight light;
+
     //Syphon output
     ofxSyphonServer syphonMainOut;
     ofTexture texScreen;
@@ -84,6 +61,30 @@ class gFrameApp : public ofBaseApp{
     ofParameterGroup localDrawingParameters;
     ofParameter<int> localPenWidth;
     ofParameter<ofColor> localPenColor;
+    
+    //OSC
+    ofxOscReceiver receiver;
+    ofxOscSender sender;
+    float last_ipad_update_time = 0;
+    
+    //DMX
+    ofxDmx dmx;
+    ofColor LEDstripColor;
+    float upper_pulsing_limit, lower_pulsing_limit;
+    bool LED_pulsing;
+    int LED_pulsing_time;
+    float LED_level;
+    float last_points_time;
+    
+    //TUIO support
+    ofxTuioClient   tuioClient;
+    void	tuioAdded(ofxTuioCursor & tuioCursor);
+	void	tuioRemoved(ofxTuioCursor & tuioCursor);
+	void	tuioUpdated(ofxTuioCursor & tuioCursor);
+    
+    // FRAME
+    ofxPQLabs touchFrame;
+    
 };
 
 
