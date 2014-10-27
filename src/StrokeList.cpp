@@ -10,6 +10,14 @@
 
 
 void StrokeList::addToNewStroke(GPoint point){
+    
+    // assign stroke id
+    point.setStrokeId(stroke_count);
+    
+    // increase the stroke count and reset it when it is too big 
+    stroke_count++;
+    if(stroke_count == 999) stroke_count = 0;
+    
     vector<GPoint> v;
     v.push_back(point);
     strokes.push_back(v);
@@ -21,6 +29,9 @@ void StrokeList::addToNewStroke(GPoint point){
 void StrokeList::add(GPoint point){
     // check if we already have a stroke with this id in the list
     if(currentStrokeForId.count(point.getId()) == 1){
+        // get the stroke id from the last one on the same list
+        point.setStrokeId(strokes[currentStrokeForId[point.getId()]].back().getStrokeId());
+        
         ofLog() << currentStrokeForId[point.getId()];
         strokes[currentStrokeForId[point.getId()]].push_back(point);
     }
@@ -36,8 +47,7 @@ void StrokeList::update(){
     for(int i = 0; i < strokes.size(); i++)
     {
         for(int j = 0; j < strokes[i].size(); j++){
-            if ((ofGetElapsedTimeMillis()/10) - strokes[i][j].getTimestamp() > lifetime )
-            {
+            if ((ofGetElapsedTimeMillis()/10) - strokes[i][j].getTimestamp() > lifetime) {
                 strokes[i].erase(strokes[i].begin() + j);
             }
         }
