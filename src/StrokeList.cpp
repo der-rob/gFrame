@@ -6,10 +6,10 @@
 //
 //
 
-#include "GPointList.h"
+#include "StrokeList.h"
 
 
-void GPointList::addToNewStroke(GPoint point){
+void StrokeList::addToNewStroke(GPoint point){
     vector<GPoint> v;
     v.push_back(point);
     strokes.push_back(v);
@@ -18,7 +18,7 @@ void GPointList::addToNewStroke(GPoint point){
     currentStrokeForId[point.getId()] = strokes.size()-1;
 }
 
-void GPointList::add(GPoint point){
+void StrokeList::add(GPoint point){
     // check if we already have a stroke with this id in the list
     if(currentStrokeForId.count(point.getId()) == 1){
         ofLog() << currentStrokeForId[point.getId()];
@@ -30,7 +30,7 @@ void GPointList::add(GPoint point){
     }
 }
 
-void GPointList::update(){
+void StrokeList::update(){
 
     // remove points that have exceeded their lifetime
     for(int i = 0; i < strokes.size(); i++)
@@ -60,7 +60,7 @@ void GPointList::update(){
     }
 }
 
-//void GPointList::getStrokesById(int id, vector<vector<GPoint> >* list){
+//void StrokeList::getStrokesById(int id, vector<vector<GPoint> >* list){
 //    for(vector<GPoint> stroke : strokes){
 //        if(stroke[0].getId() == id){
 //            list->push_back(stroke);

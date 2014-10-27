@@ -13,7 +13,7 @@
 #include "ofxTuio.h"
 #include "GPoint.h"
 #include "ProfileStyle.h"
-#include "GPointList.h"
+#include "StrokeList.h"
 
 class gFrameApp : public ofBaseApp{
 	public:
@@ -79,7 +79,7 @@ class gFrameApp : public ofBaseApp{
     ProfileStyle profileStyle;
     ofLight light;
     
-    GPointList pointList;
+    StrokeList pointList;
 };
 
 

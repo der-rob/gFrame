@@ -11,14 +11,14 @@
  
  */
 
-#ifndef __gFrame__PointList__
-#define __gFrame__PointList__
+#ifndef __gFrame__StrokeList__
+#define __gFrame__StrokeList__
 
 #include <iostream>
 #include "ofMain.h"
 #include "GPoint.h"
 
-class GPointList{
+class StrokeList{
 
 public:
     void update();

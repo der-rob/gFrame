@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6CA504DB19FA82590091B61A /* GPointList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CA504D919FA82590091B61A /* GPointList.cpp */; };
+		6CA504DB19FA82590091B61A /* StrokeList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CA504D919FA82590091B61A /* StrokeList.cpp */; };
 		6CEACF3B19F957AD00EB7DE6 /* GPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CEACF3719F957AD00EB7DE6 /* GPoint.cpp */; };
 		6CEACF3C19F957AD00EB7DE6 /* ProfileStyle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CEACF3919F957AD00EB7DE6 /* ProfileStyle.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
@@ -100,8 +100,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		6CA504D919FA82590091B61A /* GPointList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GPointList.cpp; sourceTree = "<group>"; };
-		6CA504DA19FA82590091B61A /* GPointList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPointList.h; sourceTree = "<group>"; };
+		6CA504D919FA82590091B61A /* StrokeList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StrokeList.cpp; sourceTree = "<group>"; };
+		6CA504DA19FA82590091B61A /* StrokeList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StrokeList.h; sourceTree = "<group>"; };
 		6CEACF3719F957AD00EB7DE6 /* GPoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GPoint.cpp; sourceTree = "<group>"; };
 		6CEACF3819F957AD00EB7DE6 /* GPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPoint.h; sourceTree = "<group>"; };
 		6CEACF3919F957AD00EB7DE6 /* ProfileStyle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProfileStyle.cpp; sourceTree = "<group>"; };
@@ -637,8 +637,8 @@
 			children = (
 				6CEACF3719F957AD00EB7DE6 /* GPoint.cpp */,
 				6CEACF3819F957AD00EB7DE6 /* GPoint.h */,
-				6CA504D919FA82590091B61A /* GPointList.cpp */,
-				6CA504DA19FA82590091B61A /* GPointList.h */,
+				6CA504D919FA82590091B61A /* StrokeList.cpp */,
+				6CA504DA19FA82590091B61A /* StrokeList.h */,
 				6CEACF3919F957AD00EB7DE6 /* ProfileStyle.cpp */,
 				6CEACF3A19F957AD00EB7DE6 /* ProfileStyle.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
@@ -744,7 +744,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6CA504DB19FA82590091B61A /* GPointList.cpp in Sources */,
+				6CA504DB19FA82590091B61A /* StrokeList.cpp in Sources */,
 				D4A778C11976A26E005E4026 /* ofxEasingExpo.cpp in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				D4605492196DC7480040C381 /* ofxOscReceiver.cpp in Sources */,

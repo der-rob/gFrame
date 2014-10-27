@@ -8,7 +8,7 @@ void gFrameApp::setup(){
     //ofBackground(82,70,86);
     ofBackground(ofColor::black);
     //ofBackground(ofColor::white);
-    ofSetWindowShape(840, 540);
+    ofSetWindowShape(480, 288);
     //Syphon stuff
     syphonMainOut.setName("gFrame Main Out");
 
@@ -120,7 +120,15 @@ void gFrameApp::draw(){
 //    }
     
     for(vector<GPoint> stroke : *pointList.getAllStrokes()){
-            profileStyle.render(stroke);
+        switch(stroke[0].getType()){
+            case 0:
+                profileStyle.render(stroke);
+                break;
+            case 1:
+                
+                break;
+        }
+        
     }
     
     //syphon
