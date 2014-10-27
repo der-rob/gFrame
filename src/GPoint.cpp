@@ -11,13 +11,13 @@
 
 GPoint::GPoint(){
     timestamp = ofGetElapsedTimeMillis()/10;
-    point_id = instance_count;
+    finger_id = instance_count;
     instance_count++;
 }
 
-GPoint::GPoint(int x, int y, int point_id, int color_r, int color_g, int color_b, int type, int stroke_id){
+GPoint::GPoint(int x, int y, int finger_id, int color_r, int color_g, int color_b, int type, int stroke_id){
     loc = ofVec2f(x, y);
-    this->point_id = point_id;
+    this->finger_id = finger_id;
     this->timestamp = ofGetElapsedTimeMillis();
     this->color = ofColor(color_r, color_g, color_b);
     this->type = type;
@@ -29,7 +29,7 @@ void GPoint::serialize(string *s){
     
     s->append(ofToString(loc.x) + "," +
               ofToString(loc.y) + "," +
-              ofToString(point_id) + "," +
+              ofToString(finger_id) + "," +
               ofToString(color.r) + "," +
               ofToString(color.g) + "," +
               ofToString(color.b) + "," +
@@ -47,7 +47,7 @@ void GPoint::unserialize(string s){
         s = s.substr(pos+1);
     }
     loc = ofVec2f(ofToInt(list[0]), ofToInt(list[1]));
-    this->point_id = ofToInt(list[2]);
+    this->finger_id = ofToInt(list[2]);
     this->color = ofColor(ofToInt(list[3]), ofToInt(list[4]), ofToInt(list[5]));
     this->type = ofToInt(list[6]);
     this->stroke_id = ofToInt(list[7]);

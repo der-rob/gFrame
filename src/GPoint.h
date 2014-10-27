@@ -22,15 +22,14 @@ public:
     
     // setters
     void setLocation(ofVec2f loc){this->loc = loc;}
-    void setId(int id){this->point_id = id;}
+    void setId(int id){this->finger_id = id;}
     void setColor(ofColor c){ color = c; }
     void setType(int type){this->type = type;}
     void setStrokeId(int stroke_id){this->stroke_id = stroke_id;}
     
-    
     // getters
     ofVec2f getLocation(){return loc;}
-    int getId(){return point_id;}
+    int getId(){return finger_id;}
     unsigned long getTimestamp(){return timestamp;}
     ofColor* getColor(){return &color;}
     int getType(){return type;}
@@ -38,7 +37,7 @@ public:
     
 private:
     ofVec2f loc;
-    int point_id;
+    int finger_id;
     unsigned long timestamp;
     ofColor color;
     int type;
