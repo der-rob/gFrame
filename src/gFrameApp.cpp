@@ -8,9 +8,11 @@ void gFrameApp::setup(){
     //ofBackground(82,70,86);
     ofBackground(ofColor::black);
     //ofBackground(ofColor::white);
-    ofSetWindowShape(840, 540);
+    ofSetWindowShape(1024, 768);
+    
     //Syphon stuff
     syphonMainOut.setName("gFrame Main Out");
+    texScreen.allocate(1024, 768, GL_RGB);
 
     //mutlitouch frame setup
     touchFrame.connect("127.0.0.1");
@@ -101,16 +103,31 @@ void gFrameApp::draw(){
         {
             if (all_points[i].lifetime >= 0.0)
             {
+                //map point for sao paulo facade
+                ofVec2f brazil_cur = ofVec2f(ofMap(all_points[i].loc.x, 0, 1024, 37, 251),ofMap(all_points[i].loc.y,0, 767, 259, 426));
+                ofVec2f brazil_last = ofVec2f(ofMap(all_points[i-1].loc.x, 0, 1024, 37, 251),ofMap(all_points[i-1].loc.y,0, 767, 259, 426));;
                 ofSetColor(all_points[i].color, ofMap(all_points[i].lifetime, timeToDie, 0.0, 0, 255));
+                //normal screen output
                 ofLine(all_points[i-1].loc, all_points[i].loc);
                 ofCircle(all_points[i].loc.x, all_points[i].loc.y, 2);
+                //output for brazilian facade
+                ofLine(brazil_last, brazil_cur);
+                ofCircle(brazil_cur.x, brazil_cur.y, 2);
                 //ofLine(all_points[i-1].loc.x, all_points[i-1].loc.y, all_points[i].loc.x, all_points[i].loc.y);
             }
         }
     }
     
     //syphon
-    syphonMainOut.publishScreen();
+    texScreen.loadScreenData(0, 0, 1024, 768);
+    
+    
+    
+    syphonMainOut.publishTexture(&texScreen);
+    //syphonMainOut.publishScreen();
+    
+    //everthing that is drawn after texScreen.loadScreenData will not be visible in the frame published to syphon
+    
 }
 
 //--------------------------------------------------------------

@@ -31,6 +31,7 @@
 		D4605491196DC7480040C381 /* ofxOscParameterSync.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4605480196DC7480040C381 /* ofxOscParameterSync.cpp */; };
 		D4605492196DC7480040C381 /* ofxOscReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4605482196DC7480040C381 /* ofxOscReceiver.cpp */; };
 		D4605493196DC7480040C381 /* ofxOscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4605484196DC7480040C381 /* ofxOscSender.cpp */; };
+		D48FFC9F19F965360026B1D2 /* GPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D48FFC9D19F965360026B1D2 /* GPoint.cpp */; };
 		D4A778BB1976A26E005E4026 /* ofxEasing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4A7789B1976A26E005E4026 /* ofxEasing.cpp */; };
 		D4A778BC1976A26E005E4026 /* ofxEasingBack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4A7789D1976A26E005E4026 /* ofxEasingBack.cpp */; };
 		D4A778BD1976A26E005E4026 /* ofxEasingBounce.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4A7789F1976A26E005E4026 /* ofxEasingBounce.cpp */; };
@@ -160,6 +161,8 @@
 		D4605483196DC7480040C381 /* ofxOscReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOscReceiver.h; sourceTree = "<group>"; };
 		D4605484196DC7480040C381 /* ofxOscSender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxOscSender.cpp; sourceTree = "<group>"; };
 		D4605485196DC7480040C381 /* ofxOscSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOscSender.h; sourceTree = "<group>"; };
+		D48FFC9D19F965360026B1D2 /* GPoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GPoint.cpp; sourceTree = "<group>"; };
+		D48FFC9E19F965360026B1D2 /* GPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPoint.h; sourceTree = "<group>"; };
 		D4A778961976A26E005E4026 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		D4A778971976A26E005E4026 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		D4A7789A1976A26E005E4026 /* easing_terms_of_use.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = easing_terms_of_use.html; sourceTree = "<group>"; };
@@ -626,6 +629,8 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				D48FFC9D19F965360026B1D2 /* GPoint.cpp */,
+				D48FFC9E19F965360026B1D2 /* GPoint.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* gFrameApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* gFrameApp.h */,
@@ -757,6 +762,7 @@
 				D4605490196DC7480040C381 /* ofxOscMessage.cpp in Sources */,
 				D4A778BB1976A26E005E4026 /* ofxEasing.cpp in Sources */,
 				D460548E196DC7480040C381 /* OscTypes.cpp in Sources */,
+				D48FFC9F19F965360026B1D2 /* GPoint.cpp in Sources */,
 				D4091B07196AB67B00F109F1 /* ofxSyphonServer.mm in Sources */,
 				D4605486196DC7480040C381 /* IpEndpointName.cpp in Sources */,
 				D4605491196DC7480040C381 /* ofxOscParameterSync.cpp in Sources */,

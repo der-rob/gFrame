@@ -11,6 +11,7 @@
 #include "ofxDmx.h"
 #include "ofxOsc.h"
 #include "ofxTuio.h"
+//#include "GPoint.h"
 
 typedef struct {
     ofVec2f loc;
@@ -20,6 +21,7 @@ typedef struct {
     int type;
     int style;
 } gPoint;
+
 
 class gFrameApp : public ofBaseApp{
 	public:
@@ -76,6 +78,7 @@ class gFrameApp : public ofBaseApp{
     
     //Syphon output
     ofxSyphonServer syphonMainOut;
+    ofTexture texScreen;
     
     //drawing parameter
     ofParameterGroup localDrawingParameters;
