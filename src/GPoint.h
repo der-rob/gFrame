@@ -42,6 +42,7 @@ private:
     ofColor color;
     int type;
     int stroke_id;
+    int style_id;
     
     static int instance_count;
 

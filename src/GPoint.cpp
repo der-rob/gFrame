@@ -34,14 +34,15 @@ void GPoint::serialize(string *s){
               ofToString(color.g) + "," +
               ofToString(color.b) + "," +
               ofToString(type) + "," +
-              ofToString(stroke_id)
+              ofToString(stroke_id)  + "," +
+              ofToString(style_id)
     );
 }
 
 void GPoint::unserialize(string s){
     vector<string> list;
     
-    for(int i = 0; i<8; i++){
+    for(int i = 0; i<9; i++){
         int pos = s.find(',');
         list.push_back(s.substr(0, pos));
         s = s.substr(pos+1);
@@ -51,6 +52,7 @@ void GPoint::unserialize(string s){
     this->color = ofColor(ofToInt(list[3]), ofToInt(list[4]), ofToInt(list[5]));
     this->type = ofToInt(list[6]);
     this->stroke_id = ofToInt(list[7]);
+    this->style_id = ofToInt(list[8]);
 }
 
 int GPoint::instance_count;
