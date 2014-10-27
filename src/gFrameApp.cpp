@@ -64,28 +64,6 @@ void gFrameApp::update(){
 
 }
 
-void gFrameApp::dmxUpdate(){
-    //create triangle wave for pulsing led lights
-    int time = abs(((int)ofGetElapsedTimeMillis() % (LED_pulsing_time*2)) - LED_pulsing_time);
-    
-    //check how long no point has been added
-    if (ofGetElapsedTimeMillis() - last_points_time > 500 && !LED_pulsing)
-    {
-        LED_level -= 0.01;
-        float new_level = ofMap(time, 0, LED_pulsing_time, lower_pulsing_limit, upper_pulsing_limit);
-        cout << new_level << " " << LED_level << endl;
-        if (LED_level - new_level < 0)
-            start_pulsing();
-    }
-    
-    if (LED_pulsing) {
-        //int time = abs(((int)ofGetElapsedTimeMillis() % (LED_pulsing_time*2)) - LED_pulsing_time);
-        LED_level = ofMap(time, 0, LED_pulsing_time, lower_pulsing_limit, upper_pulsing_limit);
-    }
-    
-    setLEDColor(localPenColor);
-}
-
 //--------------------------------------------------------------
 void gFrameApp::draw(){
    
@@ -150,6 +128,37 @@ void gFrameApp::onTouchPoint(TouchPointEvent &event) {
     last_points_time = ofGetElapsedTimeMillis();
 }
 
+//--------------------------------------------------------------
+void gFrameApp::tuioAdded(ofxTuioCursor &cursor) {
+    GPoint the_point;
+    the_point.setLocation(ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight()));
+    the_point.setId(cursor.getFingerId());
+    the_point.setColor(localPenColor);
+    the_point.setType(TUIO);
+    the_point.setStyle(current_style);
+    stroke_list.addToNewStroke(the_point);
+    
+    stop_pulsing();
+    last_points_time = ofGetElapsedTimeMillis();
+}
+
+//--------------------------------------------------------------
+void gFrameApp::tuioUpdated(ofxTuioCursor &cursor) {
+    GPoint the_point;
+    the_point.setLocation(ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight()));
+    the_point.setId(cursor.getFingerId());
+    the_point.setColor(localPenColor);
+    the_point.setType(TUIO);
+    the_point.setStyle(current_style);
+    stroke_list.add(the_point);
+    
+    stop_pulsing();
+    last_points_time = ofGetElapsedTimeMillis();
+}
+
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
 void gFrameApp::setLEDColor(ofColor color){
     int r,g,b;
     float fr = 0,fg = 0,fb = 0;
@@ -266,30 +275,26 @@ void gFrameApp::oscupdate_interface() {
     sender.sendMessage(update);
 }
 
-void gFrameApp::tuioAdded(ofxTuioCursor &cursor) {
-    GPoint the_point;
-    the_point.setLocation(ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight()));
-    the_point.setId(cursor.getFingerId());
-    the_point.setColor(localPenColor);
-    the_point.setType(TUIO);
-    the_point.setStyle(current_style);
-    stroke_list.addToNewStroke(the_point);
+void gFrameApp::dmxUpdate(){
+    //create triangle wave for pulsing led lights
+    int time = abs(((int)ofGetElapsedTimeMillis() % (LED_pulsing_time*2)) - LED_pulsing_time);
     
-    stop_pulsing();
-    last_points_time = ofGetElapsedTimeMillis();
-}
-
-void gFrameApp::tuioUpdated(ofxTuioCursor &cursor) {
-    GPoint the_point;
-    the_point.setLocation(ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight()));
-    the_point.setId(cursor.getFingerId());
-    the_point.setColor(localPenColor);
-    the_point.setType(TUIO);
-    the_point.setStyle(current_style);
-    stroke_list.add(the_point);
+    //check how long no point has been added
+    if (ofGetElapsedTimeMillis() - last_points_time > 500 && !LED_pulsing)
+    {
+        LED_level -= 0.01;
+        float new_level = ofMap(time, 0, LED_pulsing_time, lower_pulsing_limit, upper_pulsing_limit);
+        cout << new_level << " " << LED_level << endl;
+        if (LED_level - new_level < 0)
+            start_pulsing();
+    }
     
-    stop_pulsing();
-    last_points_time = ofGetElapsedTimeMillis();
+    if (LED_pulsing) {
+        //int time = abs(((int)ofGetElapsedTimeMillis() % (LED_pulsing_time*2)) - LED_pulsing_time);
+        LED_level = ofMap(time, 0, LED_pulsing_time, lower_pulsing_limit, upper_pulsing_limit);
+    }
+    
+    setLEDColor(localPenColor);
 }
 
 void gFrameApp::start_pulsing() {
