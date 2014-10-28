@@ -17,7 +17,7 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
     last_used_point = &points[0];
     
     interpolator.clear();
-    glLineWidth(1.0);
+    glLineWidth(3.0);
     ofSetColor(color1);
     glBegin(GL_LINE_STRIP);
     for (int i = 1 ; i < points.size(); i++) {
@@ -60,7 +60,7 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
     //second run through all points in this stroke
     interpolator.clear();
     last_used_point = &points[0];
-    glLineWidth(1.0);
+    glLineWidth(2.0);
     ofSetColor(color2);
     glBegin(GL_LINE_STRIP);
     for (int i = 1 ; i < points.size(); i++) {
@@ -106,6 +106,7 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
     //third run through all points in this stroke
     last_used_point = &points[0];
     interpolator.clear();
+    glLineWidth(1.0);
     ofSetColor(color3);
     glBegin(GL_LINE_STRIP);
     for (int i = 1 ; i < points.size(); i++) {
@@ -151,5 +152,6 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
     }
     glEnd();
     
-    counter+=0.01;
+    float last_time = ofGetElapsedTimef();
+    counter=last_time;
 }
