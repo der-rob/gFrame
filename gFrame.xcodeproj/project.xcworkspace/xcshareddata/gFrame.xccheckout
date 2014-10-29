@@ -12,6 +12,10 @@
 	<dict>
 		<key>09956FC378D8B160FBFD2EBF802C987EE22661C0</key>
 		<string>github.com:der-rob/gFrame.git</string>
+		<key>65FAA983A662D43645B6C2BEE45CDCC6359DE6D9</key>
+		<string>https://github.com/memo/ofxMSAInterpolator.git</string>
+		<key>CB1CF109CA3A77AF931BD92C92B3F38F4A501645</key>
+		<string>https://github.com/memo/ofxMSACore.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>gFrame.xcodeproj</string>
@@ -19,6 +23,10 @@
 	<dict>
 		<key>09956FC378D8B160FBFD2EBF802C987EE22661C0</key>
 		<string>../..</string>
+		<key>65FAA983A662D43645B6C2BEE45CDCC6359DE6D9</key>
+		<string>../../../addons/ofxMSAInterpolator</string>
+		<key>CB1CF109CA3A77AF931BD92C92B3F38F4A501645</key>
+		<string>../../../addons/ofxMSACore</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>github.com:der-rob/gFrame.git</string>
@@ -35,6 +43,22 @@
 			<string>09956FC378D8B160FBFD2EBF802C987EE22661C0</string>
 			<key>IDESourceControlWCCName</key>
 			<string>gFrame</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>CB1CF109CA3A77AF931BD92C92B3F38F4A501645</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ofxMSACore</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>65FAA983A662D43645B6C2BEE45CDCC6359DE6D9</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ofxMSAInterpolator</string>
 		</dict>
 	</array>
 </dict>
