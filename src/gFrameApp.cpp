@@ -73,6 +73,9 @@ void gFrameApp::draw(){
             case STYLE_PROFILE:
                 profileStyle.render(stroke);
                 break;
+            case STYLE_SCRIZZLE:
+                scrizzleStyle.render(stroke);
+                break;
             default:
                 profileStyle.render(stroke);
                 break;
@@ -102,6 +105,10 @@ void gFrameApp::keyPressed(int key){
         localPenColor = ofColor::green;
     else if(key == 'c')
         stroke_list.clear();
+    else if (key == 'p')
+        current_style = STYLE_PROFILE;
+    else if (key == 's')
+        current_style = STYLE_SCRIZZLE;
 }
 
 //--------------------------------------------------------------
@@ -110,7 +117,6 @@ void gFrameApp::mouseMoved(int x, int y){
     the_point.setLocation(ofVec2f(x,y));
     the_point.setId(0);
     the_point.setColor(localPenColor);
-    the_point.setType(MOUSE);
     the_point.setStyle(current_style);
 //    the_point.lifetime = 0;
 //    all_points.push_back(the_point);

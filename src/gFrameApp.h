@@ -14,9 +14,11 @@
 #include "GPoint.h"
 #include "ProfileStyle.h"
 #include "StrokeList.h"
+#include "ScrizzleStyle.h"
 
 
 #define STYLE_PROFILE 0
+#define STYLE_SCRIZZLE 1
 
 
 class gFrameApp : public ofBaseApp{
@@ -50,6 +52,7 @@ private:
     StrokeList stroke_list;
     int current_style = STYLE_PROFILE;
     ProfileStyle profileStyle;
+    ScrizzleStyle scrizzleStyle;
     
     ofLight light;
 

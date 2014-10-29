@@ -100,12 +100,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "src/gFrameApp.cpp"
-            timestampString = "435775558.260164"
+            timestampString = "436217433.263353"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "245"
-            endingLineNumber = "245"
-            landmarkName = "gFrameApp::oscUpdate()"
+            startingLineNumber = "251"
+            endingLineNumber = "251"
+            landmarkName = "gFrameApp::oscupdate_interface()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -116,12 +116,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "src/gFrameApp.cpp"
-            timestampString = "435752728.7537"
+            timestampString = "436217433.263353"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
-            landmarkName = "gFrameApp::update()"
+            startingLineNumber = "93"
+            endingLineNumber = "93"
+            landmarkName = "gFrameApp::draw()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -132,11 +132,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "src/gFrameApp.h"
-            timestampString = "435775558.260164"
+            timestampString = "436217820.740545"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "64"
-            endingLineNumber = "64"
+            startingLineNumber = "67"
+            endingLineNumber = "67"
             landmarkName = "class gFrameApp"
             landmarkType = "3">
          </BreakpointContent>
@@ -148,12 +148,44 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "src/gFrameApp.cpp"
-            timestampString = "435752728.7537"
+            timestampString = "436217433.263353"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "87"
+            endingLineNumber = "87"
+            landmarkName = "gFrameApp::draw()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "src/gFrameApp.cpp"
+            timestampString = "436217433.263353"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
+            landmarkName = "gFrameApp::draw()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "src/gFrameApp.cpp"
+            timestampString = "436217433.263353"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "84"
             endingLineNumber = "84"
-            landmarkName = "gFrameApp::update()"
+            landmarkName = "gFrameApp::draw()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -164,12 +196,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "src/gFrameApp.cpp"
-            timestampString = "435752728.7537"
+            timestampString = "436217433.263353"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "79"
-            endingLineNumber = "79"
-            landmarkName = "gFrameApp::update()"
+            startingLineNumber = "86"
+            endingLineNumber = "86"
+            landmarkName = "gFrameApp::draw()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -180,44 +212,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "src/gFrameApp.cpp"
-            timestampString = "435752728.7537"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "81"
-            endingLineNumber = "81"
-            landmarkName = "gFrameApp::update()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "src/gFrameApp.cpp"
-            timestampString = "435752728.7537"
+            timestampString = "436217433.263353"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "83"
             endingLineNumber = "83"
-            landmarkName = "gFrameApp::update()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "src/gFrameApp.cpp"
-            timestampString = "435752728.7537"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
-            landmarkName = "gFrameApp::update()"
+            landmarkName = "gFrameApp::draw()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

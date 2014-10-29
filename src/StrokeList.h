@@ -38,7 +38,7 @@ public:
 private:
     vector<vector<GPoint> > strokes;
     map<int, int> currentStrokeForId;
-    float lifetime = 500;
+    float lifetime = 1000;
     
     int stroke_count = 0;
     

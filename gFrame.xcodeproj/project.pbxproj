@@ -34,7 +34,14 @@
 		D4605491196DC7480040C381 /* ofxOscParameterSync.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4605480196DC7480040C381 /* ofxOscParameterSync.cpp */; };
 		D4605492196DC7480040C381 /* ofxOscReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4605482196DC7480040C381 /* ofxOscReceiver.cpp */; };
 		D4605493196DC7480040C381 /* ofxOscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4605484196DC7480040C381 /* ofxOscSender.cpp */; };
-		D48FFC9F19F965360026B1D2 /* GPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D48FFC9D19F965360026B1D2 /* GPoint.cpp */; };
+		D486254C1A001C770076E13F /* BaseStyle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D48625481A001C770076E13F /* BaseStyle.cpp */; };
+		D486254D1A001C770076E13F /* ScrizzleStyle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D486254A1A001C770076E13F /* ScrizzleStyle.cpp */; };
+		D486256D1A001C9A0076E13F /* license.md in Sources */ = {isa = PBXBuildFile; fileRef = D48625501A001C990076E13F /* license.md */; };
+		D486256E1A001C9A0076E13F /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = D48625511A001C990076E13F /* README.md */; };
+		D486256F1A001C9A0076E13F /* MSACoreGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D48625571A001C990076E13F /* MSACoreGL.cpp */; };
+		D48625711A001C9A0076E13F /* testApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D48625621A001C990076E13F /* testApp.cpp */; };
+		D48625721A001C9A0076E13F /* license.md in Sources */ = {isa = PBXBuildFile; fileRef = D48625641A001C990076E13F /* license.md */; };
+		D48625731A001C9A0076E13F /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = D48625651A001C990076E13F /* README.md */; };
 		D4A778BB1976A26E005E4026 /* ofxEasing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4A7789B1976A26E005E4026 /* ofxEasing.cpp */; };
 		D4A778BC1976A26E005E4026 /* ofxEasingBack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4A7789D1976A26E005E4026 /* ofxEasingBack.cpp */; };
 		D4A778BD1976A26E005E4026 /* ofxEasingBounce.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4A7789F1976A26E005E4026 /* ofxEasingBounce.cpp */; };
@@ -170,8 +177,33 @@
 		D4605483196DC7480040C381 /* ofxOscReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOscReceiver.h; sourceTree = "<group>"; };
 		D4605484196DC7480040C381 /* ofxOscSender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxOscSender.cpp; sourceTree = "<group>"; };
 		D4605485196DC7480040C381 /* ofxOscSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOscSender.h; sourceTree = "<group>"; };
-		D48FFC9D19F965360026B1D2 /* GPoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GPoint.cpp; sourceTree = "<group>"; };
-		D48FFC9E19F965360026B1D2 /* GPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPoint.h; sourceTree = "<group>"; };
+		D48625481A001C770076E13F /* BaseStyle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseStyle.cpp; sourceTree = "<group>"; };
+		D48625491A001C770076E13F /* BaseStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseStyle.h; sourceTree = "<group>"; };
+		D486254A1A001C770076E13F /* ScrizzleStyle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScrizzleStyle.cpp; sourceTree = "<group>"; };
+		D486254B1A001C770076E13F /* ScrizzleStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrizzleStyle.h; sourceTree = "<group>"; };
+		D486254F1A001C990076E13F /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		D48625501A001C990076E13F /* license.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = license.md; sourceTree = "<group>"; };
+		D48625511A001C990076E13F /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		D48625531A001C990076E13F /* MSACore-Cinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MSACore-Cinder.h"; sourceTree = "<group>"; };
+		D48625541A001C990076E13F /* MSACore-OF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MSACore-OF.h"; sourceTree = "<group>"; };
+		D48625551A001C990076E13F /* MSACore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSACore.h; sourceTree = "<group>"; };
+		D48625561A001C990076E13F /* MSACoreCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSACoreCommon.h; sourceTree = "<group>"; };
+		D48625571A001C990076E13F /* MSACoreGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MSACoreGL.cpp; sourceTree = "<group>"; };
+		D48625581A001C990076E13F /* MSACoreGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSACoreGL.h; sourceTree = "<group>"; };
+		D48625591A001C990076E13F /* MSACoreMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSACoreMath.h; sourceTree = "<group>"; };
+		D486255B1A001C990076E13F /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		D486255F1A001C990076E13F /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
+		D48625611A001C990076E13F /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		D48625621A001C990076E13F /* testApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testApp.cpp; sourceTree = "<group>"; };
+		D48625631A001C990076E13F /* testApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = testApp.h; sourceTree = "<group>"; };
+		D48625641A001C990076E13F /* license.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = license.md; sourceTree = "<group>"; };
+		D48625651A001C990076E13F /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		D48625671A001C990076E13F /* MSAInterpolationTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAInterpolationTypes.h; sourceTree = "<group>"; };
+		D48625681A001C990076E13F /* MSAInterpolator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAInterpolator.h; sourceTree = "<group>"; };
+		D48625691A001C990076E13F /* MSAInterpolator1D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAInterpolator1D.h; sourceTree = "<group>"; };
+		D486256A1A001C9A0076E13F /* MSAInterpolator2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAInterpolator2D.h; sourceTree = "<group>"; };
+		D486256B1A001C9A0076E13F /* MSAInterpolator3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAInterpolator3D.h; sourceTree = "<group>"; };
+		D486256C1A001C9A0076E13F /* MSAInterpolatorT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAInterpolatorT.h; sourceTree = "<group>"; };
 		D4A778961976A26E005E4026 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		D4A778971976A26E005E4026 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		D4A7789A1976A26E005E4026 /* easing_terms_of_use.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = easing_terms_of_use.html; sourceTree = "<group>"; };
@@ -258,6 +290,8 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				D486254E1A001C990076E13F /* ofxMSACore */,
+				D486255A1A001C990076E13F /* ofxMSAInterpolator */,
 				D4A778741976A26E005E4026 /* ofxTween */,
 				D42292731973E92B007A533C /* ofxTuio */,
 				D460545B196DC7480040C381 /* ofxOsc */,
@@ -542,6 +576,93 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		D486254E1A001C990076E13F /* ofxMSACore */ = {
+			isa = PBXGroup;
+			children = (
+				D486254F1A001C990076E13F /* .gitignore */,
+				D48625501A001C990076E13F /* license.md */,
+				D48625511A001C990076E13F /* README.md */,
+				D48625521A001C990076E13F /* src */,
+			);
+			name = ofxMSACore;
+			path = ../../../addons/ofxMSACore;
+			sourceTree = "<group>";
+		};
+		D48625521A001C990076E13F /* src */ = {
+			isa = PBXGroup;
+			children = (
+				D48625531A001C990076E13F /* MSACore-Cinder.h */,
+				D48625541A001C990076E13F /* MSACore-OF.h */,
+				D48625551A001C990076E13F /* MSACore.h */,
+				D48625561A001C990076E13F /* MSACoreCommon.h */,
+				D48625571A001C990076E13F /* MSACoreGL.cpp */,
+				D48625581A001C990076E13F /* MSACoreGL.h */,
+				D48625591A001C990076E13F /* MSACoreMath.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		D486255A1A001C990076E13F /* ofxMSAInterpolator */ = {
+			isa = PBXGroup;
+			children = (
+				D486255B1A001C990076E13F /* .gitignore */,
+				D486255C1A001C990076E13F /* example */,
+				D48625641A001C990076E13F /* license.md */,
+				D48625651A001C990076E13F /* README.md */,
+				D48625661A001C990076E13F /* src */,
+			);
+			name = ofxMSAInterpolator;
+			path = ../../../addons/ofxMSAInterpolator;
+			sourceTree = "<group>";
+		};
+		D486255C1A001C990076E13F /* example */ = {
+			isa = PBXGroup;
+			children = (
+				D486255D1A001C990076E13F /* bin */,
+				D48625601A001C990076E13F /* src */,
+			);
+			path = example;
+			sourceTree = "<group>";
+		};
+		D486255D1A001C990076E13F /* bin */ = {
+			isa = PBXGroup;
+			children = (
+				D486255E1A001C990076E13F /* data */,
+			);
+			path = bin;
+			sourceTree = "<group>";
+		};
+		D486255E1A001C990076E13F /* data */ = {
+			isa = PBXGroup;
+			children = (
+				D486255F1A001C990076E13F /* .gitkeep */,
+			);
+			path = data;
+			sourceTree = "<group>";
+		};
+		D48625601A001C990076E13F /* src */ = {
+			isa = PBXGroup;
+			children = (
+				D48625611A001C990076E13F /* main.cpp */,
+				D48625621A001C990076E13F /* testApp.cpp */,
+				D48625631A001C990076E13F /* testApp.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		D48625661A001C990076E13F /* src */ = {
+			isa = PBXGroup;
+			children = (
+				D48625671A001C990076E13F /* MSAInterpolationTypes.h */,
+				D48625681A001C990076E13F /* MSAInterpolator.h */,
+				D48625691A001C990076E13F /* MSAInterpolator1D.h */,
+				D486256A1A001C9A0076E13F /* MSAInterpolator2D.h */,
+				D486256B1A001C9A0076E13F /* MSAInterpolator3D.h */,
+				D486256C1A001C9A0076E13F /* MSAInterpolatorT.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		D4A778741976A26E005E4026 /* ofxTween */ = {
 			isa = PBXGroup;
 			children = (
@@ -638,6 +759,10 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				D48625481A001C770076E13F /* BaseStyle.cpp */,
+				D48625491A001C770076E13F /* BaseStyle.h */,
+				D486254A1A001C770076E13F /* ScrizzleStyle.cpp */,
+				D486254B1A001C770076E13F /* ScrizzleStyle.h */,
 				6CEACF3719F957AD00EB7DE6 /* GPoint.cpp */,
 				6CEACF3819F957AD00EB7DE6 /* GPoint.h */,
 				6CA504D919FA82590091B61A /* StrokeList.cpp */,
@@ -751,34 +876,42 @@
 				D4A778C11976A26E005E4026 /* ofxEasingExpo.cpp in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				D4605492196DC7480040C381 /* ofxOscReceiver.cpp in Sources */,
+				D48625721A001C9A0076E13F /* license.md in Sources */,
 				D460548D196DC7480040C381 /* OscReceivedElements.cpp in Sources */,
 				D4605487196DC7480040C381 /* NetworkingUtils.cpp in Sources */,
 				D4A778C41976A26E005E4026 /* ofxEasingQuart.cpp in Sources */,
 				D4A778BE1976A26E005E4026 /* ofxEasingCirc.cpp in Sources */,
 				D4605493196DC7480040C381 /* ofxOscSender.cpp in Sources */,
 				D460548C196DC7480040C381 /* OscPrintReceivedElements.cpp in Sources */,
+				D48625731A001C9A0076E13F /* README.md in Sources */,
 				D4A778C21976A26E005E4026 /* ofxEasingLinear.cpp in Sources */,
 				D4605488196DC7480040C381 /* UdpSocket.cpp in Sources */,
 				D460548B196DC7480040C381 /* OscOutboundPacketStream.cpp in Sources */,
 				D4605411196C52650040C381 /* ofxDmx.cpp in Sources */,
 				D4A778BD1976A26E005E4026 /* ofxEasingBounce.cpp in Sources */,
+				D48625711A001C9A0076E13F /* testApp.cpp in Sources */,
 				6CEACF3C19F957AD00EB7DE6 /* ProfileStyle.cpp in Sources */,
 				D4091B06196AB67B00F109F1 /* ofxSyphonClient.mm in Sources */,
 				D4091B05196AB67B00F109F1 /* SyphonNameboundClient.m in Sources */,
 				D460548F196DC7480040C381 /* ofxOscBundle.cpp in Sources */,
 				D4A778C51976A26E005E4026 /* ofxEasingQuint.cpp in Sources */,
+				D486256F1A001C9A0076E13F /* MSACoreGL.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* gFrameApp.cpp in Sources */,
+				D486254C1A001C770076E13F /* BaseStyle.cpp in Sources */,
 				D4A778C31976A26E005E4026 /* ofxEasingQuad.cpp in Sources */,
 				D459997919534A5B0071B3E3 /* ofxPQLabs.cpp in Sources */,
+				D486256E1A001C9A0076E13F /* README.md in Sources */,
 				D4A778BC1976A26E005E4026 /* ofxEasingBack.cpp in Sources */,
 				D4A778BF1976A26E005E4026 /* ofxEasingCubic.cpp in Sources */,
 				D4A778C01976A26E005E4026 /* ofxEasingElastic.cpp in Sources */,
+				D486256D1A001C9A0076E13F /* license.md in Sources */,
 				D4A778C71976A26E005E4026 /* ofxTween.cpp in Sources */,
 				D4605490196DC7480040C381 /* ofxOscMessage.cpp in Sources */,
 				D4A778BB1976A26E005E4026 /* ofxEasing.cpp in Sources */,
 				D460548E196DC7480040C381 /* OscTypes.cpp in Sources */,
 				6CEACF3B19F957AD00EB7DE6 /* GPoint.cpp in Sources */,
 				D4091B07196AB67B00F109F1 /* ofxSyphonServer.mm in Sources */,
+				D486254D1A001C770076E13F /* ScrizzleStyle.cpp in Sources */,
 				D4605486196DC7480040C381 /* IpEndpointName.cpp in Sources */,
 				D4605491196DC7480040C381 /* ofxOscParameterSync.cpp in Sources */,
 				D4605489196DC7480040C381 /* NetworkingUtilsWin.cpp in Sources */,
@@ -876,8 +1009,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
-					/Users/rob/Documents/of_v0.8.1_osx_release/addons/ofxSyphon/libs/Syphon/lib/osx,
-					/Users/julianadenauer/CloudStation/Programming/of_v0.8.1/addons/ofxSyphon/libs/Syphon/lib/osx,
+					/Users/rob/Documents/of_v0.8.4_osx_release/addons/ofxSyphon/libs/Syphon/lib/osx,
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../libs/glut/lib/osx\"";
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -977,8 +1109,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
-					/Users/rob/Documents/of_v0.8.1_osx_release/addons/ofxSyphon/libs/Syphon/lib/osx,
-					/Users/julianadenauer/CloudStation/Programming/of_v0.8.1/addons/ofxSyphon/libs/Syphon/lib/osx,
+					/Users/rob/Documents/of_v0.8.4_osx_release/addons/ofxSyphon/libs/Syphon/lib/osx,
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../libs/glut/lib/osx\"";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
