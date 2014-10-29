@@ -70,6 +70,25 @@ public:
     void setEndFadeAge( float _age) {endFadeAge = _age;}
     
     //getters
+    float getAmplitude1() {return amplitude1;}
+    float getAmplitude2() {return amplitude2;}
+    float getAmplitude3() {return amplitude3;}
     
+    float getSpeed1() {return speed1;}
+    float getSpeed2() {return speed2;}
+    float getSpeed3() {return speed3;}
+    
+    float getLength1() {return length1;}
+    float getLength2() {return length2;}
+    float getLength3() {return length3;}
+    
+    int getInterpolatorSteps() {return isteps1;}
+    
+    ofColor getColor1() {return color1;}
+    ofColor getColor2() {return color2;}
+    ofColor getColor3() {return color3;}
+    
+    float getStartFadeAge() {return startFadeAge;}
+    float getEndFadeAge() {return endFadeAge;}
 };
 

@@ -24,9 +24,9 @@
 		<key>09956FC378D8B160FBFD2EBF802C987EE22661C0</key>
 		<string>../..</string>
 		<key>65FAA983A662D43645B6C2BEE45CDCC6359DE6D9</key>
-		<string>../../../../../addons/ofxMSAInterpolator</string>
+		<string>../../../addons/ofxMSAInterpolator</string>
 		<key>CB1CF109CA3A77AF931BD92C92B3F38F4A501645</key>
-		<string>../../../../../addons/ofxMSACore</string>
+		<string>../../../addons/ofxMSACore</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>github.com:der-rob/gFrame.git</string>
