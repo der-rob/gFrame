@@ -50,7 +50,7 @@ private:
     
     // DRAWING
     StrokeList stroke_list;
-    int current_style = STYLE_PROFILE;
+    int current_style = STYLE_SCRIZZLE;
     ProfileStyle profileStyle;
     ScrizzleStyle scrizzleStyle;
     
@@ -87,6 +87,14 @@ private:
     
     // FRAME
     ofxPQLabs touchFrame;
+    
+    //brazil support
+    ofImage mPanels, mCanvas, panelsMask;
+    ofRectangle mPanelPositionAndSize;
+    void toPanels(ofImage &canvas, ofImage &panels);
+    ofImage fiespMask;
+    ofImage brazilianOut;
+    ofTexture brazilianOutTex;
     
 };
 
