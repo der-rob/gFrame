@@ -10,6 +10,7 @@
 #include "ofxDmx.h"
 #include "ofxOsc.h"
 #include "ofxTuio.h"
+#include "ofxXmlSettings.h"
 #include "GPoint.h"
 #include "ProfileStyle.h"
 #include "StrokeList.h"
@@ -40,6 +41,9 @@ public:
     //OSC
     void oscUpdate();
     void oscupdate_interface();
+    
+    //settings
+    void saveSettings();
    
 
 private:
@@ -82,6 +86,9 @@ private:
     int LED_pulsing_time;
     float LED_level;
     float last_points_time;
+    
+    //setting
+    ofxXmlSettings settings;
     
     //TUIO support
     ofxTuioClient   tuioClient;

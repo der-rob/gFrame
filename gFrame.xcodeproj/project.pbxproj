@@ -40,6 +40,10 @@
 		D48625711A001C9A0076E13F /* testApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D48625621A001C990076E13F /* testApp.cpp */; };
 		D48625721A001C9A0076E13F /* license.md in Sources */ = {isa = PBXBuildFile; fileRef = D48625641A001C990076E13F /* license.md */; };
 		D48625731A001C9A0076E13F /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = D48625651A001C990076E13F /* README.md */; };
+		D495BD5A1A02A8DC0097B172 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D495BD531A02A8DC0097B172 /* tinyxml.cpp */; };
+		D495BD5B1A02A8DC0097B172 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D495BD551A02A8DC0097B172 /* tinyxmlerror.cpp */; };
+		D495BD5C1A02A8DC0097B172 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D495BD561A02A8DC0097B172 /* tinyxmlparser.cpp */; };
+		D495BD5D1A02A8DC0097B172 /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D495BD581A02A8DC0097B172 /* ofxXmlSettings.cpp */; };
 		D4A778BB1976A26E005E4026 /* ofxEasing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4A7789B1976A26E005E4026 /* ofxEasing.cpp */; };
 		D4A778BC1976A26E005E4026 /* ofxEasingBack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4A7789D1976A26E005E4026 /* ofxEasingBack.cpp */; };
 		D4A778BD1976A26E005E4026 /* ofxEasingBounce.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4A7789F1976A26E005E4026 /* ofxEasingBounce.cpp */; };
@@ -197,6 +201,12 @@
 		D486256A1A001C9A0076E13F /* MSAInterpolator2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAInterpolator2D.h; sourceTree = "<group>"; };
 		D486256B1A001C9A0076E13F /* MSAInterpolator3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAInterpolator3D.h; sourceTree = "<group>"; };
 		D486256C1A001C9A0076E13F /* MSAInterpolatorT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAInterpolatorT.h; sourceTree = "<group>"; };
+		D495BD531A02A8DC0097B172 /* tinyxml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxml.cpp; sourceTree = "<group>"; };
+		D495BD541A02A8DC0097B172 /* tinyxml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyxml.h; sourceTree = "<group>"; };
+		D495BD551A02A8DC0097B172 /* tinyxmlerror.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlerror.cpp; sourceTree = "<group>"; };
+		D495BD561A02A8DC0097B172 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
+		D495BD581A02A8DC0097B172 /* ofxXmlSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxXmlSettings.cpp; sourceTree = "<group>"; };
+		D495BD591A02A8DC0097B172 /* ofxXmlSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxXmlSettings.h; sourceTree = "<group>"; };
 		D4A778961976A26E005E4026 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		D4A778971976A26E005E4026 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		D4A7789A1976A26E005E4026 /* easing_terms_of_use.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = easing_terms_of_use.html; sourceTree = "<group>"; };
@@ -282,6 +292,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				D495BD511A02A8DC0097B172 /* ofxXmlSettings */,
 				D486254E1A001C990076E13F /* ofxMSACore */,
 				D486255A1A001C990076E13F /* ofxMSAInterpolator */,
 				D4A778741976A26E005E4026 /* ofxTween */,
@@ -625,6 +636,36 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		D495BD511A02A8DC0097B172 /* ofxXmlSettings */ = {
+			isa = PBXGroup;
+			children = (
+				D495BD521A02A8DC0097B172 /* libs */,
+				D495BD571A02A8DC0097B172 /* src */,
+			);
+			name = ofxXmlSettings;
+			path = ../../../addons/ofxXmlSettings;
+			sourceTree = "<group>";
+		};
+		D495BD521A02A8DC0097B172 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				D495BD531A02A8DC0097B172 /* tinyxml.cpp */,
+				D495BD541A02A8DC0097B172 /* tinyxml.h */,
+				D495BD551A02A8DC0097B172 /* tinyxmlerror.cpp */,
+				D495BD561A02A8DC0097B172 /* tinyxmlparser.cpp */,
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
+		D495BD571A02A8DC0097B172 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				D495BD581A02A8DC0097B172 /* ofxXmlSettings.cpp */,
+				D495BD591A02A8DC0097B172 /* ofxXmlSettings.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		D4A778741976A26E005E4026 /* ofxTween */ = {
 			isa = PBXGroup;
 			children = (
@@ -837,6 +878,8 @@
 				6CA504DB19FA82590091B61A /* StrokeList.cpp in Sources */,
 				D4A778C11976A26E005E4026 /* ofxEasingExpo.cpp in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
+				D495BD5A1A02A8DC0097B172 /* tinyxml.cpp in Sources */,
+				D495BD5C1A02A8DC0097B172 /* tinyxmlparser.cpp in Sources */,
 				D4605492196DC7480040C381 /* ofxOscReceiver.cpp in Sources */,
 				D48625721A001C9A0076E13F /* license.md in Sources */,
 				D460548D196DC7480040C381 /* OscReceivedElements.cpp in Sources */,
@@ -857,6 +900,7 @@
 				D4091B05196AB67B00F109F1 /* SyphonNameboundClient.m in Sources */,
 				D460548F196DC7480040C381 /* ofxOscBundle.cpp in Sources */,
 				D4A778C51976A26E005E4026 /* ofxEasingQuint.cpp in Sources */,
+				D495BD5B1A02A8DC0097B172 /* tinyxmlerror.cpp in Sources */,
 				D486256F1A001C9A0076E13F /* MSACoreGL.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* gFrameApp.cpp in Sources */,
 				D486254C1A001C770076E13F /* BaseStyle.cpp in Sources */,
@@ -865,6 +909,7 @@
 				D4A778BC1976A26E005E4026 /* ofxEasingBack.cpp in Sources */,
 				D4A778BF1976A26E005E4026 /* ofxEasingCubic.cpp in Sources */,
 				D4A778C01976A26E005E4026 /* ofxEasingElastic.cpp in Sources */,
+				D495BD5D1A02A8DC0097B172 /* ofxXmlSettings.cpp in Sources */,
 				D486256D1A001C9A0076E13F /* license.md in Sources */,
 				D4A778C71976A26E005E4026 /* ofxTween.cpp in Sources */,
 				D4605490196DC7480040C381 /* ofxOscMessage.cpp in Sources */,

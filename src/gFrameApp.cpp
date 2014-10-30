@@ -173,6 +173,10 @@ void gFrameApp::keyPressed(int key){
         ofSetWindowShape(1024, 768);
         outputmode = PROJECTOR;
     }
+    else if (key == 'm') {
+        cout << "saving!" << endl;
+        saveSettings();
+    }
 }
 
 //--------------------------------------------------------------
@@ -387,4 +391,9 @@ void gFrameApp::toPanels(ofImage &canvas, ofImage &panels){
         }
     }
     panels.reloadTexture();
+}
+
+void gFrameApp::saveSettings() {
+    settings.setValue("settings:style", current_style);
+    settings.save("settings.xml");
 }
