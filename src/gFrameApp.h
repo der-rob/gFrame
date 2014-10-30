@@ -20,6 +20,7 @@
 #define STYLE_PROFILE 0
 #define STYLE_SCRIZZLE 1
 
+enum OutputMode {SESI, LED1, LED2, PROJECTOR};
 
 class gFrameApp : public ofBaseApp{
 
@@ -56,9 +57,17 @@ private:
     
     ofLight light;
 
-    //Syphon output
+    //output
+    OutputMode outputmode = PROJECTOR;
     ofxSyphonServer syphonMainOut;
     ofTexture texScreen;
+    //brazil support
+    ofImage mPanels, mCanvas, panelsMask;
+    ofRectangle mPanelPositionAndSize;
+    void toPanels(ofImage &canvas, ofImage &panels);
+    ofImage fiespMask;
+    ofImage brazilianOut;
+    ofTexture brazilianOutTex;
     
     //drawing parameter
     ofParameterGroup localDrawingParameters;
@@ -87,15 +96,6 @@ private:
     
     // FRAME
     ofxPQLabs touchFrame;
-    
-    //brazil support
-    ofImage mPanels, mCanvas, panelsMask;
-    ofRectangle mPanelPositionAndSize;
-    void toPanels(ofImage &canvas, ofImage &panels);
-    ofImage fiespMask;
-    ofImage brazilianOut;
-    ofTexture brazilianOutTex;
-    
 };
 
 
