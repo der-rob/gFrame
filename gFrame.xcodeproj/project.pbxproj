@@ -17,8 +17,6 @@
 		D4091B07196AB67B00F109F1 /* ofxSyphonServer.mm in Sources */ = {isa = PBXBuildFile; fileRef = D4091AFD196AB67B00F109F1 /* ofxSyphonServer.mm */; };
 		D4091B08196AB67B00F109F1 /* ofxSyphonServerDirectory.mm in Sources */ = {isa = PBXBuildFile; fileRef = D4091AFF196AB67B00F109F1 /* ofxSyphonServerDirectory.mm */; };
 		D4091B0F196AB69C00F109F1 /* Syphon.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = D4091AF3196AB67B00F109F1 /* Syphon.framework */; };
-		D459997819534A5B0071B3E3 /* PQMTClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D459997219534A5B0071B3E3 /* PQMTClient.a */; };
-		D459997919534A5B0071B3E3 /* ofxPQLabs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D459997519534A5B0071B3E3 /* ofxPQLabs.cpp */; };
 		D4605411196C52650040C381 /* ofxDmx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D460540B196C52650040C381 /* ofxDmx.cpp */; };
 		D4605486196DC7480040C381 /* IpEndpointName.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4605460196DC7480040C381 /* IpEndpointName.cpp */; };
 		D4605487196DC7480040C381 /* NetworkingUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4605465196DC7480040C381 /* NetworkingUtils.cpp */; };
@@ -133,11 +131,6 @@
 		D422928B1973E92B007A533C /* ofxTuioCursor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuioCursor.h; sourceTree = "<group>"; };
 		D422928C1973E92B007A533C /* ofxTuioObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuioObject.h; sourceTree = "<group>"; };
 		D422928D1973E92B007A533C /* ofxTuioPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuioPoint.h; sourceTree = "<group>"; };
-		D459997219534A5B0071B3E3 /* PQMTClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = PQMTClient.a; sourceTree = "<group>"; };
-		D459997319534A5B0071B3E3 /* PQMTClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PQMTClient.h; sourceTree = "<group>"; };
-		D459997519534A5B0071B3E3 /* ofxPQLabs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxPQLabs.cpp; sourceTree = "<group>"; };
-		D459997619534A5B0071B3E3 /* ofxPQLabs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxPQLabs.h; sourceTree = "<group>"; };
-		D459997719534A5B0071B3E3 /* ofxPQLabsEventTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxPQLabsEventTypes.h; sourceTree = "<group>"; };
 		D46053EB196C52640040C381 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		D4605408196C52650040C381 /* license.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.md; sourceTree = "<group>"; };
 		D4605409196C52650040C381 /* readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.md; sourceTree = "<group>"; };
@@ -264,7 +257,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D4091B04196AB67B00F109F1 /* Syphon.framework in Frameworks */,
-				D459997819534A5B0071B3E3 /* PQMTClient.a in Frameworks */,
 				E7F985F815E0DEA3003869B5 /* Accelerate.framework in Frameworks */,
 				E7E077E815D3B6510020DFD4 /* QTKit.framework in Frameworks */,
 				E4EB6799138ADC1D00A09F29 /* GLUT.framework in Frameworks */,
@@ -297,7 +289,6 @@
 				D460545B196DC7480040C381 /* ofxOsc */,
 				D46053EA196C52640040C381 /* ofxDmx */,
 				D4091AD4196AB67B00F109F1 /* ofxSyphon */,
-				D459997019534A5B0071B3E3 /* ofxPQLabs */,
 			);
 			name = addons;
 			sourceTree = "<group>";
@@ -416,35 +407,6 @@
 				D422928B1973E92B007A533C /* ofxTuioCursor.h */,
 				D422928C1973E92B007A533C /* ofxTuioObject.h */,
 				D422928D1973E92B007A533C /* ofxTuioPoint.h */,
-			);
-			path = src;
-			sourceTree = "<group>";
-		};
-		D459997019534A5B0071B3E3 /* ofxPQLabs */ = {
-			isa = PBXGroup;
-			children = (
-				D459997119534A5B0071B3E3 /* PQMTClient */,
-				D459997419534A5B0071B3E3 /* src */,
-			);
-			name = ofxPQLabs;
-			path = ../../../addons/ofxPQLabs/addons/ofxPQLabs;
-			sourceTree = "<group>";
-		};
-		D459997119534A5B0071B3E3 /* PQMTClient */ = {
-			isa = PBXGroup;
-			children = (
-				D459997219534A5B0071B3E3 /* PQMTClient.a */,
-				D459997319534A5B0071B3E3 /* PQMTClient.h */,
-			);
-			path = PQMTClient;
-			sourceTree = "<group>";
-		};
-		D459997419534A5B0071B3E3 /* src */ = {
-			isa = PBXGroup;
-			children = (
-				D459997519534A5B0071B3E3 /* ofxPQLabs.cpp */,
-				D459997619534A5B0071B3E3 /* ofxPQLabs.h */,
-				D459997719534A5B0071B3E3 /* ofxPQLabsEventTypes.h */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -899,7 +861,6 @@
 				E4B69E210A3A1BDC003C02F2 /* gFrameApp.cpp in Sources */,
 				D486254C1A001C770076E13F /* BaseStyle.cpp in Sources */,
 				D4A778C31976A26E005E4026 /* ofxEasingQuad.cpp in Sources */,
-				D459997919534A5B0071B3E3 /* ofxPQLabs.cpp in Sources */,
 				D486256E1A001C9A0076E13F /* README.md in Sources */,
 				D4A778BC1976A26E005E4026 /* ofxEasingBack.cpp in Sources */,
 				D4A778BF1976A26E005E4026 /* ofxEasingCubic.cpp in Sources */,

@@ -6,7 +6,6 @@
 #define MOUSE 4
 
 #include "ofMain.h"
-#include "ofxPQLabs.h"
 #include "ofxSyphon.h"
 #include "ofxDmx.h"
 #include "ofxOsc.h"
@@ -32,12 +31,8 @@ public:
     void mouseMoved(int x, int y);
     void keyPressed(int key);
     
-    void dmxUpdate();
-    
-    //frame and point data
-    void onTouchPoint(TouchPointEvent &event);
-    
     // DMX
+    void dmxUpdate();
     void setLEDColor(ofColor ledColor);
     void start_pulsing();
     void stop_pulsing();
@@ -93,9 +88,6 @@ private:
     void	tuioAdded(ofxTuioCursor & tuioCursor);
 	void	tuioRemoved(ofxTuioCursor & tuioCursor);
 	void	tuioUpdated(ofxTuioCursor & tuioCursor);
-    
-    // FRAME
-    ofxPQLabs touchFrame;
 };
 
 

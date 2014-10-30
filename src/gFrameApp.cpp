@@ -11,10 +11,6 @@ void gFrameApp::setup(){
     //Syphon stuff
     syphonMainOut.setName("gFrame Main Out");
     texScreen.allocate(1024, 768, GL_RGB);
-
-    //mutlitouch frame setup
-    touchFrame.connect("127.0.0.1");
-    ofAddListener(touchFrame.touchEventDispatcher, this, &gFrameApp::onTouchPoint);
     
     //TUIO setup
     tuioClient.start(3333);
@@ -190,23 +186,6 @@ void gFrameApp::mouseMoved(int x, int y){
 //    all_points.push_back(the_point);
     stroke_list.add(the_point);
     
-    stop_pulsing();
-    last_points_time = ofGetElapsedTimeMillis();
-}
-
-//--------------------------------------------------------------
-void gFrameApp::onTouchPoint(TouchPointEvent &event) {
-    GPoint the_point;
-    int x = ofMap(event.touchPoint.x, 0, 1680, 0, ofGetWidth());
-    int y = ofMap(event.touchPoint.y, 0, 1080, 0, ofGetHeight());
-    the_point.setLocation(ofVec2f(x, y));
-    the_point.setId((int)event.touchPoint.id);
-    the_point.setColor(localPenColor);
-    the_point.setType(LOCALFRAME);
-    the_point.setStyle(current_style);
-    stroke_list.add(the_point);
-    
-    //stop pulsing LEDs
     stop_pulsing();
     last_points_time = ofGetElapsedTimeMillis();
 }
