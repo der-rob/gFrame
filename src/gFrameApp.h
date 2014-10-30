@@ -6,7 +6,6 @@
 #define MOUSE 4
 
 #include "ofMain.h"
-#include "ofxPQLabs.h"
 #include "ofxSyphon.h"
 #include "ofxDmx.h"
 #include "ofxOsc.h"
@@ -20,6 +19,7 @@
 #define STYLE_PROFILE 0
 #define STYLE_SCRIZZLE 1
 
+enum OutputMode {SESI, LED1, LED2, PROJECTOR};
 
 class gFrameApp : public ofBaseApp{
 
@@ -31,12 +31,8 @@ public:
     void mouseMoved(int x, int y);
     void keyPressed(int key);
     
-    void dmxUpdate();
-    
-    //frame and point data
-    void onTouchPoint(TouchPointEvent &event);
-    
     // DMX
+    void dmxUpdate();
     void setLEDColor(ofColor ledColor);
     void start_pulsing();
     void stop_pulsing();
@@ -50,15 +46,23 @@ private:
     
     // DRAWING
     StrokeList stroke_list;
-    int current_style = STYLE_PROFILE;
+    int current_style = STYLE_SCRIZZLE;
     ProfileStyle profileStyle;
     ScrizzleStyle scrizzleStyle;
     
     ofLight light;
 
-    //Syphon output
+    //output
+    OutputMode outputmode = PROJECTOR;
     ofxSyphonServer syphonMainOut;
     ofTexture texScreen;
+    //brazil support
+    ofImage mPanels, mCanvas, panelsMask;
+    ofRectangle mPanelPositionAndSize;
+    void toPanels(ofImage &canvas, ofImage &panels);
+    ofImage fiespMask;
+    ofImage brazilianOut;
+    ofTexture brazilianOutTex;
     
     //drawing parameter
     ofParameterGroup localDrawingParameters;
@@ -84,10 +88,6 @@ private:
     void	tuioAdded(ofxTuioCursor & tuioCursor);
 	void	tuioRemoved(ofxTuioCursor & tuioCursor);
 	void	tuioUpdated(ofxTuioCursor & tuioCursor);
-    
-    // FRAME
-    ofxPQLabs touchFrame;
-    
 };
 
 

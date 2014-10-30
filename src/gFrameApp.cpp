@@ -3,7 +3,7 @@
 //--------------------------------------------------------------
 void gFrameApp::setup(){
     //just set up the openFrameworks stuff
-    ofSetFrameRate(60);
+    ofSetFrameRate(30);
     ofSetVerticalSync(true);
     ofBackground(ofColor::black);
     ofSetWindowShape(1024, 768);
@@ -11,10 +11,6 @@ void gFrameApp::setup(){
     //Syphon stuff
     syphonMainOut.setName("gFrame Main Out");
     texScreen.allocate(1024, 768, GL_RGB);
-
-    //mutlitouch frame setup
-    touchFrame.connect("127.0.0.1");
-    ofAddListener(touchFrame.touchEventDispatcher, this, &gFrameApp::onTouchPoint);
     
     //TUIO setup
     tuioClient.start(3333);
@@ -47,6 +43,17 @@ void gFrameApp::setup(){
     // SETUP OPENGL
     ofEnableDepthTest(); // IMPORTANT!!!
 
+    //brazil support
+    mPanelPositionAndSize = ofRectangle(37,259,214,167);
+    mCanvas.allocate(1024, 768, OF_IMAGE_COLOR);
+    mPanels.allocate(mPanelPositionAndSize.width, mPanelPositionAndSize.height, OF_IMAGE_COLOR);
+    mPanels.setColor(0);
+    
+    panelsMask.loadImage("SP_Urban_MASK_025.png");
+    panelsMask.crop(mPanelPositionAndSize.x, mPanelPositionAndSize.y, mPanelPositionAndSize.width, mPanelPositionAndSize.height);
+    fiespMask.loadImage("SP_Urban_MASK_025.png");
+
+
 }
 void gFrameApp::exit(){
     setLEDColor(ofColor::black);
@@ -62,12 +69,51 @@ void gFrameApp::update(){
     
     // DMX UPDATE
     dmxUpdate();
+    
+    
+    //dealing with different output modes
+    //might be crushed down to a simpleif statement if there no option to deal with for the other outut modes
+    switch (outputmode) {
+        case PROJECTOR:
+        {
+            break;
+        }
+        case LED1:
+        {
+            break;
+        }
+        case LED2:
+        {
+            break;
+        }
 
+        case SESI:
+        {
+            ofFbo tempFBO;
+            tempFBO.allocate(1024, 768);
+            tempFBO.begin();
+            fiespMask.draw(0,0);
+            ofBackground(128);
+            mPanels.draw(37,259);
+            tempFBO.end();
+            syphonMainOut.publishTexture(&tempFBO.getTextureReference());
+            break;
+        }
+        default:
+            break;
+    }
+    
 }
 
 //--------------------------------------------------------------
 void gFrameApp::draw(){
-   
+    
+    ofBackground(0);
+    ofSetColor(255);
+
+//    //
+//    mPanels.draw(mPanelPositionAndSize.x,mPanelPositionAndSize.y);
+    
     for(vector<GPoint> stroke : *stroke_list.getAllStrokes()){
         switch(stroke[0].getStyle()){
             case STYLE_PROFILE:
@@ -83,16 +129,16 @@ void gFrameApp::draw(){
         
     }
     
-    //syphon
-    texScreen.loadScreenData(0, 0, 1024, 768);
-    
-    
-    
-    syphonMainOut.publishTexture(&texScreen);
-    //syphonMainOut.publishScreen();
-    
-    //everthing that is drawn after texScreen.loadScreenData will not be visible in the frame published to syphon
-    
+    //some texture juggling if outputmode is SESI
+    if (outputmode == SESI)
+    {
+        mCanvas.allocate(1024,768,OF_IMAGE_COLOR);
+        mCanvas.grabScreen(0, 0, 1024, 768);
+        mCanvas.resize(mPanelPositionAndSize.width, mPanelPositionAndSize.height);
+        toPanels(mCanvas, mPanels);
+    } else {
+        syphonMainOut.publishScreen();
+    }
 }
 
 //--------------------------------------------------------------
@@ -109,6 +155,24 @@ void gFrameApp::keyPressed(int key){
         current_style = STYLE_PROFILE;
     else if (key == 's')
         current_style = STYLE_SCRIZZLE;
+    
+    //switchen between different output modes
+    else if (key == '1') {
+        ofSetWindowShape(768, 288);
+        outputmode = LED1;
+    }
+    else if (key == '2') {
+        ofSetWindowShape(480, 288);
+        outputmode = LED2;
+    }
+    else if (key == '3') {
+        ofSetWindowShape(1024, 768);
+        outputmode = SESI;
+    }
+    else if (key == '4') {
+        ofSetWindowShape(1024, 768);
+        outputmode = PROJECTOR;
+    }
 }
 
 //--------------------------------------------------------------
@@ -122,23 +186,6 @@ void gFrameApp::mouseMoved(int x, int y){
 //    all_points.push_back(the_point);
     stroke_list.add(the_point);
     
-    stop_pulsing();
-    last_points_time = ofGetElapsedTimeMillis();
-}
-
-//--------------------------------------------------------------
-void gFrameApp::onTouchPoint(TouchPointEvent &event) {
-    GPoint the_point;
-    int x = ofMap(event.touchPoint.x, 0, 1680, 0, ofGetWidth());
-    int y = ofMap(event.touchPoint.y, 0, 1080, 0, ofGetHeight());
-    the_point.setLocation(ofVec2f(x, y));
-    the_point.setId((int)event.touchPoint.id);
-    the_point.setColor(localPenColor);
-    the_point.setType(LOCALFRAME);
-    the_point.setStyle(current_style);
-    stroke_list.add(the_point);
-    
-    //stop pulsing LEDs
     stop_pulsing();
     last_points_time = ofGetElapsedTimeMillis();
 }
@@ -180,7 +227,6 @@ void gFrameApp::setLEDColor(ofColor color){
     r = (int)color.r; fr = (float)r * LED_level;
     g = (int)color.g; fg = (float)g * LED_level;
     b = (int)color.b; fb = (float)b * LED_level;
-    //cout << fr << " " << fg << " " << fb << endl;
     //dmx channels are 2, 3 & 4
     dmx.setLevel(2, (int)fg);     //green
     dmx.setLevel(3, (int)fr);     //red
@@ -299,7 +345,6 @@ void gFrameApp::dmxUpdate(){
     {
         LED_level -= 0.01;
         float new_level = ofMap(time, 0, LED_pulsing_time, lower_pulsing_limit, upper_pulsing_limit);
-        cout << new_level << " " << LED_level << endl;
         if (LED_level - new_level < 0)
             start_pulsing();
     }
@@ -320,4 +365,26 @@ void gFrameApp::start_pulsing() {
 void gFrameApp::stop_pulsing() {
     LED_pulsing = false;
     LED_level = 1.0;
+}
+
+void gFrameApp::toPanels(ofImage &canvas, ofImage &panels){
+    if(!(canvas.getWidth() == 214 && canvas.getHeight() == 167))
+        return;
+    for(int y=0; y<panels.getHeight(); y++){
+        int rowWidthHalf = (int)((93.0-51.0)/panels.getHeight()*y/2.0+25.0);
+        int rowCenterPixel = y*panels.getWidth()+panels.getWidth()/2;
+        // center
+        for(int x=0; x<=rowWidthHalf; x++){
+            panels.setColor(panels.getWidth()/2+x, y, canvas.getColor(panels.getWidth()/2+x, y));
+            panels.setColor(panels.getWidth()/2-x, y, canvas.getColor(panels.getWidth()/2-x, y));
+        }
+        // left/right
+        int gapSize = (int)((0.0-74.0)/panels.getHeight()*y+74.0);
+        int leftoverPixels = (int)((61.0-9.0)/panels.getHeight()*y+9.0);
+        for(int x=0; x<=leftoverPixels; x++){
+            panels.setColor(panels.getWidth()/2+rowWidthHalf+1+x+gapSize, y, canvas.getColor(panels.getWidth()/2+rowWidthHalf+1+x, y));
+            panels.setColor(panels.getWidth()/2-rowWidthHalf-1-x-gapSize, y, canvas.getColor(panels.getWidth()/2-rowWidthHalf-1-x, y));
+        }
+    }
+    panels.reloadTexture();
 }

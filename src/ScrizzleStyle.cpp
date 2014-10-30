@@ -17,7 +17,7 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
     last_used_point = &points[0];
     
     interpolator.clear();
-    glLineWidth(3.0);
+    glLineWidth(linewidth1);
     ofSetColor(color1);
     glBegin(GL_LINE_STRIP);
     for (int i = 1 ; i < points.size(); i++) {
@@ -47,7 +47,7 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
     }
     
     
-    float spacing = 1.0/(points.size()*isteps1);
+    float spacing = 1.0/(points.size()*isteps);
     for (float f = 0; f <= 1; f+=spacing) {
         ofVec3f v_with_alpha = interpolator.sampleAt(f);
         ofVec2f v = ofVec2f(v_with_alpha.x, v_with_alpha.y);
@@ -60,7 +60,7 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
     //second run through all points in this stroke
     interpolator.clear();
     last_used_point = &points[0];
-    glLineWidth(2.0);
+    glLineWidth(linewidth2);
     ofSetColor(color2);
     glBegin(GL_LINE_STRIP);
     for (int i = 1 ; i < points.size(); i++) {
@@ -93,7 +93,7 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
     //setcolor after calculating age
     ofSetColor(color2);
     
-    spacing = 1.0/(points.size()*isteps2);
+    spacing = 1.0/(points.size()*isteps);
     for (float f = 0; f <= 1; f+=spacing) {
         ofVec3f v_with_alpha = interpolator.sampleAt(f);
         ofVec2f v = ofVec2f(v_with_alpha.x, v_with_alpha.y);
@@ -106,7 +106,7 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
     //third run through all points in this stroke
     last_used_point = &points[0];
     interpolator.clear();
-    glLineWidth(1.0);
+    glLineWidth(linewidth3);
     ofSetColor(color3);
     glBegin(GL_LINE_STRIP);
     for (int i = 1 ; i < points.size(); i++) {
@@ -142,7 +142,7 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
     //setcolor after calculating age
     ofSetColor(color3);
     
-    spacing = 1.0/(points.size()*isteps3);
+    spacing = 1.0/(points.size()*isteps);
     for (float f = 0; f <= 1; f+=spacing) {
         ofVec3f v_with_alpha = interpolator.sampleAt(f);
         ofVec2f v = ofVec2f(v_with_alpha.x, v_with_alpha.y);

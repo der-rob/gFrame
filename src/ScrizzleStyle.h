@@ -16,9 +16,9 @@ private:
     //generall brush parameters
     int new_point_distance = 20;
     //amplitude
-    float amplitude1 = 2.0;
-    float amplitude2 = 4.0;
-    float amplitude3 = 6.0;
+    float amplitude1 = 4.0;
+    float amplitude2 = 8.0;
+    float amplitude3 = 12.0;
     //periodic speed
     float speed1 = 1.0;
     float speed2 = 0.9;
@@ -28,13 +28,16 @@ private:
     float length2 = 4.0;
     float length3 = 6.0;
     //interpolator steps
-    int isteps1 = 3;
-    int isteps2 = 3;
-    int isteps3 = 3;
+    int isteps = 3;
     //color for each stroke
-    ofColor color1 = ofColor(41, 78, 127);
-    ofColor color2 = ofColor(62, 117, 191);
-    ofColor color3 = ofColor(82, 157, 255);
+    ofColor color1 = ofColor(0, 0, 255);
+    ofColor color2 = ofColor(12, 70, 232);
+    ofColor color3 = ofColor(13, 140, 255);
+    //linewidth for each stroke
+    float linewidth1 = 4.0;
+    float linewidth2 = 2.0;
+    float linewidth3 = 2.0;
+    
     //aging and fading out
     float startFadeAge = 500;
     float endFadeAge = 1000;
@@ -60,7 +63,7 @@ public:
     void setLegth2(float _length) {length2 = _length;}
     void setLegth3(float _length) {length3 = _length;}
     
-    void setInterpolatorSteps(int _iSteps) {isteps1 = _iSteps; isteps2 = _iSteps; isteps3 = _iSteps;}
+    void setInterpolatorSteps(int _iSteps) {isteps = _iSteps;}
     
     void setColor1(ofColor _color) {color1 = _color;}
     void setColor2(ofColor _color) {color2 = _color;}
@@ -82,7 +85,7 @@ public:
     float getLength2() {return length2;}
     float getLength3() {return length3;}
     
-    int getInterpolatorSteps() {return isteps1;}
+    int getInterpolatorSteps() {return isteps;}
     
     ofColor getColor1() {return color1;}
     ofColor getColor2() {return color2;}
