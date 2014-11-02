@@ -8,9 +8,6 @@
 
 #include "BaseStyle.h"
 
-BaseStyle::BaseStyle() {
-   
-}
 
 void BaseStyle::render(vector<GPoint> &points) {
     ofSetColor(255);

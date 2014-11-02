@@ -44,7 +44,6 @@ public:
     
     //settings
     void saveSettings();
-   
 
 private:
     
@@ -59,14 +58,14 @@ private:
     //output
     OutputMode outputmode = PROJECTOR;
     ofxSyphonServer syphonMainOut;
-    ofTexture texScreen;
     //brazil support
-    ofImage mPanels, mCanvas, panelsMask;
+    ofImage mPanels, mCanvas;
     ofRectangle mPanelPositionAndSize;
+    ofRectangle mCanvasPositionAndSize;
     void toPanels(ofImage &canvas, ofImage &panels);
+    void toPanelsGFrame(ofImage &canvas, ofImage &panels);
     ofImage fiespMask;
     ofImage brazilianOut;
-    ofTexture brazilianOutTex;
     
     //drawing parameter
     ofParameterGroup localDrawingParameters;

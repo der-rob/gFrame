@@ -10,7 +10,6 @@ void gFrameApp::setup(){
     
     //Syphon stuff
     syphonMainOut.setName("gFrame Main Out");
-    texScreen.allocate(1024, 768, GL_RGB);
     
     //TUIO setup
     tuioClient.start(3333);
@@ -45,12 +44,10 @@ void gFrameApp::setup(){
 
     //brazil support
     mPanelPositionAndSize = ofRectangle(37,259,214,167);
-    mCanvas.allocate(1024, 768, OF_IMAGE_COLOR);
+    mCanvasPositionAndSize = ofRectangle(98,259,93,167);
+    mCanvas.allocate(mCanvasPositionAndSize.width, mCanvasPositionAndSize.height, OF_IMAGE_COLOR);
     mPanels.allocate(mPanelPositionAndSize.width, mPanelPositionAndSize.height, OF_IMAGE_COLOR);
     mPanels.setColor(0);
-    
-    panelsMask.loadImage("SP_Urban_MASK_025.png");
-    panelsMask.crop(mPanelPositionAndSize.x, mPanelPositionAndSize.y, mPanelPositionAndSize.width, mPanelPositionAndSize.height);
     fiespMask.loadImage("SP_Urban_MASK_025.png");
 
 
@@ -72,7 +69,7 @@ void gFrameApp::update(){
     
     
     //dealing with different output modes
-    //might be crushed down to a simpleif statement if there no option to deal with for the other outut modes
+    //might be crushed down to a simple if statement if there are no options to deal with for the other outut modes
     switch (outputmode) {
         case PROJECTOR:
         {
@@ -92,9 +89,9 @@ void gFrameApp::update(){
             ofFbo tempFBO;
             tempFBO.allocate(1024, 768);
             tempFBO.begin();
-            fiespMask.draw(0,0);
             ofBackground(128);
-            mPanels.draw(37,259);
+            //fiespMask.draw(0,0);
+            mPanels.draw(mPanelPositionAndSize.x,mPanelPositionAndSize.y);
             tempFBO.end();
             syphonMainOut.publishTexture(&tempFBO.getTextureReference());
             break;
@@ -110,9 +107,6 @@ void gFrameApp::draw(){
     
     ofBackground(0);
     ofSetColor(255);
-
-//    //
-//    mPanels.draw(mPanelPositionAndSize.x,mPanelPositionAndSize.y);
     
     for(vector<GPoint> stroke : *stroke_list.getAllStrokes()){
         switch(stroke[0].getStyle()){
@@ -126,16 +120,16 @@ void gFrameApp::draw(){
                 profileStyle.render(stroke);
                 break;
         }
-        
     }
     
     //some texture juggling if outputmode is SESI
     if (outputmode == SESI)
     {
-        mCanvas.allocate(1024,768,OF_IMAGE_COLOR);
-        mCanvas.grabScreen(0, 0, 1024, 768);
-        mCanvas.resize(mPanelPositionAndSize.width, mPanelPositionAndSize.height);
-        toPanels(mCanvas, mPanels);
+//        mCanvas.allocate(1024,768,OF_IMAGE_COLOR);
+        mCanvas.allocate(mCanvasPositionAndSize.width, mCanvasPositionAndSize.height,OF_IMAGE_COLOR);
+        mCanvas.grabScreen(0, 0, mCanvasPositionAndSize.width, mCanvasPositionAndSize.height);
+//        mCanvas.resize(mPanelPositionAndSize.width, mPanelPositionAndSize.height);
+        toPanelsGFrame(mCanvas, mPanels);
     } else {
         syphonMainOut.publishScreen();
     }
@@ -143,20 +137,25 @@ void gFrameApp::draw(){
 
 //--------------------------------------------------------------
 void gFrameApp::keyPressed(int key){
-    if (key == 'r')
+    if (key == 'r') {
         localPenColor = ofColor::red;
-    else if (key == 'b')
+        
+    }
+    else if (key == 'b') {
         localPenColor = ofColor::blue;
-    else if (key == 'g')
+    }
+    else if (key == 'g') {
         localPenColor = ofColor::green;
-    else if(key == 'c')
+    }
+    else if(key == 'c') {
         stroke_list.clear();
+    }
     else if (key == 'p')
         current_style = STYLE_PROFILE;
     else if (key == 's')
         current_style = STYLE_SCRIZZLE;
     
-    //switchen between different output modes
+    //switch between different output modes
     else if (key == '1') {
         ofSetWindowShape(768, 288);
         outputmode = LED1;
@@ -166,7 +165,7 @@ void gFrameApp::keyPressed(int key){
         outputmode = LED2;
     }
     else if (key == '3') {
-        ofSetWindowShape(1024, 768);
+        ofSetWindowShape(mCanvasPositionAndSize.width, mCanvasPositionAndSize.height);
         outputmode = SESI;
     }
     else if (key == '4') {
@@ -340,7 +339,7 @@ void gFrameApp::oscupdate_interface() {
     sender.sendMessage(update);
 }
 
-void gFrameApp::dmxUpdate(){
+void gFrameApp::dmxUpdate(){ // name of this method is a bit misleading, should be updateLED or something like that
     //create triangle wave for pulsing led lights
     int time = abs(((int)ofGetElapsedTimeMillis() % (LED_pulsing_time*2)) - LED_pulsing_time);
     
@@ -386,12 +385,35 @@ void gFrameApp::toPanels(ofImage &canvas, ofImage &panels){
         int gapSize = (int)((0.0-74.0)/panels.getHeight()*y+74.0);
         int leftoverPixels = (int)((61.0-9.0)/panels.getHeight()*y+9.0);
         for(int x=0; x<=leftoverPixels; x++){
-            panels.setColor(panels.getWidth()/2+rowWidthHalf+1+x+gapSize, y, canvas.getColor(panels.getWidth()/2+rowWidthHalf+1+x, y));
-            panels.setColor(panels.getWidth()/2-rowWidthHalf-1-x-gapSize, y, canvas.getColor(panels.getWidth()/2-rowWidthHalf-1-x, y));
+            panels.setColor(panels.getWidth()/2+rowWidthHalf+1+x+gapSize, y, localPenColor);
+            panels.setColor(panels.getWidth()/2-rowWidthHalf-1-x-gapSize, y, localPenColor);
         }
     }
     panels.reloadTexture();
 }
+
+void gFrameApp::toPanelsGFrame(ofImage &canvas, ofImage &panels){
+    if(!(canvas.getWidth() == 93 && canvas.getHeight() == 167))
+        return;
+    for(int y=0; y<panels.getHeight(); y++){
+        int rowWidthHalf = (int)((93.0-51.0)/panels.getHeight()*y/2.0+25.0);
+        int rowCenterPixel = y*panels.getWidth()+panels.getWidth()/2;
+        // center
+        for(int x=0; x<=rowWidthHalf; x++){
+            panels.setColor(panels.getWidth()/2+x, y, canvas.getColor(canvas.getWidth()/2+x, y));
+            panels.setColor(panels.getWidth()/2-x, y, canvas.getColor(canvas.getWidth()/2-x, y));
+        }
+        // left/right
+        int gapSize = (int)((0.0-74.0)/panels.getHeight()*y+74.0);
+        int leftoverPixels = (int)((61.0-9.0)/panels.getHeight()*y+9.0);
+        for(int x=0; x<=leftoverPixels; x++){
+            panels.setColor(panels.getWidth()/2+rowWidthHalf+1+x+gapSize, y, localPenColor);
+            panels.setColor(panels.getWidth()/2-rowWidthHalf-1-x-gapSize, y, localPenColor);
+        }
+    }
+    panels.reloadTexture();
+}
+
 
 void gFrameApp::saveSettings() {
     settings.setValue("settings:style", current_style);

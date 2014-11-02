@@ -16,12 +16,5 @@ private:
     ofPoint lastPoint;
 
 public:
-    BaseStyle();
-    
     virtual void render(vector<GPoint> &points);
-    
-    //int getStrokeID() {return stroke_id;}
-    //void setStrokeID(int _id) {stroke_id = _id;}
-    //ofPoint getLastPoint() {return lastPoint;}
-    //void setLastPoint(ofPoint new_lastPoint) {lastPoint = new_lastPoint;}
 };

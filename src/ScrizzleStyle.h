@@ -47,7 +47,6 @@ private:
 
 public:
     double counter = 0;
-    ScrizzleStyle();
     void render(vector<GPoint> &points);
 
     //setters
@@ -93,5 +92,7 @@ public:
     
     float getStartFadeAge() {return startFadeAge;}
     float getEndFadeAge() {return endFadeAge;}
+    
+    void setColor(ofColor _color);
 };
 

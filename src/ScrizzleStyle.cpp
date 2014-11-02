@@ -8,13 +8,11 @@
 
 #include "ScrizzleStyle.h"
 
-ScrizzleStyle::ScrizzleStyle() {
-}
-
 void ScrizzleStyle::render(vector<GPoint> &points) {
 
     GPoint *last_used_point;
     last_used_point = &points[0];
+    setColor(points[0].getColor());
     
     interpolator.clear();
     glLineWidth(linewidth1);
@@ -45,7 +43,6 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
         ofVec3f newPointWithAlpha = ofVec3f(newPoint.x, newPoint.y, alpha);
         interpolator.push_back(newPointWithAlpha);
     }
-    
     
     float spacing = 1.0/(points.size()*isteps);
     for (float f = 0; f <= 1; f+=spacing) {
@@ -154,4 +151,14 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
     
     float last_time = ofGetElapsedTimef();
     counter=last_time;
+}
+
+void ScrizzleStyle::setColor(ofColor _color)
+{
+    float hue = _color.getHue();
+    float saturation = _color.getSaturation();
+    float brightness = _color.getBrightness();
+    color1.setHsb(hue, saturation, brightness);
+    color2.setHsb(hue + 15.0, saturation - 10.0, brightness - 20.0);
+    color3.setHsb(hue - 15.0, saturation + 10.0, brightness - 40.0);
 }
