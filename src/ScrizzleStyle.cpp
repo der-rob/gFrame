@@ -151,6 +151,7 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
     
     float last_time = ofGetElapsedTimef();
     counter=last_time;
+    ofSetColor(0);
 }
 
 void ScrizzleStyle::setColor(ofColor _color)

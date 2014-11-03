@@ -59,7 +59,7 @@ Das generelle Vorgehen hier sieht folgendermaßen aus:
 	mCanvas.allocate(1024,768,OF_IMAGE_COLOR);
     mCanvas.grabScreen(0, 0, 1024, 768);
     mCanvas.resize(mPanelPositionAndSize.width, mPanelPositionAndSize.height);
-    toPanels(mCanvas, mPanels);`
+    toPanels(mCanvas, mPanels);
 
 Das originale Bild, also die eigentliche Ausgabe der gFrame-App, wird in einer Texture `mCanvas` gespeichert.
 Diese wird per `resize(216,167)` auf die Dimensionen der LED-Fassade gebracht. Der Aufruf von `toPanel` sorgt schließlich für die Anpassung auf die LED-Panels.  
@@ -73,6 +73,37 @@ Das angepasste Bild muss nun noch an der richtigen Position auf dem "Bildschirm"
     mPanels.draw(37,259);
     tempFBO.end();
     syphonMainOut.publishTexture(&tempFBO.getTextureReference());
+    
+#### SESI 2.0
+
+Da wir nur den vorderen Teil der Fassade für das Zeichnen verwenden wollen, habe ich die die Ausgabe entsprechend angepasst. Die Seitenteilen werden nun in der aktuellen Stiftfarbe eingefärbt. Außerdem hab ich versucht die den Code soweit zu verbessern, dass weniger Berechnungen anfallen. Das gezeichnete Bild wird jetzt genau in den Dimensionen der Fassade auf dem Bildschirm angezeigt. Das hat den Vorteil, dass `mCanvas.resize(mPanelPositionAndSize.width, mPanelPositionAndSize.height)` entfallen kann. Sicherlich ganz gut für die Performance auf den Mac Minis.
+
+	mCanvas.allocate(mCanvasPositionAndSize.width, mCanvasPositionAndSize.height,OF_IMAGE_COLOR);
+    mCanvas.grabScreen(0, 0, mCanvasPositionAndSize.width, mCanvasPositionAndSize.height);
+    toPanelsGFrame(mCanvas, mPanels);
+Die angepasste `toPanels`-Funktion:
+
+	void gFrameApp::toPanelsGFrame(ofImage &canvas, ofImage &panels){
+    	if(!(canvas.getWidth() == 93 && canvas.getHeight() == 167))
+        	return;
+    	for(int y=0; y<panels.getHeight(); y++){
+        	int rowWidthHalf = (int)((93.0-51.0)/panels.getHeight()*y/2.0+25.0);
+        	int rowCenterPixel = y*panels.getWidth()+panels.getWidth()/2;
+        	// center
+        	for(int x=0; x<=rowWidthHalf; x++){
+            	panels.setColor(panels.getWidth()/2+x, y, canvas.getColor(canvas.getWidth()/2+x, y));
+            	panels.setColor(panels.getWidth()/2-x, y, canvas.getColor(canvas.getWidth()/2-x, y));
+        	}
+        	// left/right
+        	int gapSize = (int)((0.0-74.0)/panels.getHeight()*y+74.0);
+        	int leftoverPixels = (int)((61.0-9.0)/panels.getHeight()*y+9.0);
+        	for(int x=0; x<=leftoverPixels; x++){
+            	panels.setColor(panels.getWidth()/2+rowWidthHalf+1+x+gapSize, y, localPenColor);
+            	panels.setColor(panels.getWidth()/2-rowWidthHalf-1-x-gapSize, y, localPenColor);
+        	}
+    	}
+    	panels.reloadTexture();
+	}
 
 #### LED 1 & LED 2
 
