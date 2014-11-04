@@ -12,10 +12,18 @@
 	<dict>
 		<key>09956FC378D8B160FBFD2EBF802C987EE22661C0</key>
 		<string>github.com:der-rob/gFrame.git</string>
+		<key>1C584D82D8F91B619E103DBEA051F0CCC0070ED3</key>
+		<string>https://github.com/kylemcdonald/ofxDmx.git</string>
 		<key>65FAA983A662D43645B6C2BEE45CDCC6359DE6D9</key>
 		<string>https://github.com/memo/ofxMSAInterpolator.git</string>
+		<key>6B5D1DE462D521A98972DF70F1147E20268C546A</key>
+		<string>https://github.com/arturoc/ofxTween.git</string>
 		<key>CB1CF109CA3A77AF931BD92C92B3F38F4A501645</key>
 		<string>https://github.com/memo/ofxMSACore.git</string>
+		<key>E405B7BB2A09A6AEBFC7DABE78D91B8B66657ADA</key>
+		<string>https://github.com/patriciogonzalezvivo/ofxTuio.git</string>
+		<key>F4CCB893AFADB97238A965FD2F28717F1CAAE613</key>
+		<string>https://github.com/astellato/ofxSyphon.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>gFrame.xcodeproj</string>
@@ -23,10 +31,18 @@
 	<dict>
 		<key>09956FC378D8B160FBFD2EBF802C987EE22661C0</key>
 		<string>../..</string>
+		<key>1C584D82D8F91B619E103DBEA051F0CCC0070ED3</key>
+		<string>../../../addons/ofxDmx</string>
 		<key>65FAA983A662D43645B6C2BEE45CDCC6359DE6D9</key>
 		<string>../../../addons/ofxMSAInterpolator</string>
+		<key>6B5D1DE462D521A98972DF70F1147E20268C546A</key>
+		<string>../../../addons/ofxTween</string>
 		<key>CB1CF109CA3A77AF931BD92C92B3F38F4A501645</key>
 		<string>../../../addons/ofxMSACore</string>
+		<key>E405B7BB2A09A6AEBFC7DABE78D91B8B66657ADA</key>
+		<string>../../../addons/ofxTuio</string>
+		<key>F4CCB893AFADB97238A965FD2F28717F1CAAE613</key>
+		<string>../../../addons/ofxSyphon</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>github.com:der-rob/gFrame.git</string>
@@ -48,6 +64,14 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>1C584D82D8F91B619E103DBEA051F0CCC0070ED3</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ofxDmx</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>CB1CF109CA3A77AF931BD92C92B3F38F4A501645</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ofxMSACore</string>
@@ -59,6 +83,30 @@
 			<string>65FAA983A662D43645B6C2BEE45CDCC6359DE6D9</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ofxMSAInterpolator</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>F4CCB893AFADB97238A965FD2F28717F1CAAE613</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ofxSyphon</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>E405B7BB2A09A6AEBFC7DABE78D91B8B66657ADA</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ofxTuio</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>6B5D1DE462D521A98972DF70F1147E20268C546A</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ofxTween</string>
 		</dict>
 	</array>
 </dict>

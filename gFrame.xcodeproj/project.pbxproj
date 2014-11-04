@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6C7223411A0936DF004D5BF6 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4091AF3196AB67B00F109F1 /* Syphon.framework */; };
 		6CA504DB19FA82590091B61A /* StrokeList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CA504D919FA82590091B61A /* StrokeList.cpp */; };
 		6CEACF3B19F957AD00EB7DE6 /* GPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CEACF3719F957AD00EB7DE6 /* GPoint.cpp */; };
 		6CEACF3C19F957AD00EB7DE6 /* ProfileStyle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CEACF3919F957AD00EB7DE6 /* ProfileStyle.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
-		D4091B04196AB67B00F109F1 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4091AF3196AB67B00F109F1 /* Syphon.framework */; };
 		D4091B05196AB67B00F109F1 /* SyphonNameboundClient.m in Sources */ = {isa = PBXBuildFile; fileRef = D4091AF6196AB67B00F109F1 /* SyphonNameboundClient.m */; };
 		D4091B06196AB67B00F109F1 /* ofxSyphonClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = D4091AFB196AB67B00F109F1 /* ofxSyphonClient.mm */; };
 		D4091B07196AB67B00F109F1 /* ofxSyphonServer.mm in Sources */ = {isa = PBXBuildFile; fileRef = D4091AFD196AB67B00F109F1 /* ofxSyphonServer.mm */; };
@@ -266,7 +266,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4091B04196AB67B00F109F1 /* Syphon.framework in Frameworks */,
+				6C7223411A0936DF004D5BF6 /* Syphon.framework in Frameworks */,
 				E7F985F815E0DEA3003869B5 /* Accelerate.framework in Frameworks */,
 				E7E077E815D3B6510020DFD4 /* QTKit.framework in Frameworks */,
 				E4EB6799138ADC1D00A09F29 /* GLUT.framework in Frameworks */,
@@ -1016,6 +1016,8 @@
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 					/Users/rob/Documents/of_v0.8.4_osx_release/addons/ofxSyphon/libs/Syphon/lib/osx,
+					/Users/julianadenauer/CloudStation/Programming/of_v0.8.4_/addons/ofxSyphon/libs/Syphon/lib/osx,
+					/Users/julianadenauer/CloudStation/Programming/of_v0.8.4/addons/ofxSyphon/libs/Syphon/lib/osx,
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../libs/glut/lib/osx\"";
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1103,6 +1105,7 @@
 					/Users/rob/Documents/of_v0.8.1_osx_release/addons/ofxPQLabs/addons/ofxPQLabs/PQMTClient,
 				);
 				PRODUCT_NAME = gFrameDebug;
+				SDKROOT = macosx10.9;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1116,6 +1119,8 @@
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 					/Users/rob/Documents/of_v0.8.4_osx_release/addons/ofxSyphon/libs/Syphon/lib/osx,
+					/Users/julianadenauer/CloudStation/Programming/of_v0.8.4_/addons/ofxSyphon/libs/Syphon/lib/osx,
+					/Users/julianadenauer/CloudStation/Programming/of_v0.8.4/addons/ofxSyphon/libs/Syphon/lib/osx,
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../libs/glut/lib/osx\"";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
@@ -1202,6 +1207,7 @@
 					/Users/rob/Documents/of_v0.8.1_osx_release/addons/ofxPQLabs/addons/ofxPQLabs/PQMTClient,
 				);
 				PRODUCT_NAME = gFrame;
+				SDKROOT = macosx10.9;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
