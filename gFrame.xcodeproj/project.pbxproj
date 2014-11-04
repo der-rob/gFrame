@@ -32,8 +32,6 @@
 		D4605491196DC7480040C381 /* ofxOscParameterSync.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4605480196DC7480040C381 /* ofxOscParameterSync.cpp */; };
 		D4605492196DC7480040C381 /* ofxOscReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4605482196DC7480040C381 /* ofxOscReceiver.cpp */; };
 		D4605493196DC7480040C381 /* ofxOscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4605484196DC7480040C381 /* ofxOscSender.cpp */; };
-		D4680D611A07CB91001D113F /* readme_robert.md in Sources */ = {isa = PBXBuildFile; fileRef = D4680D5F1A07CB91001D113F /* readme_robert.md */; };
-		D4680D621A07CB91001D113F /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = D4680D601A07CB91001D113F /* README.md */; };
 		D486254C1A001C770076E13F /* BaseStyle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D48625481A001C770076E13F /* BaseStyle.cpp */; };
 		D486254D1A001C770076E13F /* ScrizzleStyle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D486254A1A001C770076E13F /* ScrizzleStyle.cpp */; };
 		D486256D1A001C9A0076E13F /* license.md in Sources */ = {isa = PBXBuildFile; fileRef = D48625501A001C990076E13F /* license.md */; };
@@ -176,8 +174,6 @@
 		D4605483196DC7480040C381 /* ofxOscReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOscReceiver.h; sourceTree = "<group>"; };
 		D4605484196DC7480040C381 /* ofxOscSender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxOscSender.cpp; sourceTree = "<group>"; };
 		D4605485196DC7480040C381 /* ofxOscSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOscSender.h; sourceTree = "<group>"; };
-		D4680D5F1A07CB91001D113F /* readme_robert.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = readme_robert.md; sourceTree = "<group>"; };
-		D4680D601A07CB91001D113F /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D48625481A001C770076E13F /* BaseStyle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseStyle.cpp; sourceTree = "<group>"; };
 		D48625491A001C770076E13F /* BaseStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseStyle.h; sourceTree = "<group>"; };
 		D486254A1A001C770076E13F /* ScrizzleStyle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScrizzleStyle.cpp; sourceTree = "<group>"; };
@@ -751,8 +747,6 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
-				D4680D5F1A07CB91001D113F /* readme_robert.md */,
-				D4680D601A07CB91001D113F /* README.md */,
 				D4091B2B196AF5B900F109F1 /* .gitignore */,
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
@@ -895,7 +889,6 @@
 				D4605493196DC7480040C381 /* ofxOscSender.cpp in Sources */,
 				D460548C196DC7480040C381 /* OscPrintReceivedElements.cpp in Sources */,
 				D48625731A001C9A0076E13F /* README.md in Sources */,
-				D4680D611A07CB91001D113F /* readme_robert.md in Sources */,
 				D4A778C21976A26E005E4026 /* ofxEasingLinear.cpp in Sources */,
 				D4605488196DC7480040C381 /* UdpSocket.cpp in Sources */,
 				D460548B196DC7480040C381 /* OscOutboundPacketStream.cpp in Sources */,
@@ -926,7 +919,6 @@
 				D4091B07196AB67B00F109F1 /* ofxSyphonServer.mm in Sources */,
 				D486254D1A001C770076E13F /* ScrizzleStyle.cpp in Sources */,
 				D4605486196DC7480040C381 /* IpEndpointName.cpp in Sources */,
-				D4680D621A07CB91001D113F /* README.md in Sources */,
 				D4605491196DC7480040C381 /* ofxOscParameterSync.cpp in Sources */,
 				D4605489196DC7480040C381 /* NetworkingUtilsWin.cpp in Sources */,
 				D4A778C61976A26E005E4026 /* ofxEasingSine.cpp in Sources */,

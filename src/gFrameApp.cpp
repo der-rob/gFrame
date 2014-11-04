@@ -89,7 +89,7 @@ void gFrameApp::update(){
             ofFbo tempFBO;
             tempFBO.allocate(1024, 768);
             tempFBO.begin();
-            ofBackground(0);
+            ofBackground(128);
             //fiespMask.draw(0,0);
             mPanels.draw(mPanelPositionAndSize.x,mPanelPositionAndSize.y);
             tempFBO.end();
@@ -125,8 +125,10 @@ void gFrameApp::draw(){
     //some texture juggling if outputmode is SESI
     if (outputmode == SESI)
     {
+//        mCanvas.allocate(1024,768,OF_IMAGE_COLOR);
         mCanvas.allocate(mCanvasPositionAndSize.width, mCanvasPositionAndSize.height,OF_IMAGE_COLOR);
         mCanvas.grabScreen(0, 0, mCanvasPositionAndSize.width, mCanvasPositionAndSize.height);
+//        mCanvas.resize(mPanelPositionAndSize.width, mPanelPositionAndSize.height);
         toPanelsGFrame(mCanvas, mPanels);
     } else {
         syphonMainOut.publishScreen();
