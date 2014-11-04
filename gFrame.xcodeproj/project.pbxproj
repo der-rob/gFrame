@@ -7,11 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6C51F02F1A093CE500066662 /* Network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C51F02D1A093CE500066662 /* Network.cpp */; };
+		6C7223411A0936DF004D5BF6 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4091AF3196AB67B00F109F1 /* Syphon.framework */; };
+		6C7223511A093BB1004D5BF6 /* ofxTCPClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C7223491A093BB1004D5BF6 /* ofxTCPClient.cpp */; };
+		6C7223521A093BB1004D5BF6 /* ofxTCPManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C72234B1A093BB1004D5BF6 /* ofxTCPManager.cpp */; };
+		6C7223531A093BB1004D5BF6 /* ofxTCPServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C72234D1A093BB1004D5BF6 /* ofxTCPServer.cpp */; };
+		6C7223541A093BB1004D5BF6 /* ofxUDPManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C72234F1A093BB1004D5BF6 /* ofxUDPManager.cpp */; };
 		6CA504DB19FA82590091B61A /* StrokeList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CA504D919FA82590091B61A /* StrokeList.cpp */; };
 		6CEACF3B19F957AD00EB7DE6 /* GPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CEACF3719F957AD00EB7DE6 /* GPoint.cpp */; };
 		6CEACF3C19F957AD00EB7DE6 /* ProfileStyle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CEACF3919F957AD00EB7DE6 /* ProfileStyle.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
-		D4091B04196AB67B00F109F1 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4091AF3196AB67B00F109F1 /* Syphon.framework */; };
 		D4091B05196AB67B00F109F1 /* SyphonNameboundClient.m in Sources */ = {isa = PBXBuildFile; fileRef = D4091AF6196AB67B00F109F1 /* SyphonNameboundClient.m */; };
 		D4091B06196AB67B00F109F1 /* ofxSyphonClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = D4091AFB196AB67B00F109F1 /* ofxSyphonClient.mm */; };
 		D4091B07196AB67B00F109F1 /* ofxSyphonServer.mm in Sources */ = {isa = PBXBuildFile; fileRef = D4091AFD196AB67B00F109F1 /* ofxSyphonServer.mm */; };
@@ -110,6 +115,18 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6C51F02D1A093CE500066662 /* Network.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Network.cpp; sourceTree = "<group>"; };
+		6C51F02E1A093CE500066662 /* Network.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Network.h; sourceTree = "<group>"; };
+		6C7223471A093BB1004D5BF6 /* ofxNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxNetwork.h; sourceTree = "<group>"; };
+		6C7223481A093BB1004D5BF6 /* ofxNetworkUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxNetworkUtils.h; sourceTree = "<group>"; };
+		6C7223491A093BB1004D5BF6 /* ofxTCPClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTCPClient.cpp; sourceTree = "<group>"; };
+		6C72234A1A093BB1004D5BF6 /* ofxTCPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTCPClient.h; sourceTree = "<group>"; };
+		6C72234B1A093BB1004D5BF6 /* ofxTCPManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTCPManager.cpp; sourceTree = "<group>"; };
+		6C72234C1A093BB1004D5BF6 /* ofxTCPManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTCPManager.h; sourceTree = "<group>"; };
+		6C72234D1A093BB1004D5BF6 /* ofxTCPServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTCPServer.cpp; sourceTree = "<group>"; };
+		6C72234E1A093BB1004D5BF6 /* ofxTCPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTCPServer.h; sourceTree = "<group>"; };
+		6C72234F1A093BB1004D5BF6 /* ofxUDPManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxUDPManager.cpp; sourceTree = "<group>"; };
+		6C7223501A093BB1004D5BF6 /* ofxUDPManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUDPManager.h; sourceTree = "<group>"; };
 		6CA504D919FA82590091B61A /* StrokeList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StrokeList.cpp; sourceTree = "<group>"; };
 		6CA504DA19FA82590091B61A /* StrokeList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StrokeList.h; sourceTree = "<group>"; };
 		6CEACF3719F957AD00EB7DE6 /* GPoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GPoint.cpp; sourceTree = "<group>"; };
@@ -266,7 +283,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4091B04196AB67B00F109F1 /* Syphon.framework in Frameworks */,
+				6C7223411A0936DF004D5BF6 /* Syphon.framework in Frameworks */,
 				E7F985F815E0DEA3003869B5 /* Accelerate.framework in Frameworks */,
 				E7E077E815D3B6510020DFD4 /* QTKit.framework in Frameworks */,
 				E4EB6799138ADC1D00A09F29 /* GLUT.framework in Frameworks */,
@@ -289,9 +306,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6C7223431A093BB1004D5BF6 /* ofxNetwork */ = {
+			isa = PBXGroup;
+			children = (
+				6C7223461A093BB1004D5BF6 /* src */,
+			);
+			name = ofxNetwork;
+			path = ../../../addons/ofxNetwork;
+			sourceTree = "<group>";
+		};
+		6C7223461A093BB1004D5BF6 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				6C7223471A093BB1004D5BF6 /* ofxNetwork.h */,
+				6C7223481A093BB1004D5BF6 /* ofxNetworkUtils.h */,
+				6C7223491A093BB1004D5BF6 /* ofxTCPClient.cpp */,
+				6C72234A1A093BB1004D5BF6 /* ofxTCPClient.h */,
+				6C72234B1A093BB1004D5BF6 /* ofxTCPManager.cpp */,
+				6C72234C1A093BB1004D5BF6 /* ofxTCPManager.h */,
+				6C72234D1A093BB1004D5BF6 /* ofxTCPServer.cpp */,
+				6C72234E1A093BB1004D5BF6 /* ofxTCPServer.h */,
+				6C72234F1A093BB1004D5BF6 /* ofxUDPManager.cpp */,
+				6C7223501A093BB1004D5BF6 /* ofxUDPManager.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				6C7223431A093BB1004D5BF6 /* ofxNetwork */,
 				D495BD511A02A8DC0097B172 /* ofxXmlSettings */,
 				D486254E1A001C990076E13F /* ofxMSACore */,
 				D486255A1A001C990076E13F /* ofxMSAInterpolator */,
@@ -762,6 +806,8 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				6C51F02D1A093CE500066662 /* Network.cpp */,
+				6C51F02E1A093CE500066662 /* Network.h */,
 				D48625481A001C770076E13F /* BaseStyle.cpp */,
 				D48625491A001C770076E13F /* BaseStyle.h */,
 				D486254A1A001C770076E13F /* ScrizzleStyle.cpp */,
@@ -903,20 +949,25 @@
 				D495BD5B1A02A8DC0097B172 /* tinyxmlerror.cpp in Sources */,
 				D486256F1A001C9A0076E13F /* MSACoreGL.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* gFrameApp.cpp in Sources */,
+				6C51F02F1A093CE500066662 /* Network.cpp in Sources */,
 				D486254C1A001C770076E13F /* BaseStyle.cpp in Sources */,
 				D4A778C31976A26E005E4026 /* ofxEasingQuad.cpp in Sources */,
 				D486256E1A001C9A0076E13F /* README.md in Sources */,
 				D4A778BC1976A26E005E4026 /* ofxEasingBack.cpp in Sources */,
+				6C7223541A093BB1004D5BF6 /* ofxUDPManager.cpp in Sources */,
 				D4A778BF1976A26E005E4026 /* ofxEasingCubic.cpp in Sources */,
 				D4A778C01976A26E005E4026 /* ofxEasingElastic.cpp in Sources */,
 				D495BD5D1A02A8DC0097B172 /* ofxXmlSettings.cpp in Sources */,
 				D486256D1A001C9A0076E13F /* license.md in Sources */,
+				6C7223531A093BB1004D5BF6 /* ofxTCPServer.cpp in Sources */,
+				6C7223511A093BB1004D5BF6 /* ofxTCPClient.cpp in Sources */,
 				D4A778C71976A26E005E4026 /* ofxTween.cpp in Sources */,
 				D4605490196DC7480040C381 /* ofxOscMessage.cpp in Sources */,
 				D4A778BB1976A26E005E4026 /* ofxEasing.cpp in Sources */,
 				D460548E196DC7480040C381 /* OscTypes.cpp in Sources */,
 				6CEACF3B19F957AD00EB7DE6 /* GPoint.cpp in Sources */,
 				D4091B07196AB67B00F109F1 /* ofxSyphonServer.mm in Sources */,
+				6C7223521A093BB1004D5BF6 /* ofxTCPManager.cpp in Sources */,
 				D486254D1A001C770076E13F /* ScrizzleStyle.cpp in Sources */,
 				D4605486196DC7480040C381 /* IpEndpointName.cpp in Sources */,
 				D4605491196DC7480040C381 /* ofxOscParameterSync.cpp in Sources */,
@@ -1015,7 +1066,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
-					/Users/rob/Documents/of_v0.8.4_osx_release/addons/ofxSyphon/libs/Syphon/lib/osx,
+					/Users/julianadenauer/CloudStation/Programming/of_v0.8.4/addons/ofxSyphon/libs/Syphon/lib/osx,
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../libs/glut/lib/osx\"";
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1100,9 +1151,9 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_50)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_51)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_52)",
-					/Users/rob/Documents/of_v0.8.1_osx_release/addons/ofxPQLabs/addons/ofxPQLabs/PQMTClient,
 				);
 				PRODUCT_NAME = gFrameDebug;
+				SDKROOT = macosx10.9;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1115,7 +1166,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
-					/Users/rob/Documents/of_v0.8.4_osx_release/addons/ofxSyphon/libs/Syphon/lib/osx,
+					/Users/julianadenauer/CloudStation/Programming/of_v0.8.4/addons/ofxSyphon/libs/Syphon/lib/osx,
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../libs/glut/lib/osx\"";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
@@ -1199,9 +1250,9 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_49)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_50)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_51)",
-					/Users/rob/Documents/of_v0.8.1_osx_release/addons/ofxPQLabs/addons/ofxPQLabs/PQMTClient,
 				);
 				PRODUCT_NAME = gFrame;
+				SDKROOT = macosx10.9;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

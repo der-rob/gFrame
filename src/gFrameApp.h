@@ -15,6 +15,7 @@
 #include "ProfileStyle.h"
 #include "StrokeList.h"
 #include "ScrizzleStyle.h"
+#include "Network.h"
 
 
 #define STYLE_PROFILE 0
@@ -94,6 +95,9 @@ private:
     void	tuioAdded(ofxTuioCursor & tuioCursor);
 	void	tuioRemoved(ofxTuioCursor & tuioCursor);
 	void	tuioUpdated(ofxTuioCursor & tuioCursor);
+    
+    // NETWORK
+    Network network;
 };
 
 

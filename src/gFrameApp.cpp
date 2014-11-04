@@ -41,6 +41,10 @@ void gFrameApp::setup(){
     
     // SETUP OPENGL
     ofEnableDepthTest(); // IMPORTANT!!!
+    
+    // NETWORK
+    network.setup(9001, "localhost", 9000);
+    stroke_list.setupSync(&network);
 
     //brazil support
     mPanelPositionAndSize = ofRectangle(37,259,214,167);
@@ -59,6 +63,8 @@ void gFrameApp::exit(){
 
 //--------------------------------------------------------------
 void gFrameApp::update(){
+    
+    network.update();
     
     stroke_list.update();
     oscUpdate();
@@ -131,7 +137,7 @@ void gFrameApp::draw(){
 //        mCanvas.resize(mPanelPositionAndSize.width, mPanelPositionAndSize.height);
         toPanelsGFrame(mCanvas, mPanels);
     } else {
-        syphonMainOut.publishScreen();
+//        syphonMainOut.publishScreen();
     }
 }
 
