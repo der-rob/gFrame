@@ -17,11 +17,17 @@
 #include <iostream>
 #include "ofMain.h"
 #include "GPoint.h"
+#include "Network.h"
+
+#define TYPE_LOCAL 0
+#define TYPE_REMOTE 1
 
 class StrokeList{
 
 public:
     void update();
+    
+    void setupSync(Network* network);
     
     void addToNewStroke(GPoint point);
     void add(GPoint point);
@@ -37,10 +43,12 @@ public:
     
 private:
     vector<vector<GPoint> > strokes;
-    map<int, int> currentStrokeForId;
+    map<int, int> currentListForId;
     float lifetime = 1000;
-    
     int stroke_count = 0;
+    
+    Network *network;
+    bool enableSync = false;
     
 };
 

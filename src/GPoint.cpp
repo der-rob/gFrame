@@ -30,13 +30,13 @@ void GPoint::serialize(string *s){
     s->append(ofToString(loc.x) + "," +
               ofToString(loc.y) + "," +
               ofToString(finger_id) + "," +
-              ofToString(color.r) + "," +
-              ofToString(color.g) + "," +
-              ofToString(color.b) + "," +
+              ofToString((int)color.r) + "," +
+              ofToString((int)color.g) + "," +
+              ofToString((int)color.b) + "," +
               ofToString(type) + "," +
               ofToString(stroke_id)  + "," +
               ofToString(style_id)
-    );
+              );
 }
 
 void GPoint::unserialize(string s){
