@@ -22,6 +22,8 @@
 		D4091B07196AB67B00F109F1 /* ofxSyphonServer.mm in Sources */ = {isa = PBXBuildFile; fileRef = D4091AFD196AB67B00F109F1 /* ofxSyphonServer.mm */; };
 		D4091B08196AB67B00F109F1 /* ofxSyphonServerDirectory.mm in Sources */ = {isa = PBXBuildFile; fileRef = D4091AFF196AB67B00F109F1 /* ofxSyphonServerDirectory.mm */; };
 		D4091B0F196AB69C00F109F1 /* Syphon.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = D4091AF3196AB67B00F109F1 /* Syphon.framework */; };
+		D40A13FC1A10D6B60067C957 /* PQMTClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D40A13F61A10D6B60067C957 /* PQMTClient.a */; };
+		D40A13FD1A10D6B60067C957 /* ofxPQLabs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D40A13F91A10D6B60067C957 /* ofxPQLabs.cpp */; };
 		D4605411196C52650040C381 /* ofxDmx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D460540B196C52650040C381 /* ofxDmx.cpp */; };
 		D4605486196DC7480040C381 /* IpEndpointName.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4605460196DC7480040C381 /* IpEndpointName.cpp */; };
 		D4605487196DC7480040C381 /* NetworkingUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4605465196DC7480040C381 /* NetworkingUtils.cpp */; };
@@ -45,10 +47,6 @@
 		D48625711A001C9A0076E13F /* testApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D48625621A001C990076E13F /* testApp.cpp */; };
 		D48625721A001C9A0076E13F /* license.md in Sources */ = {isa = PBXBuildFile; fileRef = D48625641A001C990076E13F /* license.md */; };
 		D48625731A001C9A0076E13F /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = D48625651A001C990076E13F /* README.md */; };
-		D495BD5A1A02A8DC0097B172 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D495BD531A02A8DC0097B172 /* tinyxml.cpp */; };
-		D495BD5B1A02A8DC0097B172 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D495BD551A02A8DC0097B172 /* tinyxmlerror.cpp */; };
-		D495BD5C1A02A8DC0097B172 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D495BD561A02A8DC0097B172 /* tinyxmlparser.cpp */; };
-		D495BD5D1A02A8DC0097B172 /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D495BD581A02A8DC0097B172 /* ofxXmlSettings.cpp */; };
 		D4A778BB1976A26E005E4026 /* ofxEasing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4A7789B1976A26E005E4026 /* ofxEasing.cpp */; };
 		D4A778BC1976A26E005E4026 /* ofxEasingBack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4A7789D1976A26E005E4026 /* ofxEasingBack.cpp */; };
 		D4A778BD1976A26E005E4026 /* ofxEasingBounce.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4A7789F1976A26E005E4026 /* ofxEasingBounce.cpp */; };
@@ -146,6 +144,11 @@
 		D4091AFE196AB67B00F109F1 /* ofxSyphonServerDirectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSyphonServerDirectory.h; sourceTree = "<group>"; };
 		D4091AFF196AB67B00F109F1 /* ofxSyphonServerDirectory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ofxSyphonServerDirectory.mm; sourceTree = "<group>"; };
 		D4091B2B196AF5B900F109F1 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		D40A13F61A10D6B60067C957 /* PQMTClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = PQMTClient.a; sourceTree = "<group>"; };
+		D40A13F71A10D6B60067C957 /* PQMTClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PQMTClient.h; sourceTree = "<group>"; };
+		D40A13F91A10D6B60067C957 /* ofxPQLabs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxPQLabs.cpp; sourceTree = "<group>"; };
+		D40A13FA1A10D6B60067C957 /* ofxPQLabs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxPQLabs.h; sourceTree = "<group>"; };
+		D40A13FB1A10D6B60067C957 /* ofxPQLabsEventTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxPQLabsEventTypes.h; sourceTree = "<group>"; };
 		D42292881973E92B007A533C /* ofxTuio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuio.h; sourceTree = "<group>"; };
 		D42292891973E92B007A533C /* ofxTuioClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuioClient.h; sourceTree = "<group>"; };
 		D422928A1973E92B007A533C /* ofxTuioContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuioContainer.h; sourceTree = "<group>"; };
@@ -218,12 +221,6 @@
 		D486256A1A001C9A0076E13F /* MSAInterpolator2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAInterpolator2D.h; sourceTree = "<group>"; };
 		D486256B1A001C9A0076E13F /* MSAInterpolator3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAInterpolator3D.h; sourceTree = "<group>"; };
 		D486256C1A001C9A0076E13F /* MSAInterpolatorT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAInterpolatorT.h; sourceTree = "<group>"; };
-		D495BD531A02A8DC0097B172 /* tinyxml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxml.cpp; sourceTree = "<group>"; };
-		D495BD541A02A8DC0097B172 /* tinyxml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyxml.h; sourceTree = "<group>"; };
-		D495BD551A02A8DC0097B172 /* tinyxmlerror.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlerror.cpp; sourceTree = "<group>"; };
-		D495BD561A02A8DC0097B172 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
-		D495BD581A02A8DC0097B172 /* ofxXmlSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxXmlSettings.cpp; sourceTree = "<group>"; };
-		D495BD591A02A8DC0097B172 /* ofxXmlSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxXmlSettings.h; sourceTree = "<group>"; };
 		D4A778961976A26E005E4026 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		D4A778971976A26E005E4026 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		D4A7789A1976A26E005E4026 /* easing_terms_of_use.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = easing_terms_of_use.html; sourceTree = "<group>"; };
@@ -287,6 +284,7 @@
 				E7F985F815E0DEA3003869B5 /* Accelerate.framework in Frameworks */,
 				E7E077E815D3B6510020DFD4 /* QTKit.framework in Frameworks */,
 				E4EB6799138ADC1D00A09F29 /* GLUT.framework in Frameworks */,
+				D40A13FC1A10D6B60067C957 /* PQMTClient.a in Frameworks */,
 				E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */,
 				E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */,
 				E45BE97C0E8CC7DD009D7055 /* ApplicationServices.framework in Frameworks */,
@@ -335,8 +333,8 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				D40A13F41A10D6B60067C957 /* ofxPQLabs */,
 				6C7223431A093BB1004D5BF6 /* ofxNetwork */,
-				D495BD511A02A8DC0097B172 /* ofxXmlSettings */,
 				D486254E1A001C990076E13F /* ofxMSACore */,
 				D486255A1A001C990076E13F /* ofxMSAInterpolator */,
 				D4A778741976A26E005E4026 /* ofxTween */,
@@ -440,6 +438,35 @@
 				D4091AFD196AB67B00F109F1 /* ofxSyphonServer.mm */,
 				D4091AFE196AB67B00F109F1 /* ofxSyphonServerDirectory.h */,
 				D4091AFF196AB67B00F109F1 /* ofxSyphonServerDirectory.mm */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		D40A13F41A10D6B60067C957 /* ofxPQLabs */ = {
+			isa = PBXGroup;
+			children = (
+				D40A13F51A10D6B60067C957 /* PQMTClient */,
+				D40A13F81A10D6B60067C957 /* src */,
+			);
+			name = ofxPQLabs;
+			path = ../../../addons/ofxPQLabs/addons/ofxPQLabs;
+			sourceTree = "<group>";
+		};
+		D40A13F51A10D6B60067C957 /* PQMTClient */ = {
+			isa = PBXGroup;
+			children = (
+				D40A13F61A10D6B60067C957 /* PQMTClient.a */,
+				D40A13F71A10D6B60067C957 /* PQMTClient.h */,
+			);
+			path = PQMTClient;
+			sourceTree = "<group>";
+		};
+		D40A13F81A10D6B60067C957 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				D40A13F91A10D6B60067C957 /* ofxPQLabs.cpp */,
+				D40A13FA1A10D6B60067C957 /* ofxPQLabs.h */,
+				D40A13FB1A10D6B60067C957 /* ofxPQLabsEventTypes.h */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -680,36 +707,6 @@
 			path = src;
 			sourceTree = "<group>";
 		};
-		D495BD511A02A8DC0097B172 /* ofxXmlSettings */ = {
-			isa = PBXGroup;
-			children = (
-				D495BD521A02A8DC0097B172 /* libs */,
-				D495BD571A02A8DC0097B172 /* src */,
-			);
-			name = ofxXmlSettings;
-			path = ../../../addons/ofxXmlSettings;
-			sourceTree = "<group>";
-		};
-		D495BD521A02A8DC0097B172 /* libs */ = {
-			isa = PBXGroup;
-			children = (
-				D495BD531A02A8DC0097B172 /* tinyxml.cpp */,
-				D495BD541A02A8DC0097B172 /* tinyxml.h */,
-				D495BD551A02A8DC0097B172 /* tinyxmlerror.cpp */,
-				D495BD561A02A8DC0097B172 /* tinyxmlparser.cpp */,
-			);
-			path = libs;
-			sourceTree = "<group>";
-		};
-		D495BD571A02A8DC0097B172 /* src */ = {
-			isa = PBXGroup;
-			children = (
-				D495BD581A02A8DC0097B172 /* ofxXmlSettings.cpp */,
-				D495BD591A02A8DC0097B172 /* ofxXmlSettings.h */,
-			);
-			path = src;
-			sourceTree = "<group>";
-		};
 		D4A778741976A26E005E4026 /* ofxTween */ = {
 			isa = PBXGroup;
 			children = (
@@ -924,8 +921,6 @@
 				6CA504DB19FA82590091B61A /* StrokeList.cpp in Sources */,
 				D4A778C11976A26E005E4026 /* ofxEasingExpo.cpp in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
-				D495BD5A1A02A8DC0097B172 /* tinyxml.cpp in Sources */,
-				D495BD5C1A02A8DC0097B172 /* tinyxmlparser.cpp in Sources */,
 				D4605492196DC7480040C381 /* ofxOscReceiver.cpp in Sources */,
 				D48625721A001C9A0076E13F /* license.md in Sources */,
 				D460548D196DC7480040C381 /* OscReceivedElements.cpp in Sources */,
@@ -946,7 +941,6 @@
 				D4091B05196AB67B00F109F1 /* SyphonNameboundClient.m in Sources */,
 				D460548F196DC7480040C381 /* ofxOscBundle.cpp in Sources */,
 				D4A778C51976A26E005E4026 /* ofxEasingQuint.cpp in Sources */,
-				D495BD5B1A02A8DC0097B172 /* tinyxmlerror.cpp in Sources */,
 				D486256F1A001C9A0076E13F /* MSACoreGL.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* gFrameApp.cpp in Sources */,
 				6C51F02F1A093CE500066662 /* Network.cpp in Sources */,
@@ -957,7 +951,6 @@
 				6C7223541A093BB1004D5BF6 /* ofxUDPManager.cpp in Sources */,
 				D4A778BF1976A26E005E4026 /* ofxEasingCubic.cpp in Sources */,
 				D4A778C01976A26E005E4026 /* ofxEasingElastic.cpp in Sources */,
-				D495BD5D1A02A8DC0097B172 /* ofxXmlSettings.cpp in Sources */,
 				D486256D1A001C9A0076E13F /* license.md in Sources */,
 				6C7223531A093BB1004D5BF6 /* ofxTCPServer.cpp in Sources */,
 				6C7223511A093BB1004D5BF6 /* ofxTCPClient.cpp in Sources */,
@@ -966,6 +959,7 @@
 				D4A778BB1976A26E005E4026 /* ofxEasing.cpp in Sources */,
 				D460548E196DC7480040C381 /* OscTypes.cpp in Sources */,
 				6CEACF3B19F957AD00EB7DE6 /* GPoint.cpp in Sources */,
+				D40A13FD1A10D6B60067C957 /* ofxPQLabs.cpp in Sources */,
 				D4091B07196AB67B00F109F1 /* ofxSyphonServer.mm in Sources */,
 				6C7223521A093BB1004D5BF6 /* ofxTCPManager.cpp in Sources */,
 				D486254D1A001C770076E13F /* ScrizzleStyle.cpp in Sources */,
@@ -1151,6 +1145,7 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_50)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_51)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_52)",
+					/Users/rob/Documents/of_v0.8.4_osx_release/addons/ofxPQLabs/addons/ofxPQLabs/PQMTClient,
 				);
 				PRODUCT_NAME = gFrameDebug;
 				SDKROOT = macosx10.9;
@@ -1250,6 +1245,7 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_49)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_50)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_51)",
+					/Users/rob/Documents/of_v0.8.4_osx_release/addons/ofxPQLabs/addons/ofxPQLabs/PQMTClient,
 				);
 				PRODUCT_NAME = gFrame;
 				SDKROOT = macosx10.9;

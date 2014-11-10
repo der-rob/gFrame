@@ -12,6 +12,8 @@ void gFrameApp::setup(){
     syphonMainOut.setName("gFrame Main Out");
     
     //TUIO setup
+    pqlabsframe.connect("127.0.0.1");
+    ofAddListener(pqlabsframe.touchEventDispatcher, this, &gFrameApp::onTouchPoint);
     tuioClient.start(3333);
     ofAddListener(tuioClient.cursorAdded,this,&gFrameApp::tuioAdded);
 	ofAddListener(tuioClient.cursorUpdated,this,&gFrameApp::tuioUpdated);
@@ -57,6 +59,7 @@ void gFrameApp::setup(){
 
 }
 void gFrameApp::exit(){
+    pqlabsframe.~ofxPQLabs();
     setLEDColor(ofColor::black);
     dmx.disconnect();
 }
@@ -178,10 +181,7 @@ void gFrameApp::keyPressed(int key){
         ofSetWindowShape(1024, 768);
         outputmode = PROJECTOR;
     }
-    else if (key == 'm') {
-        cout << "saving!" << endl;
-        saveSettings();
-    }
+
 }
 
 //--------------------------------------------------------------
@@ -229,6 +229,22 @@ void gFrameApp::tuioUpdated(ofxTuioCursor &cursor) {
 
 
 //--------------------------------------------------------------
+void gFrameApp::onTouchPoint(TouchPointEvent &event) {
+    GPoint the_point;
+    int x = ofMap(event.touchPoint.x, 0, 1680, 0, ofGetWidth());
+    int y = ofMap(event.touchPoint.y, 0, 1080, 0, ofGetHeight());
+    the_point.setLocation(ofVec2f(x, y));
+    the_point.setId((int)event.touchPoint.id);
+    the_point.setColor(localPenColor);
+    the_point.setType(LOCALFRAME);
+    the_point.setStyle(current_style);
+    stroke_list.add(the_point);
+    
+    //stop pulsing LEDs
+    stop_pulsing();
+    last_points_time = ofGetElapsedTimeMillis();
+}
+
 //--------------------------------------------------------------
 void gFrameApp::setLEDColor(ofColor color){
     int r,g,b;
@@ -418,10 +434,4 @@ void gFrameApp::toPanelsGFrame(ofImage &canvas, ofImage &panels){
         }
     }
     panels.reloadTexture();
-}
-
-
-void gFrameApp::saveSettings() {
-    settings.setValue("settings:style", current_style);
-    settings.save("settings.xml");
 }

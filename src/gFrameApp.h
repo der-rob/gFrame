@@ -10,12 +10,12 @@
 #include "ofxDmx.h"
 #include "ofxOsc.h"
 #include "ofxTuio.h"
-#include "ofxXmlSettings.h"
 #include "GPoint.h"
 #include "ProfileStyle.h"
 #include "StrokeList.h"
 #include "ScrizzleStyle.h"
 #include "Network.h"
+#include "ofxPQLabs.h"
 
 
 #define STYLE_PROFILE 0
@@ -42,9 +42,6 @@ public:
     //OSC
     void oscUpdate();
     void oscupdate_interface();
-    
-    //settings
-    void saveSettings();
 
 private:
     
@@ -86,15 +83,14 @@ private:
     int LED_pulsing_time;
     float LED_level;
     float last_points_time;
-    
-    //setting
-    ofxXmlSettings settings;
-    
+        
     //TUIO support
     ofxTuioClient   tuioClient;
+    ofxPQLabs pqlabsframe;
     void	tuioAdded(ofxTuioCursor & tuioCursor);
 	void	tuioRemoved(ofxTuioCursor & tuioCursor);
 	void	tuioUpdated(ofxTuioCursor & tuioCursor);
+    void onTouchPoint(TouchPointEvent &event);
     
     // NETWORK
     Network network;
