@@ -24,8 +24,8 @@ void StrokeList::addToNewStroke(GPoint point){
     if(stroke_count == 999) stroke_count = 0;
     
     vector<GPoint> v;
-    v.push_back(point);
-    strokes.push_back(v);
+    v.insert(v.begin(), point);
+    strokes.insert(strokes.begin(), v);
     
     // the current stroke for this ID is now the last one in the list
     currentListForId[point.getId()] = strokes.size()-1;
@@ -42,7 +42,8 @@ void StrokeList::add(GPoint point){
         // get the stroke id from the last one on the same list
         point.setStrokeId(strokes[currentListForId[point.getId()]].back().getStrokeId());
         point.setType(TYPE_LOCAL);
-        strokes[currentListForId[point.getId()]].push_back(point);
+//        strokes[currentListForId[point.getId()]].push_back(point);
+        strokes[currentListForId[point.getId()]].insert(strokes[currentListForId[point.getId()]].begin(), point);
     }
     // otherwise treat the point like a new stroke
     else{
@@ -61,8 +62,9 @@ void StrokeList::update(){
     for(int i = 0; i < strokes.size(); i++)
     {
         for(int j = 0; j < strokes[i].size(); j++){
-            if ((ofGetElapsedTimeMillis()/10) - strokes[i][j].getTimestamp() > lifetime) {
-                strokes[i].erase(strokes[i].begin() + j);
+            if ((ofGetElapsedTimeMillis()/10.0) - strokes[i][j].getTimestamp() > lifetime) {
+//                strokes[i].erase(strokes[i].begin() + j);
+                strokes[i].pop_back();
             }
         }
         

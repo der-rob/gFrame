@@ -55,8 +55,11 @@ private:
     ofLight light;
 
     //output
+    int outputwidth = 1024;
+    int outputheight = 768;
+    ofRectangle outputRect;
     OutputMode outputmode = PROJECTOR;
-    Orientation orientation = PORTRAIT;
+    Orientation orientation = LANDSCAPE;
     ofxSyphonServer syphonMainOut;
     //brazil support
     ofImage mPanels, mCanvas;

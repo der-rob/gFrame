@@ -8,6 +8,9 @@ void gFrameApp::setup(){
     ofBackground(ofColor::black);
     ofSetWindowShape(1024, 768);
     
+    //dimensions for final output
+    outputRect = ofRectangle(0,0,1024, 768);
+    
     //Syphon stuff
     syphonMainOut.setName("gFrame Main Out");
     
@@ -43,6 +46,8 @@ void gFrameApp::setup(){
     
     // SETUP OPENGL
     ofEnableDepthTest(); // IMPORTANT!!!
+    glEnable (GL_BLEND);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     // NETWORK
     network.setup(9001, "localhost", 9000);
@@ -59,7 +64,7 @@ void gFrameApp::setup(){
 
 }
 void gFrameApp::exit(){
-    pqlabsframe.~ofxPQLabs();
+//    pqlabsframe.~ofxPQLabs();
     setLEDColor(ofColor::black);
     dmx.disconnect();
 }
@@ -80,25 +85,13 @@ void gFrameApp::update(){
     //dealing with different output modes
     //might be crushed down to a simple if statement if there are no options to deal with for the other outut modes
     switch (outputmode) {
-        case PROJECTOR:
-        {
-            break;
-        }
-        case LED1:
-        {
-            break;
-        }
-        case LED2:
-        {
-            break;
-        }
-
         case SESI:
         {
+            toPanelsGFrame(mCanvas, mPanels);
             ofFbo tempFBO;
             tempFBO.allocate(1024, 768);
             tempFBO.begin();
-            ofBackground(128);
+            ofBackground(0);
             //fiespMask.draw(0,0);
             mPanels.draw(mPanelPositionAndSize.x,mPanelPositionAndSize.y);
             tempFBO.end();
@@ -106,6 +99,7 @@ void gFrameApp::update(){
             break;
         }
         default:
+            syphonMainOut.publishTexture(&mCanvas.getTextureReference());
             break;
     }
     
@@ -116,6 +110,7 @@ void gFrameApp::draw(){
     
     ofBackground(0);
     ofSetColor(255);
+    
     
     for(vector<GPoint> stroke : *stroke_list.getAllStrokes()){
         switch(stroke[0].getStyle()){
@@ -132,16 +127,10 @@ void gFrameApp::draw(){
     }
     
     //some texture juggling if outputmode is SESI
-    if (outputmode == SESI)
-    {
-//        mCanvas.allocate(1024,768,OF_IMAGE_COLOR);
-        mCanvas.allocate(mCanvasPositionAndSize.width, mCanvasPositionAndSize.height,OF_IMAGE_COLOR);
-        mCanvas.grabScreen(0, 0, mCanvasPositionAndSize.width, mCanvasPositionAndSize.height);
-//        mCanvas.resize(mPanelPositionAndSize.width, mPanelPositionAndSize.height);
-        toPanelsGFrame(mCanvas, mPanels);
-    } else {
-//        syphonMainOut.publishScreen();
-    }
+    mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
+    mCanvas.grabScreen(0, 0, outputRect.width, outputRect.height);
+    
+    //debug output here
 }
 
 //--------------------------------------------------------------
@@ -166,25 +155,38 @@ void gFrameApp::keyPressed(int key){
     
     //switch between different output modes
     else if (key == '1') {
-        ofSetWindowShape(768, 288);
-        scrizzleStyle.setNewPointDistance(ofGetWidth()/50.0);
+        //ofSetWindowShape(768, 288);
+        outputRect.width = 768;
+        outputRect.height = 288;
+        scrizzleStyle.setNewPointDistance(outputRect.width/50.0);
         outputmode = LED1;
         orientation = LANDSCAPE;
     }
     else if (key == '2') {
-        ofSetWindowShape(480, 288);
-        scrizzleStyle.setNewPointDistance(ofGetWidth()/50.0);
+        //ofSetWindowShape(480, 288);
+        outputRect.width = 480;
+        outputRect.height = 288;
+        scrizzleStyle.setNewPointDistance(outputRect.width/50.0);
         outputmode = LED2;
         orientation = LANDSCAPE;
     }
     else if (key == '3') {
-        ofSetWindowShape(mCanvasPositionAndSize.width, mCanvasPositionAndSize.height);
-        scrizzleStyle.setNewPointDistance(ofGetWidth()/50.0);outputmode = SESI;
+        //ofSetWindowShape(mCanvasPositionAndSize.width, mCanvasPositionAndSize.height);
+        outputRect.width = mCanvasPositionAndSize.width;
+        outputRect.height = mCanvasPositionAndSize.height;
+        scrizzleStyle.setNewPointDistance(outputRect.width/50.0);
+        scrizzleStyle.setLineWidth(1.0);
+        scrizzleStyle.setAmplitude(4.0);
+        scrizzleStyle.setLength(2.0);
+        outputmode = SESI;
         orientation = PORTRAIT;
     }
     else if (key == '4') {
-        ofSetWindowShape(1024, 768);
-        scrizzleStyle.setNewPointDistance(ofGetWidth()/50.0);
+        //ofSetWindowShape(1024, 768);
+        outputRect.width = 1024;
+        outputRect.height =768;
+        scrizzleStyle.setNewPointDistance(outputRect.width/25.0);
+     
         outputmode = PROJECTOR;
         orientation = LANDSCAPE;
     }
@@ -238,61 +240,42 @@ void gFrameApp::tuioUpdated(ofxTuioCursor &cursor) {
 
 //--------------------------------------------------------------
 void gFrameApp::onTouchPoint(TouchPointEvent &event) {
+    GPoint the_point;
+    int x,y;
+    if (orientation == PORTRAIT) {
+        int temp = x;
+        x = outputRect.width-ofMap(event.touchPoint.y, 0, 1050, 0, outputRect.width);
+        y = outputRect.height-ofMap(event.touchPoint.x, 0, 1680, 0, outputRect.height);;
+    } else {
+        x = ofMap(event.touchPoint.x, 0, 1680, 0, outputRect.width);
+        y = ofMap(event.touchPoint.y, 0, 1050, 0, outputRect.height);
+    }
+    cout << x << " " << y << endl;
+    the_point.setLocation(ofVec2f(x, y));
+    the_point.setId((int)event.touchPoint.id);
+    the_point.setColor(localPenColor);
+    the_point.setType(LOCALFRAME);
+    the_point.setStyle(current_style);
+    
     switch (event.touchPoint.point_event)
     {
         case TP_DOWN:
         {
-            GPoint the_point;
-            int x = ofMap(event.touchPoint.x, 0, 1680, 0, ofGetWidth());
-            int y = ofMap(event.touchPoint.y, 0, 1050, 0, ofGetHeight());
-            cout << event.touchPoint.x << " " << event.touchPoint.y << endl;
-            if (orientation == PORTRAIT) {
-                int temp = x;
-                x = 1024-y;
-                y = 768-temp;
-            }
-
-            the_point.setLocation(ofVec2f(x, y));
-            the_point.setId((int)event.touchPoint.id);
-            the_point.setColor(localPenColor);
-            the_point.setType(LOCALFRAME);
-            the_point.setStyle(current_style);
             stroke_list.addToNewStroke(the_point);
-            
-            //stop pulsing LEDs
-            stop_pulsing();
-            last_points_time = ofGetElapsedTimeMillis();
             break;
         }
         case TP_MOVE:
         {
-            GPoint the_point;
-            int x = ofMap(event.touchPoint.x, 0, 1680, 0, ofGetWidth());
-            int y = ofMap(event.touchPoint.y, 0, 1050, 0, ofGetHeight());
-            cout << event.touchPoint.x << " " << event.touchPoint.y << endl;
-            if (orientation == PORTRAIT) {
-                int temp = x;
-                x = 1024-y;
-                y = 768-temp;
-            }
-            
-            the_point.setLocation(ofVec2f(x, y));
-            the_point.setId((int)event.touchPoint.id);
-            the_point.setColor(localPenColor);
-            the_point.setType(LOCALFRAME);
-            the_point.setStyle(current_style);
             stroke_list.add(the_point);
-            
-            //stop pulsing LEDs
-            stop_pulsing();
-            last_points_time = ofGetElapsedTimeMillis();
-            break;
-        }
-        case TP_UP:
-        {
             break;
         }
     }
+    
+    //stop pulsing LEDs
+    stop_pulsing();
+    last_points_time = ofGetElapsedTimeMillis();
+    
+    
 }
 
 //--------------------------------------------------------------
