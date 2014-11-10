@@ -67,6 +67,7 @@ void gFrameApp::exit(){
 //    pqlabsframe.~ofxPQLabs();
     setLEDColor(ofColor::black);
     dmx.disconnect();
+    network.disconnect();
 }
 
 //--------------------------------------------------------------

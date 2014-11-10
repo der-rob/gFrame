@@ -19,6 +19,7 @@ class Network{
 public: 
     Network();
     void setup(int local_server_port, string remote_server_ip, int remote_server_port);
+    void disconnect();
     void update();
 
     GPoint popPoint();
