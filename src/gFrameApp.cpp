@@ -7,9 +7,19 @@ void gFrameApp::setup(){
     ofSetVerticalSync(true);
     ofBackground(ofColor::black);
     ofSetWindowShape(1024, 768);
-    
+
     //dimensions for final output
     outputRect = ofRectangle(0,0,1024, 768);
+
+    //GUI Setup
+    parameters.add(parameters_output);
+    parameters.add(parameters_network);
+    gui.setup(parameters);
+    
+    gui.setTextColor(ofColor::white);
+    gui.add(brush_radius.set("Brush Radius", 8.0,2.0,20.0));
+    gui.add(brush_width.set("Linewidth", 2.0, 1.0, 4.0));
+    
     
     //Syphon stuff
     syphonMainOut.setName("gFrame Main Out");
@@ -61,7 +71,7 @@ void gFrameApp::setup(){
     mPanels.setColor(0);
     fiespMask.loadImage("SP_Urban_MASK_025.png");
 
-
+    
 }
 void gFrameApp::exit(){
 //    pqlabsframe.~ofxPQLabs();
@@ -130,7 +140,9 @@ void gFrameApp::draw(){
     mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
     mCanvas.grabScreen(0, 0, outputRect.width, outputRect.height);
     
+    
     //debug output here
+    gui.draw();
 }
 
 //--------------------------------------------------------------

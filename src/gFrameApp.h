@@ -16,6 +16,7 @@
 #include "ScrizzleStyle.h"
 #include "Network.h"
 #include "ofxPQLabs.h"
+#include "ofxGui.h"
 
 
 #define STYLE_PROFILE 0
@@ -92,14 +93,34 @@ private:
     //TUIO support
     ofxTuioClient   tuioClient;
     ofxPQLabs pqlabsframe;
-    void	tuioAdded(ofxTuioCursor & tuioCursor);
-	void	tuioRemoved(ofxTuioCursor & tuioCursor);
-	void	tuioUpdated(ofxTuioCursor & tuioCursor);
+    void tuioAdded(ofxTuioCursor & tuioCursor);
+	void tuioRemoved(ofxTuioCursor & tuioCursor);
+	void tuioUpdated(ofxTuioCursor & tuioCursor);
     void onTouchPoint(TouchPointEvent &event);
+    
     // NETWORK
     Network network;
+
+public:
+    // GUI
+    ofxPanel gui;
+    ofParameterGroup parameters;
+    ofParameterGroup parameters_osc;
+    ofParameter<string> ipad_ip;
+    ofParameter<int> ipad_port;
     
-    ofVec2f swapXY(ofVec2f _vec) { return (ofVec2f(_vec.y, _vec.x)); }
+    ofParameterGroup parameters_network;
+    ofParameter<string> remote_ip;
+    ofParameter<int> remote_port;
+    ofParameter<int> host_port;
+    
+    ofParameterGroup parameters_output;
+    ofParameter<string> gui_outputmode;
+    ofParameter<string> gui_direction;
+    
+    ofParameterGroup parameters_brush;
+    ofParameter<float> brush_width;
+    ofParameter<float> brush_radius;
 };
 
 
