@@ -167,25 +167,33 @@ void gFrameApp::keyPressed(int key){
     //switch between different output modes
     else if (key == '1') {
         ofSetWindowShape(768, 288);
+        scrizzleStyle.setNewPointDistance(ofGetWidth()/50.0);
         outputmode = LED1;
+        orientation = LANDSCAPE;
     }
     else if (key == '2') {
         ofSetWindowShape(480, 288);
+        scrizzleStyle.setNewPointDistance(ofGetWidth()/50.0);
         outputmode = LED2;
+        orientation = LANDSCAPE;
     }
     else if (key == '3') {
         ofSetWindowShape(mCanvasPositionAndSize.width, mCanvasPositionAndSize.height);
-        outputmode = SESI;
+        scrizzleStyle.setNewPointDistance(ofGetWidth()/50.0);outputmode = SESI;
+        orientation = PORTRAIT;
     }
     else if (key == '4') {
         ofSetWindowShape(1024, 768);
+        scrizzleStyle.setNewPointDistance(ofGetWidth()/50.0);
         outputmode = PROJECTOR;
+        orientation = LANDSCAPE;
     }
 
 }
 
 //--------------------------------------------------------------
 void gFrameApp::mouseMoved(int x, int y){
+    
     GPoint the_point;
     the_point.setLocation(ofVec2f(x,y));
     the_point.setId(0);
@@ -230,19 +238,61 @@ void gFrameApp::tuioUpdated(ofxTuioCursor &cursor) {
 
 //--------------------------------------------------------------
 void gFrameApp::onTouchPoint(TouchPointEvent &event) {
-    GPoint the_point;
-    int x = ofMap(event.touchPoint.x, 0, 1680, 0, ofGetWidth());
-    int y = ofMap(event.touchPoint.y, 0, 1080, 0, ofGetHeight());
-    the_point.setLocation(ofVec2f(x, y));
-    the_point.setId((int)event.touchPoint.id);
-    the_point.setColor(localPenColor);
-    the_point.setType(LOCALFRAME);
-    the_point.setStyle(current_style);
-    stroke_list.add(the_point);
-    
-    //stop pulsing LEDs
-    stop_pulsing();
-    last_points_time = ofGetElapsedTimeMillis();
+    switch (event.touchPoint.point_event)
+    {
+        case TP_DOWN:
+        {
+            GPoint the_point;
+            int x = ofMap(event.touchPoint.x, 0, 1680, 0, ofGetWidth());
+            int y = ofMap(event.touchPoint.y, 0, 1050, 0, ofGetHeight());
+            cout << event.touchPoint.x << " " << event.touchPoint.y << endl;
+            if (orientation == PORTRAIT) {
+                int temp = x;
+                x = 1024-y;
+                y = 768-temp;
+            }
+
+            the_point.setLocation(ofVec2f(x, y));
+            the_point.setId((int)event.touchPoint.id);
+            the_point.setColor(localPenColor);
+            the_point.setType(LOCALFRAME);
+            the_point.setStyle(current_style);
+            stroke_list.addToNewStroke(the_point);
+            
+            //stop pulsing LEDs
+            stop_pulsing();
+            last_points_time = ofGetElapsedTimeMillis();
+            break;
+        }
+        case TP_MOVE:
+        {
+            GPoint the_point;
+            int x = ofMap(event.touchPoint.x, 0, 1680, 0, ofGetWidth());
+            int y = ofMap(event.touchPoint.y, 0, 1050, 0, ofGetHeight());
+            cout << event.touchPoint.x << " " << event.touchPoint.y << endl;
+            if (orientation == PORTRAIT) {
+                int temp = x;
+                x = 1024-y;
+                y = 768-temp;
+            }
+            
+            the_point.setLocation(ofVec2f(x, y));
+            the_point.setId((int)event.touchPoint.id);
+            the_point.setColor(localPenColor);
+            the_point.setType(LOCALFRAME);
+            the_point.setStyle(current_style);
+            stroke_list.add(the_point);
+            
+            //stop pulsing LEDs
+            stop_pulsing();
+            last_points_time = ofGetElapsedTimeMillis();
+            break;
+        }
+        case TP_UP:
+        {
+            break;
+        }
+    }
 }
 
 //--------------------------------------------------------------

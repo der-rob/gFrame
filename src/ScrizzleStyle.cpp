@@ -20,7 +20,7 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
     glBegin(GL_LINE_STRIP);
     for (int i = 1 ; i < points.size(); i++) {
         //check distance to last used point
-        if(last_used_point->getLocation().distance(points[i].getLocation()) < new_point_distance && i!=1)
+        if(last_used_point->getLocation().distance(points[i].getLocation()) < getNewPointDistance() && i!=1)
             continue;
         else last_used_point = &points[i];
         //calculate color to fade out when exeeding age
@@ -62,7 +62,7 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
     glBegin(GL_LINE_STRIP);
     for (int i = 1 ; i < points.size(); i++) {
         //check distance to last used point
-        if(last_used_point->getLocation().distance(points[i].getLocation()) < new_point_distance && i!=1)
+        if(last_used_point->getLocation().distance(points[i].getLocation()) < getNewPointDistance() && i!=1)
             continue;
         else last_used_point = &points[i];
         
@@ -108,7 +108,7 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
     glBegin(GL_LINE_STRIP);
     for (int i = 1 ; i < points.size(); i++) {
         //check distance to last used point
-        if(last_used_point->getLocation().distance(points[i].getLocation()) < new_point_distance && i!=1)
+        if(last_used_point->getLocation().distance(points[i].getLocation()) < getNewPointDistance() && i!=1)
             continue;
         else last_used_point = &points[i];
         

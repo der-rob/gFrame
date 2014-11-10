@@ -6,6 +6,7 @@
 //
 //
 #include <stdio.h>
+#include "ofMain.h"
 #include "BaseStyle.h"
 #include "MSACore.h"
 #include "MSAInterpolator.h"
@@ -14,7 +15,7 @@ class ScrizzleStyle : public BaseStyle {
 
 private:
     //generall brush parameters
-    int new_point_distance = 20;
+//    int new_point_distance = ofGetWidth()/50.0;
     //amplitude
     float amplitude1 = 4.0;
     float amplitude2 = 8.0;
@@ -70,6 +71,8 @@ public:
     
     void setStartFadeAge(float _age) {startFadeAge = _age;}
     void setEndFadeAge( float _age) {endFadeAge = _age;}
+    
+//    void setNewPointDistance(int _distance) {new_point_distance = _distance;}
     
     //getters
     float getAmplitude1() {return amplitude1;}

@@ -22,6 +22,7 @@
 #define STYLE_SCRIZZLE 1
 
 enum OutputMode {SESI, LED1, LED2, PROJECTOR};
+enum Orientation {PORTRAIT, LANDSCAPE};
 
 class gFrameApp : public ofBaseApp{
 
@@ -55,6 +56,7 @@ private:
 
     //output
     OutputMode outputmode = PROJECTOR;
+    Orientation orientation = PORTRAIT;
     ofxSyphonServer syphonMainOut;
     //brazil support
     ofImage mPanels, mCanvas;
@@ -91,9 +93,10 @@ private:
 	void	tuioRemoved(ofxTuioCursor & tuioCursor);
 	void	tuioUpdated(ofxTuioCursor & tuioCursor);
     void onTouchPoint(TouchPointEvent &event);
-    
     // NETWORK
     Network network;
+    
+    ofVec2f swapXY(ofVec2f _vec) { return (ofVec2f(_vec.y, _vec.x)); }
 };
 
 
