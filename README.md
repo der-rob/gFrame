@@ -344,7 +344,26 @@ Wenn ich so drüber nachdenke, reicht es bei diesem Projekt ja, nur neue Punkte 
 
 Ich habe nun eine Implementierung mit OSC fertiggestellt, die auf meinem Rechner auch ohne größere Probleme läuft.
 
-Allerdings habe ich dann festgestellt, dass OSC mit UDP läuft. Das hat den Nachteil, dass ich keinen Status über die Verbindung habe (es sei denn, ich führe eine Art Herzschlag ein) und noch viel gravierender: Es kann vorkommen
+Allerdings habe ich dann festgestellt, dass OSC mit UDP läuft. Das hat den Nachteil, dass ich keinen Status über die Verbindung habe (es sei denn, ich führe eine Art Herzschlag ein) und noch viel gravierender: Es kann vorkommen dass Daten verloren gehen.
+
+Habe deshalb auf TCP Kommunikation umgestellt. 
+Der Einfachheit halber indem ich Strings verschicke.
+
+Beim Test mit Robert wurde die Latenz bei der Nutzung von mehreren Fingern sehr groß, ohne dass der Netzwerk Traffic sehr groß geworden wäre.
+Das konnte ich beheben. Das Problem war, dass ich pro Update nur einmal nach neuen Daten gefragt habe. Nun wird so lange gelesen, bis nichts mehr da ist.
+
+Noch immer kommt es aber häufig zu dieser Fehlermeldung:
+
+	[ error ] ofxNetwork: /Users/julianadenauer/CloudStation/Programming/of_v0.8.4/addons/ofxNetwork/src/ofxTCPClient.cpp: 227 ETIMEDOUT: timeout
+	
+Außerdem bekomme ich einen Laufzeitfehler beim Aufrufen der Funktion `tcp_client.send(s);` wenn die Software auf der anderen Seite beendet wurde.
+
+Habe jetzt ein paar Dinge eingebaut und kann jetzt die beiden Seiten separat schließen und wieder öffnen ohne dass es zu Problemen kommt.
+
+	libc++abi.dylib: terminating with uncaught exception of type Poco::SystemException: System exception
+	
+
+
 
 ## Timestamps
 In der ersten Implementierung wird von der Runtime der App ausgegangen. Das ist natürlich im vernetzen System problematisch, weil sich die Startzeit der Apps unterscheiden wird. Eigentlich wäre eine gemeinsame Zeitbasis schön, aber wenn ich so drüber nachdenke, ist das wahrscheinlich gar nicht erforderlich, wenn ich stattdessen den Timestamp ignoriere und immer einen neuen lokalen Timestamp erzeuge.
@@ -365,7 +384,18 @@ Es war ein Rundungsproblem. Ich konnte es beheben, indem ich den `zIndex` zu ein
   * sollte die Netzwerk-Übertragung vielleicht direkt in die Style-Klassen integriert werden, statt separat gehandelt zu werden? Dann wäre das mit der Handhabung, welche Punkte übertragen werden und welche nicht natürlich ganz einfach
   * alternative: Trennung zwischen Rendering-Style und der Punkteliste wäre vielleicht eine gute Idee.
   
+  
+#Netzwerk einrichten
+1. Finde deine IP Adresse heraus
+   * externe: Internet, z.B. [hiermit](http://www.whatismyip.com) 
+   * lokale: in den Netzwerkeinstellungen
+2. Port forwarding am Router einstellen
+3. Port forwarding testen mit Netzwerkdienstprogramm und laufender Software
+4. Adresse des remote computer eingeben
+
 
 #Offene Themen
   * Unterschiedliche Screen-Größen! Wie ist damit umzugehen?
     * dafür hat Robert ja die Syphon Anbindung eingebaut, um das ganze nochmal durch den Madmapper zu jagen! Mal mit ihm besprechen, wie er sich das vorstellt
+    
+    

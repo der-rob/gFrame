@@ -29,6 +29,9 @@ void Network::setup(int local_server_port, string remote_server_ip, int remote_s
 }
 
 void Network::connectToRemoteHost(){
+    // close the connection (if it was open)
+    tcp_client.close();
+    
     if(ofGetElapsedTimef() - last_connection_check > 5.0){
         ofLog() << "trying to establish a connection to the remote server: " << ofToString(remote_server_ip) << ofToString(remote_server_port);
         connected = tcp_client.setup(remote_server_ip, remote_server_port);
@@ -54,45 +57,51 @@ void Network::update(){
         
         string received = tcp_server.receive(client);
         
-        if(received.size() > 10){
+        // now read as long as we get something
+        // the value 10 is just random
+        while (received.size() > 10){
             GPoint p;
             p.unserialize(received);
             
             // put it on the queue
             receive_queue.push(p);
             
-            // TODO: MORE CHECKS!!!!!
+            received = tcp_server.receive(client);
         }
-        
     }
+    
+    int fails = 0;
     
     //////////////////////
     // SENDING UPDATES
     //////////////////////
-    
     if (connected) {
         while(send_queue.size() > 0){
             GPoint p = send_queue.front();
             string s;
             p.serialize(&s);
             
-            bool send_succeeded = tcp_client.send(s);
+            bool send_succeeded;
+            
+            send_succeeded = tcp_client.send(s);
             
             if(send_succeeded){
                 send_queue.pop();
             }
             else {
-                ofLog() << "sending did not succeed";
-            }
-        
-            if (!tcp_client.isConnected()){
-                connected = false;
+                fails++;
+                ofLog() << "sending did not succeed: " << fails;
             }
             
-            // TODO: check num bytes sent
+            if (!tcp_client.isConnected() || fails > 5){
+                connected = false;
+                ofLog() << "connection seems to be broken";
+                break;
+            }
         }
     }
-    else{
+    
+    if (!connected){
         // re-establish the connection
         connectToRemoteHost();
     }
@@ -114,4 +123,10 @@ int Network::getReceiveQueueLength(){
 
 int Network::getSendQueueLength(){
     return send_queue.size();
+}
+
+void Network::disconnect(){
+    tcp_server.close();
+    tcp_client.close();
+    ofLog() << "network connections closed";
 }
