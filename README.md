@@ -362,7 +362,10 @@ Habe jetzt ein paar Dinge eingebaut und kann jetzt die beiden Seiten separat sch
 
 	libc++abi.dylib: terminating with uncaught exception of type Poco::SystemException: System exception
 	
-
+## TCPClient Connection Timeout
+Wenn `tcp_client.setup(remote_server_ip, remote_server_port);` aufgerufen wird und die IP Adresse `remote_server_ip` nicht existiert, dann hängt das Programm sehr lange. 
+Im Forum gibt es eine Diskussion zu diesem Problem: http://forum.openframeworks.cc/t/tcp-client-connection-timeout/11695
+Dort wird vorgschlagen, die Verbindungsherstellung in einen Thread zu packen. 
 
 
 ## Timestamps

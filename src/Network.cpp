@@ -33,12 +33,29 @@ void Network::connectToRemoteHost(){
     tcp_client.close();
     
     if(ofGetElapsedTimef() - last_connection_check > 5.0){
-        ofLog() << "trying to establish a connection to the remote server: " << ofToString(remote_server_ip) << ofToString(remote_server_port);
-        connected = tcp_client.setup(remote_server_ip, remote_server_port);
-        tcp_client.setMessageDelimiter("\n");
+        // check if IP is available
+        bool server_available;
+        string pingStr = (string)"ping -c 1 -t 1 " + remote_server_ip;
         
-        if(connected){
-            ofLog() << "client is connected to server " << tcp_client.getIP() << ":" << tcp_client.getPort();
+        int flag = system( pingStr.c_str());
+        
+        if(flag == 0){
+            server_available = true;
+            ofLog() << "server is available";
+        }else{
+            server_available = false;
+            //   cout<<ofGetTimestampString()<<endl;
+            ofLog() << "could not connect to timing server at IP "<<remote_server_ip<<endl;
+        }
+        
+        if(server_available){
+            ofLog() << "trying to establish a connection to the remote server: " << ofToString(remote_server_ip) << ":" << ofToString(remote_server_port);
+            connected = tcp_client.setup(remote_server_ip, remote_server_port);
+            tcp_client.setMessageDelimiter("\n");
+            
+            if(connected){
+                ofLog() << "client is connected to server " << tcp_client.getIP() << ":" << tcp_client.getPort();
+            }
         }
         
         last_connection_check = ofGetElapsedTimef();
