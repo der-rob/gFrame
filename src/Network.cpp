@@ -14,22 +14,6 @@ Network::Network(){
     last_connection_check = -1000.0; // make sure that the connection is checked on startup
 }
 
-/// Start the thread.
-void Network::start()
-{
-    // Mutex blocking is set to true by default
-    // It is rare that one would want to use startThread(false).
-    startThread();
-}
-
-/// Signal the thread to stop.  After calling this method,
-/// isThreadRunning() will return false and the while loop will stop
-/// next time it has the chance to.
-void Network::stop()
-{
-    stopThread();
-}
-
 void Network::setup(int local_server_port, string remote_server_ip, int remote_server_port){
     this->remote_server_ip = remote_server_ip;
     this->remote_server_port = remote_server_port;
@@ -43,6 +27,8 @@ void Network::setup(int local_server_port, string remote_server_ip, int remote_s
     
     // DON'T DO THIS HERE ANYMORE
     // connectToRemoteHost();
+
+    startThread();
 }
 
 void Network::connectToRemoteHost(){
