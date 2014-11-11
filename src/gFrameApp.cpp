@@ -76,7 +76,7 @@ void gFrameApp::exit(){
 //--------------------------------------------------------------
 void gFrameApp::update(){
     
-    network.update();
+//    network.update();
 //    network.update();
     
     stroke_list.update();
