@@ -219,6 +219,7 @@
 		D4605483196DC7480040C381 /* ofxOscReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOscReceiver.h; sourceTree = "<group>"; };
 		D4605484196DC7480040C381 /* ofxOscSender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxOscSender.cpp; sourceTree = "<group>"; };
 		D4605485196DC7480040C381 /* ofxOscSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOscSender.h; sourceTree = "<group>"; };
+		D47F10E71A124B7000F558E8 /* gFrameIcon.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = gFrameIcon.iconset; sourceTree = "<group>"; };
 		D48625481A001C770076E13F /* BaseStyle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseStyle.cpp; sourceTree = "<group>"; };
 		D48625491A001C770076E13F /* BaseStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseStyle.h; sourceTree = "<group>"; };
 		D486254A1A001C770076E13F /* ScrizzleStyle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScrizzleStyle.cpp; sourceTree = "<group>"; };
@@ -847,15 +848,16 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
+				D47F10E71A124B7000F558E8 /* gFrameIcon.iconset */,
 				D4091B2B196AF5B900F109F1 /* .gitignore */,
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
+				E4B69B5B0A3A1756003C02F2 /* gFrameDebug.app */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
 				E4EEC9E9138DF44700A80321 /* openFrameworks */,
 				BB4B014C10F69532006C3DED /* addons */,
 				E45BE5980E8CC70C009D7055 /* frameworks */,
 				D4E4AD2C196F3D5300ECA630 /* touchosc */,
-				E4B69B5B0A3A1756003C02F2 /* gFrameDebug.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1122,6 +1124,7 @@
 		E4B69B600A3A1757003C02F2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1223,6 +1226,7 @@
 		E4B69B610A3A1757003C02F2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (

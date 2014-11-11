@@ -52,15 +52,18 @@ private:
     int current_style = STYLE_SCRIZZLE;
     ProfileStyle profileStyle;
     ScrizzleStyle scrizzleStyle;
+    ofParameter<float> brush_width;
+    ofParameter<float> brush_radius;
     
     ofLight light;
 
     //output
-    int outputwidth = 1024;
-    int outputheight = 768;
+    ofParameter<int> outputwidth = 1024;
+    ofParameter<int> outputheight = 768;
     ofRectangle outputRect;
     OutputMode outputmode = PROJECTOR;
     Orientation orientation = LANDSCAPE;
+    
     ofxSyphonServer syphonMainOut;
     //brazil support
     ofImage mPanels, mCanvas;
@@ -77,6 +80,8 @@ private:
     ofParameter<ofColor> localPenColor;
     
     //OSC
+    ofParameter<string> ipad_ip;
+    ofParameter<int> ipad_port;
     ofxOscReceiver receiver;
     ofxOscSender sender;
     float last_ipad_update_time = 0;
@@ -100,27 +105,23 @@ private:
     
     // NETWORK
     Network network;
-
-public:
-    // GUI
-    ofxPanel gui;
-    ofParameterGroup parameters;
-    ofParameterGroup parameters_osc;
-    ofParameter<string> ipad_ip;
-    ofParameter<int> ipad_port;
-    
-    ofParameterGroup parameters_network;
     ofParameter<string> remote_ip;
     ofParameter<int> remote_port;
     ofParameter<int> host_port;
-    
+
+private:
+    // GUI
+    void guiSetup();
+    ofxPanel gui;
+    ofParameterGroup parameters;
+    ofParameterGroup parameters_osc;
+    ofParameterGroup parameters_network;
     ofParameterGroup parameters_output;
+    
     ofParameter<string> gui_outputmode;
     ofParameter<string> gui_direction;
     
     ofParameterGroup parameters_brush;
-    ofParameter<float> brush_width;
-    ofParameter<float> brush_radius;
 };
 
 
