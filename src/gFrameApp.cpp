@@ -56,9 +56,7 @@ void gFrameApp::setup(){
     ofEnableDepthTest(); // IMPORTANT!!!
     
     // NETWORK
-    network.setup(9001, "192.168.1.111", 9000);
     network.setup(9000, "localhost", 9001);
-    network.start(); // start the thread
     stroke_list.setupSync(&network);
 
     //brazil support
@@ -80,9 +78,6 @@ void gFrameApp::exit(){
 
 //--------------------------------------------------------------
 void gFrameApp::update(){
-    
-//    network.update();
-//    network.update();
     
     stroke_list.update();
     oscUpdate();
