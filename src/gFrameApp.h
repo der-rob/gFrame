@@ -21,7 +21,7 @@
 #define STYLE_PROFILE 0
 #define STYLE_SCRIZZLE 1
 
-enum OutputMode {SESI, LED1, LED2, PROJECTOR};
+enum OutputMode {SESI, LED1, LED2, PROJECTOR, PROJECTOR_PORTRAIT};
 enum Orientation {PORTRAIT, LANDSCAPE};
 
 class gFrameApp : public ofBaseApp{

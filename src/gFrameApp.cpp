@@ -6,10 +6,11 @@ void gFrameApp::setup(){
     ofSetFrameRate(30);
     ofSetVerticalSync(true);
     ofBackground(ofColor::black);
-    ofSetWindowShape(1024, 768);
+    
     
     //dimensions for final output
     outputRect = ofRectangle(0,0,1024, 768);
+    ofSetWindowShape(outputRect.width, outputRect.height);
     
     //Syphon stuff
     syphonMainOut.setName("gFrame Main Out");
@@ -50,7 +51,7 @@ void gFrameApp::setup(){
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     // NETWORK
-    network.setup(9001, "localhost", 9000);
+    network.setup(9001, "192.168.1.111", 9000);
     stroke_list.setupSync(&network);
 
     //brazil support
@@ -190,6 +191,17 @@ void gFrameApp::keyPressed(int key){
      
         outputmode = PROJECTOR;
         orientation = LANDSCAPE;
+    }
+    else if (key == '5') {
+        //ofSetWindowShape(mCanvasPositionAndSize.width, mCanvasPositionAndSize.height);
+        outputRect.width = 512;
+        outputRect.height = 768;
+        scrizzleStyle.setNewPointDistance(outputRect.width/50.0);
+        scrizzleStyle.setLineWidth(4.0);
+        scrizzleStyle.setAmplitude(8.0);
+        scrizzleStyle.setLength(4.0);
+        outputmode = PROJECTOR_PORTRAIT;
+        orientation = PORTRAIT;
     }
 
 }
