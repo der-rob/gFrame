@@ -2,6 +2,9 @@
 
 //--------------------------------------------------------------
 void gFrameApp::setup(){
+    
+    
+    
     //just set up the openFrameworks stuff
     ofSetFrameRate(30);
     ofSetVerticalSync(true);
@@ -11,6 +14,10 @@ void gFrameApp::setup(){
     //dimensions for final output
     outputRect = ofRectangle(0,0,1024, 768);
     ofSetWindowShape(outputRect.width, outputRect.height);
+    
+    //GUI setup
+    guiSetup();
+    gui.loadFromFile("settings.xml");
     
     //Syphon stuff
     syphonMainOut.setName("gFrame Main Out");
@@ -32,13 +39,13 @@ void gFrameApp::setup(){
     lower_pulsing_limit = 0.05;
     
     //OSC
+    ipad_ip = "192.168.1.34";
     receiver.setup(8000);
-    sender.setup("192.168.1.37",9000);
+    sender.setup(ipad_ip,ipad_port);
     
     //drawing parameters
     localDrawingParameters.setName("Local drawing parameters");
     localDrawingParameters.add(localPenColor.set("local pencolor", ofColor::white));
-    localDrawingParameters.add(localPenWidth.set("local penwidth", 10));
     
     // SETUP LIGHT
     light.enable();
@@ -47,8 +54,6 @@ void gFrameApp::setup(){
     
     // SETUP OPENGL
     ofEnableDepthTest(); // IMPORTANT!!!
-    glEnable (GL_BLEND);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     // NETWORK
     network.setup(9001, "192.168.1.111", 9000);
@@ -62,9 +67,9 @@ void gFrameApp::setup(){
     mCanvas.allocate(mCanvasPositionAndSize.width, mCanvasPositionAndSize.height, OF_IMAGE_COLOR);
     mPanels.allocate(mPanelPositionAndSize.width, mPanelPositionAndSize.height, OF_IMAGE_COLOR);
     mPanels.setColor(0);
-    fiespMask.loadImage("SP_Urban_MASK_025.png");
+//    fiespMask.loadImage("SP_Urban_MASK_025.png");
 
-
+    
 }
 void gFrameApp::exit(){
 //    pqlabsframe.~ofxPQLabs();
@@ -86,7 +91,6 @@ void gFrameApp::update(){
     // DMX UPDATE
     dmxUpdate();
     
-    
     //dealing with different output modes
     //might be crushed down to a simple if statement if there are no options to deal with for the other outut modes
     switch (outputmode) {
@@ -107,7 +111,6 @@ void gFrameApp::update(){
             syphonMainOut.publishTexture(&mCanvas.getTextureReference());
             break;
     }
-    
 }
 
 //--------------------------------------------------------------
@@ -115,7 +118,7 @@ void gFrameApp::draw(){
     
     ofBackground(0);
     ofSetColor(255);
-    
+//    
     
     for(vector<GPoint> stroke : *stroke_list.getAllStrokes()){
         switch(stroke[0].getStyle()){
@@ -136,6 +139,9 @@ void gFrameApp::draw(){
     mCanvas.grabScreen(0, 0, outputRect.width, outputRect.height);
     
     //debug output here
+    glDisable(GL_DEPTH_TEST);
+    gui.draw();
+    glEnable(GL_DEPTH_TEST);
 }
 
 //--------------------------------------------------------------
@@ -483,4 +489,52 @@ void gFrameApp::toPanelsGFrame(ofImage &canvas, ofImage &panels){
         }
     }
     panels.reloadTexture();
+}
+
+void gFrameApp::guiSetup() {
+    //GUI Setup
+    gui.setup();
+    gui.setName("GFrame Settings");
+    
+    ///output settings
+    parameters_output.setName("output settings");
+    outputwidth.setName("width");
+    outputheight.setName("height");
+    parameters_output.add(outputwidth);
+    parameters_output.add(outputheight);
+    
+    ///OSC
+    parameters_osc.setName("osc");
+    ipad_ip.setName("iPad IP");
+    parameters_osc.add(ipad_ip);
+    ipad_port.setName("iPad Port");
+    parameters_osc.add(ipad_port);
+    
+    ///network
+    parameters_network.setName("network");
+    host_port.setName("host port");
+    remote_ip.setName("remote ip");
+    remote_port.setName("remote port");
+    
+    parameters_network.add(host_port);
+    parameters_network.add(remote_ip);
+    parameters_network.add(remote_port);
+
+    ///Brushes
+    
+    parameters_brush.setName("brush settings");
+    parameters_brush.add(brush_radius.set("brush Radius", 8.0,2.0,20.0));
+    parameters_brush.add(brush_width.set("linewidth", 2.0, 1.0, 4.0));
+    localPenColor.setName("color");
+    parameters_brush.add(localPenColor);
+    
+    //add the subgroups to main parameter group
+    parameters.add(parameters_output);
+    parameters.add(parameters_network);
+    parameters.add(parameters_osc);
+    parameters.add(parameters_brush);
+    
+    //add all parameters to the gui
+    gui.add(parameters);
+    
 }
