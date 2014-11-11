@@ -13,14 +13,16 @@
 #include "ofMain.h"
 #include "ofxNetwork.h"
 #include "GPoint.h"
+#include "ofThread.h"
 
-class Network{
+class Network : public ofThread {
     
 public: 
     Network();
     void setup(int local_server_port, string remote_server_ip, int remote_server_port);
     void disconnect();
-    void update();
+    void start();
+    void stop();
 
     GPoint popPoint();
     void send(GPoint p);
@@ -28,6 +30,7 @@ public:
     int getReceiveQueueLength();
     int getSendQueueLength();
     
+    void threadedFunction();
 
 private:
     
@@ -36,15 +39,17 @@ private:
     
     void connectToRemoteHost();
     
-    queue<GPoint> send_queue;
-    queue<GPoint> receive_queue;
-    
     int local_server_port;
     string remote_server_ip;
     int remote_server_port;
     
     bool connected;
     float last_connection_check;
+
+protected:
+    queue<GPoint> send_queue;
+    queue<GPoint> receive_queue;
+
 
 };
 
