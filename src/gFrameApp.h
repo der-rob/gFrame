@@ -51,6 +51,7 @@ private:
     StrokeList stroke_list;
     int current_style = STYLE_SCRIZZLE;
     ofParameter<ofColor> localBrushColor;
+    ofParameter<int> newPointDistance;
     
     ProfileStyle profileStyle;
     ofParameter<float> depthSpeed;
@@ -66,6 +67,7 @@ private:
     ofParameter<float> W_mainLine_thickness;
     ofParameter<float> W_byLine_thicknes;
     ofParameter<float> W_fadeout_time;
+    ofParameter<float> W_fadeduration;
     
     //setup method for the brushes
     void setupWildBrush();
@@ -93,6 +95,7 @@ private:
     //OSC
     ofParameter<string> ipad_ip;
     ofParameter<int> ipad_port;
+    ofParameter<int> local_osc_port;
     ofxOscReceiver receiver;
     ofxOscSender sender;
     float last_ipad_update_time = 0;

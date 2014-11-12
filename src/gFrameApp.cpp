@@ -2,9 +2,6 @@
 
 //--------------------------------------------------------------
 void gFrameApp::setup(){
-    
-    
-    
     //just set up the openFrameworks stuff
     ofSetFrameRate(30);
     ofSetVerticalSync(true);
@@ -43,8 +40,7 @@ void gFrameApp::setup(){
     lower_pulsing_limit = 0.05;
     
     //OSC
-    //ipad_ip = "192.168.1.36";
-    receiver.setup(8000);
+    receiver.setup(local_osc_port);
     sender.setup(ipad_ip,ipad_port);
     
     // SETUP LIGHT
@@ -113,7 +109,8 @@ void gFrameApp::update(){
     scrizzleStyle.setAmplitude(W_amplitude);
     scrizzleStyle.setLength(W_wavelength);
     scrizzleStyle.setNervousity(W_nervosity);
-    scrizzleStyle.setFadeOutTime(W_fadeout_time);
+    scrizzleStyle.setFadeOutTime(W_fadeout_time*1000.0, W_fadeduration*1000.0);
+    scrizzleStyle.setNewPointDistance(newPointDistance);
     
     //fadeouttime
     
@@ -320,6 +317,7 @@ void gFrameApp::oscUpdate() {
     while (receiver.hasWaitingMessages())
     {
         ofxOscMessage m;
+        cout << "new osc message" << endl;
         receiver.getNextMessage(&m);
         if (m.getAddress() == "/1/t_red") localBrushColor = ofColor::red;
         else if (m.getAddress() == "/1/t_green") localBrushColor = ofColor::green;
@@ -511,6 +509,8 @@ void gFrameApp::guiSetup() {
     parameters_osc.add(ipad_ip);
     ipad_port.setName("iPad Port");
     parameters_osc.add(ipad_port);
+    local_osc_port.setName("local OSC port");
+    parameters_osc.add(local_osc_port);
     
     ///network
     parameters_network.setName("network");
@@ -526,6 +526,8 @@ void gFrameApp::guiSetup() {
     localBrushColor.setName("color");
     parameters_brush.setName("brush settings");
     parameters_brush.add(localBrushColor);
+    newPointDistance.set("new point distance", 10,1,100);
+    parameters_brush.add(newPointDistance);
         
     //add the subgroups to main parameter group
     parameters.add(parameters_output);
@@ -547,7 +549,12 @@ void gFrameApp::setupWildBrush() {
     wild_parameters.add(W_wavelength);
     //strokewidth
     //may be obsolete since amplitude means the same
-    
+    //fadeouttime
+    W_fadeout_time.set("fadeout time",10.0,2.0,60.0);
+    wild_parameters.add(W_fadeout_time);
+    //fadeduration
+    W_fadeduration.set("fade duration", 5.0, 2.0, 60);
+    wild_parameters.add(W_fadeduration);
     //nervosity aka speed
     W_nervosity.set("nervousity",1.0,0.5,20.0);
     wild_parameters.add(W_nervosity);
@@ -560,7 +567,13 @@ void gFrameApp::setupWildBrush() {
 }
 
 void gFrameApp::onSettingsReload() {
+    //network
     network.disconnect();
     network.setup(host_port, remote_ip, remote_port);
+    //osc
+    receiver.setup(local_osc_port);
+    sender.setup(ipad_ip,ipad_port);
+    //clean stroklist
+    stroke_list.clear();
     cout << "New settings loaded" << endl;
 }

@@ -10,7 +10,7 @@
 
 
 GPoint::GPoint(){
-    timestamp = ofGetElapsedTimeMillis()/10;
+    timestamp = ofGetElapsedTimeMillis();
     finger_id = instance_count;
     instance_count++;
 }
