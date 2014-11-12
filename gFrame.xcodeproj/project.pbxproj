@@ -219,6 +219,7 @@
 		D4605483196DC7480040C381 /* ofxOscReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOscReceiver.h; sourceTree = "<group>"; };
 		D4605484196DC7480040C381 /* ofxOscSender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxOscSender.cpp; sourceTree = "<group>"; };
 		D4605485196DC7480040C381 /* ofxOscSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOscSender.h; sourceTree = "<group>"; };
+		D46A05011A12764D00AE3BB3 /* settings.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = settings.xml; sourceTree = "<group>"; };
 		D47F10E71A124B7000F558E8 /* gFrameIcon.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = gFrameIcon.iconset; sourceTree = "<group>"; };
 		D48625481A001C770076E13F /* BaseStyle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseStyle.cpp; sourceTree = "<group>"; };
 		D48625491A001C770076E13F /* BaseStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseStyle.h; sourceTree = "<group>"; };
@@ -680,6 +681,15 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		D46A05001A12764D00AE3BB3 /* data */ = {
+			isa = PBXGroup;
+			children = (
+				D46A05011A12764D00AE3BB3 /* settings.xml */,
+			);
+			name = data;
+			path = bin/data;
+			sourceTree = "<group>";
+		};
 		D486254E1A001C990076E13F /* ofxMSACore */ = {
 			isa = PBXGroup;
 			children = (
@@ -848,6 +858,7 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
+				D46A05001A12764D00AE3BB3 /* data */,
 				D47F10E71A124B7000F558E8 /* gFrameIcon.iconset */,
 				D4091B2B196AF5B900F109F1 /* .gitignore */,
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,

@@ -122,6 +122,9 @@ private:
     ofParameter<string> gui_direction;
     
     ofParameterGroup parameters_brush;
+    
+    //eventhandlers for gui inputs
+    void onSettingsReload();
 };
 
 

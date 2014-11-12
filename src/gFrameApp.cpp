@@ -9,14 +9,15 @@ void gFrameApp::setup(){
     ofSetFrameRate(30);
     ofSetVerticalSync(true);
     ofBackground(ofColor::black);
-    
-    
+    ofSetWindowShape(1024, 768);
+
     //dimensions for final output
     outputRect = ofRectangle(0,0,1024, 768);
     ofSetWindowShape(outputRect.width, outputRect.height);
     
     //GUI setup
     guiSetup();
+    ofAddListener(gui.loadPressedE, this, &gFrameApp::onSettingsReload);
     gui.loadFromFile("settings.xml");
     
     //Syphon stuff
@@ -39,7 +40,7 @@ void gFrameApp::setup(){
     lower_pulsing_limit = 0.05;
     
     //OSC
-    ipad_ip = "192.168.1.34";
+    //ipad_ip = "192.168.1.36";
     receiver.setup(8000);
     sender.setup(ipad_ip,ipad_port);
     
@@ -56,9 +57,7 @@ void gFrameApp::setup(){
     ofEnableDepthTest(); // IMPORTANT!!!
     
     // NETWORK
-    network.setup(9001, "192.168.1.111", 9000);
-    network.setup(9000, "localhost", 9001);
-    network.start(); // start the thread
+    network.setup(host_port, remote_ip, remote_port);
     stroke_list.setupSync(&network);
 
     //brazil support
@@ -80,9 +79,6 @@ void gFrameApp::exit(){
 
 //--------------------------------------------------------------
 void gFrameApp::update(){
-    
-//    network.update();
-//    network.update();
     
     stroke_list.update();
     oscUpdate();
@@ -111,6 +107,15 @@ void gFrameApp::update(){
             syphonMainOut.publishTexture(&mCanvas.getTextureReference());
             break;
     }
+    
+    //update the brush settings
+    //scrizzle style
+    scrizzleStyle.setLineWidth(brush_width);
+    scrizzleStyle.setAmplitude(brush_radius);
+    
+    //profile style
+    
+    //caligraphy style
 }
 
 //--------------------------------------------------------------
@@ -319,12 +324,12 @@ void gFrameApp::oscUpdate() {
     {
         ofxOscMessage m;
         receiver.getNextMessage(&m);
-        if (m.getAddress() == "/color/red") localPenColor = ofColor::red;
-        else if (m.getAddress() == "/color/green") localPenColor = ofColor::green;
-        else if (m.getAddress() == "/color/blue") localPenColor = ofColor::blue;
-        else if (m.getAddress() == "/color/yellow") localPenColor = ofColor::yellow;
-        else if (m.getAddress() == "/color/purple") localPenColor = ofColor::purple;
-        else if (m.getAddress() == "/color/pink") localPenColor = ofColor::pink;
+        if (m.getAddress() == "/1/t_red") localPenColor = ofColor::red;
+        else if (m.getAddress() == "/1/t_green") localPenColor = ofColor::green;
+        else if (m.getAddress() == "/1/t_blue") localPenColor = ofColor::blue;
+        else if (m.getAddress() == "/1/t_yellow") localPenColor = ofColor::yellow;
+        else if (m.getAddress() == "/1/t_orange") localPenColor = ofColor::purple;
+        else if (m.getAddress() == "/1/t_pink") localPenColor = ofColor::pink;
         //settings tab
         else if (m.getAddress() == "/settings/timetolive") stroke_list.setLifetime(m.getArgAsFloat(0));
         else if (m.getAddress() == "/settings/pulsing_limits/2") upper_pulsing_limit = m.getArgAsFloat(0);
@@ -535,6 +540,11 @@ void gFrameApp::guiSetup() {
     parameters.add(parameters_brush);
     
     //add all parameters to the gui
-    gui.add(parameters);
-    
+    gui.add(parameters);    
+}
+
+void gFrameApp::onSettingsReload() {
+    network.disconnect();
+    network.setup(host_port, remote_ip, remote_port);
+    cout << "New settings loaded" << endl;
 }
