@@ -116,6 +116,11 @@ void gFrameApp::update(){
     scrizzleStyle.setLineWidth(brush_width);
     scrizzleStyle.setAmplitude(brush_radius);
     
+    profileStyle.setLineWidth(style_profile_width);
+    profileStyle.setLineDepth(style_profile_depth);
+    profileStyle.setZSpeed(style_profile_zspeed);
+    profileStyle.setTwist(style_profile_twist);
+    
     //profile style
     
     //caligraphy style
@@ -591,16 +596,25 @@ void gFrameApp::guiSetup() {
     localPenColor.setName("color");
     parameters_brush.add(localPenColor);
     
+    parameters_profile_style.setName("profile style");
+    parameters_profile_style.add(style_profile_depth.set("depth", 10, 2, 50));
+    parameters_profile_style.add(style_profile_width.set("width", 10, 2, 50));
+    parameters_profile_style.add(style_profile_zspeed.set("z-speed", 1, 1, 15));
+    parameters_profile_style.add(style_profile_twist.set("depth", 5, 2, 20));
+    
+    
     // finger positions
     parameters_finger.setName("finger positions");
     parameters_finger.add(draw_finger_positions.set("draw finger positions", true));
     parameters_finger.add(finger_position_size.set("finger circle radius", 30, 2, 100));
+    
     
     //add the subgroups to main parameter group
     parameters.add(parameters_output);
     parameters.add(parameters_network);
     parameters.add(parameters_osc);
     parameters.add(parameters_brush);
+    parameters.add(parameters_profile_style);
     parameters.add(parameters_finger);
     
     //add all parameters to the gui

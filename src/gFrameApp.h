@@ -120,6 +120,7 @@ private:
     ofParameterGroup parameters_osc;
     ofParameterGroup parameters_network;
     ofParameterGroup parameters_output;
+    ofParameterGroup parameters_profile_style;
     
     ofParameter<string> gui_outputmode;
     ofParameter<string> gui_direction;
@@ -134,6 +135,12 @@ private:
     ofParameterGroup parameters_finger;
     ofParameter<bool> draw_finger_positions = true;
     ofParameter<int> finger_position_size = 20;
+    
+    // profile style parameters
+    ofParameter<int> style_profile_depth = 10;
+    ofParameter<int> style_profile_width = 10;
+    ofParameter<int> style_profile_zspeed = 1;
+    ofParameter<int> style_profile_twist = 5;
 };
 
 
