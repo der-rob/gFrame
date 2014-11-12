@@ -173,16 +173,16 @@ void gFrameApp::drawFingerPositions(){
     // disable depth test so the alpha blending works properly
     ofDisableDepthTest();
     
-    ofColor outerColor = localPenColor;    
-    outerColor.set(localPenColor.get().r, localPenColor.get().g, localPenColor.get().b, 30);
+    ofColor outerColor = localBrushColor;
+    outerColor.set(localBrushColor.get().r, localBrushColor.get().g, localBrushColor.get().b, 30);
     
-    ofSetColor(localPenColor);
+    ofSetColor(localBrushColor);
     for(ofVec2f finger : finger_positions){
         if(!(finger.x == 0 && finger.y == 0)){
             float incr = (float) ((2 * PI) / 32);
             
             glBegin(GL_TRIANGLE_FAN);
-            ofSetColor(localPenColor);
+            ofSetColor(localBrushColor);
             glVertex2f(finger.x, finger.y);
             
             ofSetColor(outerColor);
@@ -593,10 +593,10 @@ void gFrameApp::guiSetup() {
     newPointDistance.set("new point distance", 10,1,100);
     parameters_brush.add(newPointDistance);
         
-    parameters_brush.add(brush_radius.set("brush Radius", 8.0,2.0,20.0));
-    parameters_brush.add(brush_width.set("linewidth", 2.0, 1.0, 4.0));
-    localPenColor.setName("color");
-    parameters_brush.add(localPenColor);
+//    parameters_brush.add(brush_radius.set("brush Radius", 8.0,2.0,20.0));
+//    parameters_brush.add(brush_width.set("linewidth", 2.0, 1.0, 4.0));
+    localBrushColor.setName("color");
+    parameters_brush.add(localBrushColor);
     
     parameters_profile_style.setName("profile style");
     parameters_profile_style.add(style_profile_depth.set("depth", 10, 2, 50));
