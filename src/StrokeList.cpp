@@ -64,7 +64,7 @@ void StrokeList::update(){
     for(int i = 0; i < strokes.size(); i++)
     {
         for(int j = 0; j < strokes[i].size(); j++){
-            if ((ofGetElapsedTimeMillis()/10.0) - strokes[i][j].getTimestamp() > lifetime) {
+            if ((ofGetElapsedTimeMillis()) - strokes[i][j].getTimestamp() > lifetime) {
                 strokes[i].erase(strokes[i].begin() + j);
 //                strokes[i].pop_back();
             }

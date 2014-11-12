@@ -24,7 +24,7 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
             continue;
         else last_used_point = &points[i];
         //calculate color to fade out when exeeding age
-        double age = (ofGetElapsedTimeMillis()/10) - points[i].getTimestamp();
+        double age = ((ofGetElapsedTimeMillis()) - points[i].getTimestamp()) / 10.0;
         double alpha;
         if (age < startFadeAge)
             alpha = 255;
@@ -38,7 +38,7 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
         //get normal
         ofVec2f normal = unitDir.getRotated(-90);
         //get width
-        float width = sin(length1*(counter*speed1 + points[i].getTimestamp())) * amplitude1;
+        float width = sin(length1*(counter*speed1 + points[i].getTimestamp()/10.0)) * amplitude1;
         ofVec2f newPoint = this_point + normal*width;
         ofVec3f newPointWithAlpha = ofVec3f(newPoint.x, newPoint.y, alpha);
         interpolator.push_back(newPointWithAlpha);
@@ -67,7 +67,7 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
         else last_used_point = &points[i];
         
         //calculate color to fade out when exeeding age
-        double age = (ofGetElapsedTimeMillis()/10) - points[i].getTimestamp();
+        double age = ((ofGetElapsedTimeMillis()) - points[i].getTimestamp())/10.0;
         double alpha;
         if (age < startFadeAge)
             alpha = 255;
@@ -113,7 +113,7 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
         else last_used_point = &points[i];
         
         //calculate color to fade out when exeeding age
-        double age = (ofGetElapsedTimeMillis()/10) - points[i].getTimestamp();
+        double age = ((ofGetElapsedTimeMillis()) - points[i].getTimestamp())/10.0;
         double alpha;
         if (age < startFadeAge)
             alpha = 255;

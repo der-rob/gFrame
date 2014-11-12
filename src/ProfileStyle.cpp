@@ -9,8 +9,6 @@
 #include "ProfileStyle.h"
 
 void ProfileStyle::render(vector<GPoint>& points){
-    int depth = 10;
-    int width = 10;
     
     GPoint* last_used_point;
     
@@ -23,7 +21,7 @@ void ProfileStyle::render(vector<GPoint>& points){
         
         mesh.setMode(OF_PRIMITIVE_TRIANGLES);
         
-        zIndex = (float) points[0].getTimestamp() - (ofGetElapsedTimeMillis() / 10);
+        zIndex = ((float) points[0].getTimestamp() - ofGetElapsedTimeMillis())/10.0;
         
         // add the first points
         ofVec3f last_1 = ofVec3f(points[0].getLocation().x, points[0].getLocation().y - 5, zIndex/3);
@@ -40,7 +38,7 @@ void ProfileStyle::render(vector<GPoint>& points){
             else last_used_point = &points[all];
             
             // 1) GENERATE 3D POINTS OUT OF 2D LINES
-            zIndex = (float) points[all].getTimestamp() - (ofGetElapsedTimeMillis() / 10);
+            zIndex = ((float) points[all].getTimestamp() - ofGetElapsedTimeMillis())/10.0;
             
             ofVec2f lastPoint = points[all-1].getLocation();
             ofVec2f currentPoint = points[all].getLocation();
