@@ -44,7 +44,7 @@ public:
 private:
     vector<vector<GPoint> > strokes;
     map<int, int> currentListForId;
-    float lifetime = 10000;
+    float lifetime = 60000;
     int stroke_count = 0;
     
     Network *network;

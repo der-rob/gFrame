@@ -25,7 +25,7 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
             continue;
         else last_used_point = &points[i];
         //calculate color to fade out when exeeding age
-        double age = ((ofGetElapsedTimeMillis()) - points[i].getTimestamp()) / 10.0;
+        double age = (ofGetElapsedTimeMillis()) - points[i].getTimestamp();
         double alpha;
         //check if point is too old
         if (age > endFadeAge) {
@@ -73,7 +73,7 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
         else last_used_point = &points[i];
         
         //calculate color to fade out when exeeding age
-        double age = ((ofGetElapsedTimeMillis()) - points[i].getTimestamp())/10.0;
+        double age = (ofGetElapsedTimeMillis()) - points[i].getTimestamp();
         double alpha;
         //check if point is too old
         if (age > endFadeAge) {
@@ -124,7 +124,7 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
         else last_used_point = &points[i];
         
         //calculate color to fade out when exeeding age
-        double age = ((ofGetElapsedTimeMillis()) - points[i].getTimestamp())/10.0;
+        double age = (ofGetElapsedTimeMillis()) - points[i].getTimestamp();
         double alpha;
         //check if point is too old
         if (age > endFadeAge) {

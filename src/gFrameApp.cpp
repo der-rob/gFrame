@@ -118,13 +118,11 @@ void gFrameApp::update(){
     scrizzleStyle.setFadeOutTime(W_fadeout_time*1000.0, W_fadeduration*1000.0);
     scrizzleStyle.setNewPointDistance(newPointDistance);
     
-    //fadeouttime
-    
-    
     profileStyle.setLineWidth(style_profile_width);
     profileStyle.setLineDepth(style_profile_depth);
     profileStyle.setZSpeed(style_profile_zspeed);
     profileStyle.setTwist(style_profile_twist);
+    
     
     //profile style
     
@@ -591,6 +589,10 @@ void gFrameApp::guiSetup() {
     ///Brushes
     localBrushColor.setName("color");
     parameters_brush.setName("brush settings");
+    parameters_brush.add(localBrushColor);
+    newPointDistance.set("new point distance", 10,1,100);
+    parameters_brush.add(newPointDistance);
+        
     parameters_brush.add(brush_radius.set("brush Radius", 8.0,2.0,20.0));
     parameters_brush.add(brush_width.set("linewidth", 2.0, 1.0, 4.0));
     localPenColor.setName("color");
@@ -617,6 +619,7 @@ void gFrameApp::guiSetup() {
     parameters.add(parameters_profile_style);
     parameters.add(parameters_finger);
     
+    parameters.add(wild_parameters);
     //add all parameters to the gui
     gui.add(parameters);    
 }
