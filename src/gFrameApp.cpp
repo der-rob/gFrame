@@ -3,8 +3,6 @@
 //--------------------------------------------------------------
 void gFrameApp::setup(){
     
-    
-    
     //just set up the openFrameworks stuff
     ofSetFrameRate(30);
     ofSetVerticalSync(true);
@@ -29,6 +27,7 @@ void gFrameApp::setup(){
     tuioClient.start(3333);
     ofAddListener(tuioClient.cursorAdded,this,&gFrameApp::tuioAdded);
 	ofAddListener(tuioClient.cursorUpdated,this,&gFrameApp::tuioUpdated);
+    ofAddListener(tuioClient.cursorRemoved,this,&gFrameApp::tuioRemoved);
     
     //DMX for controlling RGB LED Strips
     dmx.connect(0);
@@ -68,6 +67,10 @@ void gFrameApp::setup(){
     mPanels.setColor(0);
 //    fiespMask.loadImage("SP_Urban_MASK_025.png");
 
+    // initialize finger positions
+    for(ofVec2f finger : finger_positions){
+        finger = ofVec2f(0,0);
+    }
     
 }
 void gFrameApp::exit(){
@@ -85,7 +88,7 @@ void gFrameApp::update(){
     tuioClient.getMessage();
     
     // DMX UPDATE
-    dmxUpdate();
+//    dmxUpdate();
     
     //dealing with different output modes
     //might be crushed down to a simple if statement if there are no options to deal with for the other outut modes
@@ -139,6 +142,10 @@ void gFrameApp::draw(){
         }
     }
     
+    if(draw_finger_positions){
+        drawFingerPositions();
+    }
+    
     //some texture juggling if outputmode is SESI
     mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
     mCanvas.grabScreen(0, 0, outputRect.width, outputRect.height);
@@ -146,7 +153,44 @@ void gFrameApp::draw(){
     //debug output here
     glDisable(GL_DEPTH_TEST);
     gui.draw();
+    ofSetColor(200);
+    ofDrawBitmapString("r: " + ofToString(network.getReceiveQueueLength()), ofGetWidth()-200, ofGetHeight()-50);
+    ofDrawBitmapString("s: " + ofToString(network.getSendQueueLength()), ofGetWidth()-200, ofGetHeight()-25 );
+    ofDrawBitmapString("fps: " + ofToString(ofGetFrameRate()), ofGetWidth()-200, ofGetHeight()-10 );
     glEnable(GL_DEPTH_TEST);
+}
+
+void gFrameApp::drawFingerPositions(){
+    
+    // disable depth test so the alpha blending works properly
+    ofDisableDepthTest();
+    
+    ofColor outerColor = localPenColor;    
+    outerColor.set(localPenColor.get().r, localPenColor.get().g, localPenColor.get().b, 30);
+    
+    ofSetColor(localPenColor);
+    for(ofVec2f finger : finger_positions){
+        if(!(finger.x == 0 && finger.y == 0)){
+            float incr = (float) ((2 * PI) / 32);
+            
+            glBegin(GL_TRIANGLE_FAN);
+            ofSetColor(localPenColor);
+            glVertex2f(finger.x, finger.y);
+            
+            ofSetColor(outerColor);
+            
+            for(int i = 0; i < 32; i++){
+                float angle = incr * i;
+                float x = ((float) cos(angle) * finger_position_size) + finger.x;
+                float y = ((float) sin(angle) * finger_position_size) + finger.y;
+                glVertex2f(x, y);
+            }
+            
+            glVertex2f(finger_position_size + finger.x, finger.y);
+            glEnd();
+        }
+    }
+    ofEnableDepthTest();
 }
 
 //--------------------------------------------------------------
@@ -246,6 +290,8 @@ void gFrameApp::tuioAdded(ofxTuioCursor &cursor) {
     the_point.setStyle(current_style);
     stroke_list.addToNewStroke(the_point);
     
+    finger_positions[cursor.getFingerId()] = ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight());
+    
     stop_pulsing();
     last_points_time = ofGetElapsedTimeMillis();
 }
@@ -260,13 +306,20 @@ void gFrameApp::tuioUpdated(ofxTuioCursor &cursor) {
     the_point.setStyle(current_style);
     stroke_list.add(the_point);
     
+    finger_positions[cursor.getFingerId()] = ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight());
+    
     stop_pulsing();
     last_points_time = ofGetElapsedTimeMillis();
+}
+
+void gFrameApp::tuioRemoved(ofxTuioCursor & cursor){
+    finger_positions[cursor.getFingerId()] = ofVec2f(0, 0);
 }
 
 
 //--------------------------------------------------------------
 void gFrameApp::onTouchPoint(TouchPointEvent &event) {
+    
     GPoint the_point;
     int x,y;
     if (orientation == PORTRAIT) {
@@ -289,13 +342,18 @@ void gFrameApp::onTouchPoint(TouchPointEvent &event) {
         case TP_DOWN:
         {
             stroke_list.addToNewStroke(the_point);
+            finger_positions[event.touchPoint.id] = ofVec2f(x, y);
             break;
         }
         case TP_MOVE:
         {
             stroke_list.add(the_point);
+            finger_positions[event.touchPoint.id] = ofVec2f(x, y);
             break;
         }
+        case TP_UP:
+            finger_positions[event.touchPoint.id] = ofVec2f(0, 0);
+            break;
     }
     
     //stop pulsing LEDs
@@ -533,11 +591,17 @@ void gFrameApp::guiSetup() {
     localPenColor.setName("color");
     parameters_brush.add(localPenColor);
     
+    // finger positions
+    parameters_finger.setName("finger positions");
+    parameters_finger.add(draw_finger_positions.set("draw finger positions", true));
+    parameters_finger.add(finger_position_size.set("finger circle radius", 30, 2, 100));
+    
     //add the subgroups to main parameter group
     parameters.add(parameters_output);
     parameters.add(parameters_network);
     parameters.add(parameters_osc);
     parameters.add(parameters_brush);
+    parameters.add(parameters_finger);
     
     //add all parameters to the gui
     gui.add(parameters);    

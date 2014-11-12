@@ -31,6 +31,7 @@ public:
     void setup();
     void update();
     void draw();
+    void drawFingerPositions();
     void exit();
     void mouseMoved(int x, int y);
     void keyPressed(int key);
@@ -112,7 +113,6 @@ private:
     ofParameter<int> remote_port;
     ofParameter<int> host_port;
 
-private:
     // GUI
     void guiSetup();
     ofxPanel gui;
@@ -128,6 +128,12 @@ private:
     
     //eventhandlers for gui inputs
     void onSettingsReload();
+    
+    // current finger positions
+    ofVec2f finger_positions[20];
+    ofParameterGroup parameters_finger;
+    ofParameter<bool> draw_finger_positions = true;
+    ofParameter<int> finger_position_size = 20;
 };
 
 
