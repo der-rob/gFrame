@@ -39,20 +39,30 @@ void GPoint::serialize(string *s){
               );
 }
 
-void GPoint::unserialize(string s){
+bool GPoint::unserialize(string s){
     vector<string> list;
     
-    for(int i = 0; i<9; i++){
-        int pos = s.find(',');
-        list.push_back(s.substr(0, pos));
-        s = s.substr(pos+1);
+    RegularExpression regEx("(-?[0-9]{1,3},){2}([0-9]{1,3},){6}([0-9]{1,3})"); // accept negative values on the first two arguments (position)
+    RegularExpression::Match match;
+    int found = regEx.match(s, match);
+    
+    if(match.offset == 0 && match.length == s.length()){
+        for(int i = 0; i<9; i++){
+            int pos = s.find(',');
+            list.push_back(s.substr(0, pos));
+            s = s.substr(pos+1);
+        }
+        loc = ofVec2f(ofToInt(list[0]), ofToInt(list[1]));
+        this->finger_id = ofToInt(list[2]);
+        this->color = ofColor(ofToInt(list[3]), ofToInt(list[4]), ofToInt(list[5]));
+        this->type = ofToInt(list[6]);
+        this->stroke_id = ofToInt(list[7]);
+        this->style_id = ofToInt(list[8]);
+        return true;
     }
-    loc = ofVec2f(ofToInt(list[0]), ofToInt(list[1]));
-    this->finger_id = ofToInt(list[2]);
-    this->color = ofColor(ofToInt(list[3]), ofToInt(list[4]), ofToInt(list[5]));
-    this->type = ofToInt(list[6]);
-    this->stroke_id = ofToInt(list[7]);
-    this->style_id = ofToInt(list[8]);
+    else {
+        return false;
+    }
 }
 
 int GPoint::instance_count;

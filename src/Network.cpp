@@ -32,10 +32,10 @@ void Network::setup(int local_server_port, string remote_server_ip, int remote_s
 }
 
 void Network::connectToRemoteHost(){
-    // close the connection (if it was open)
-    tcp_client.close();
-    
     if(ofGetElapsedTimef() - last_connection_check > 5.0){
+        // close the connection (if it was open)
+        tcp_client.close();
+        
         // check if IP is available
         bool server_available;
         string pingStr = (string)"ping -c 1 -t 1 " + remote_server_ip;
@@ -84,15 +84,23 @@ void Network::threadedFunction()
             // the value 10 is just random
             while (received.size() > 10){
                 GPoint p;
-                p.unserialize(received);
                 
-                // Attempt to lock the mutex.  If blocking is turned on,
-                if(lock()){
-                    // put it on the queue
-                    receive_queue.push(p);
-                    unlock();
+                // check if the received string is valid
+                if(p.unserialize(received)){
+                    
+                    // Attempt to lock the mutex.  If blocking is turned on,
+                    if(lock()){
+                        // put it on the queue
+                        receive_queue.push(p);
+                        unlock();
+                    }
+                    else { ofLogWarning("network.threadedFunction()") << "Unable to lock mutex."; }
                 }
-                else { ofLogWarning("network.threadedFunction()") << "Unable to lock mutex."; }
+                else {
+                    ofLogWarning("network.threadedFunction()") << "Received string did not match format: " << received;
+                }
+
+                // get the next point from the network
                 received = tcp_server.receive(client);
             }
         }

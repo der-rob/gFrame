@@ -11,6 +11,8 @@
 
 #include <iostream>
 #include "ofMain.h"
+#include "Poco/RegularExpression.h"
+using Poco::RegularExpression;
 
 class GPoint {
     
@@ -18,7 +20,7 @@ public:
     GPoint();
     GPoint(int x, int y, int point_id, int color_r, int color_g, int color_b, int type, int stroke_id);
     void serialize(string* s);
-    void unserialize(string s);
+    bool unserialize(string s);
     
     // setters
     void setLocation(ofVec2f loc){this->loc = loc;}
