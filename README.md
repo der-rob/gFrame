@@ -362,11 +362,44 @@ Habe jetzt ein paar Dinge eingebaut und kann jetzt die beiden Seiten separat sch
 
 	libc++abi.dylib: terminating with uncaught exception of type Poco::SystemException: System exception
 	
-## TCPClient Connection Timeout
+## Netzwerk Thread
+
 Wenn `tcp_client.setup(remote_server_ip, remote_server_port);` aufgerufen wird und die IP Adresse `remote_server_ip` nicht existiert, dann hängt das Programm sehr lange. 
 Im Forum gibt es eine Diskussion zu diesem Problem: http://forum.openframeworks.cc/t/tcp-client-connection-timeout/11695
 Dort wird vorgschlagen, die Verbindungsherstellung in einen Thread zu packen. 
 
+Das habe ich auch getan und mich dazu entschlossen, die Abfrage, ob der Server existiert über einen Ping zu machen, weil das wesentlich schneller geht als den Verbindungstimeout abzuwarten. So wird die Verbindung schneller (wieder)hergestellt.
+
+	    // check if IP is available
+        bool server_available;
+        string pingStr = (string)"ping -c 1 -t 1 " + remote_server_ip;
+        
+        int flag = system( pingStr.c_str());
+        
+        if(flag == 0){
+            server_available = true;
+            ofLog() << "server is available";
+        }else{
+            server_available = false;
+            ofLog() << "could not connect to server at IP "<<remote_server_ip<<endl;
+        }
+        
+        if(server_available){
+            ofLog() << "trying to establish a connection to the remote server: " << ofToString(remote_server_ip) << ":" << ofToString(remote_server_port);
+            connected = tcp_client.setup(remote_server_ip, remote_server_port);
+            tcp_client.setMessageDelimiter("\n");
+            
+            if(connected){
+                ofLog() << "client is connected to server " << tcp_client.getIP() << ":" << tcp_client.getPort();
+            }
+        }
+
+### Schützen der Variablen im Thread
+Bei den Variablen, die vom Thread und von außen benutzt werden, muss sichergestellt werden, dass es nicht zu konflikten kommt. Sie werden deshalb als protected deklariert und im Thread wird vorher immer `lock()` und nach dem Zugriff `unlock()` aufgerufen. Wenn es sich um eine kurze Funktion handelt, kann man auch mit `ofScopedLock lock(mutex);` den Lock bis zum Ende der Funktion erreichen.
+
+
+### CPU Auslastung durch Netzwerk-Thread
+Die CPU Auslastung ging auch wenn man nicht gezeichnet hat durch den Netzwerk-Thread auf >100% nach oben. Durch einfügen eines `sleep(10)` ging die Auslastung wieder auf <40% zurück.
 
 ## Timestamps
 In der ersten Implementierung wird von der Runtime der App ausgegangen. Das ist natürlich im vernetzen System problematisch, weil sich die Startzeit der Apps unterscheiden wird. Eigentlich wäre eine gemeinsame Zeitbasis schön, aber wenn ich so drüber nachdenke, ist das wahrscheinlich gar nicht erforderlich, wenn ich stattdessen den Timestamp ignoriere und immer einen neuen lokalen Timestamp erzeuge.
@@ -378,7 +411,6 @@ Nachdem ich die Distanzabfrage zum letzten Punkt auch für die Punkte eingebaut 
 Es war ein Rundungsproblem. Ich konnte es beheben, indem ich den `zIndex` zu einer `float` Variable gemacht habe und bei der Zuweisung einen Cast eingebaut habe
 
 	zIndex = (float) points[all][cur].getTimestamp() - (ofGetElapsedTimeMillis() / 10);
-
 
 ## TODO
   * lokal werden nur neue Punkte aufgenommen, wenn diese weit genug auseinander liegen. Über Netzwerk wird gerade aber alles übertragen. Optionen:

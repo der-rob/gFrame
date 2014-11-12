@@ -47,8 +47,7 @@ void Network::connectToRemoteHost(){
             ofLog() << "server is available";
         }else{
             server_available = false;
-            //   cout<<ofGetTimestampString()<<endl;
-            ofLog() << "could not connect to timing server at IP "<<remote_server_ip<<endl;
+            ofLog() << "could not connect to server at IP "<<remote_server_ip<<endl;
         }
         
         if(server_available){
@@ -67,9 +66,18 @@ void Network::connectToRemoteHost(){
 
 void Network::threadedFunction()
 {
-
     while(isThreadRunning())
     {
+        if(!tcp_server.isThreadRunning()){
+            ofLog() << "Server thread is not running anymore. trying to set it up again.";
+            
+            // setup the local server
+            if(tcp_server.setup(local_server_port))
+                ofLog() << "server is set up on port " << ofToString(local_server_port);
+            else "server setup failed";
+            tcp_server.setMessageDelimiter("\n");
+        }
+        
         //////////////////////
         // RECEIVING UPDATES
         //////////////////////
@@ -81,8 +89,8 @@ void Network::threadedFunction()
             string received = tcp_server.receive(client);
             
             // now read as long as we get something
-            // the value 10 is just random
-            while (received.size() > 10){
+            // the mininum size with all values zero is 17: 0,0,0,0,0,0,0,0,0
+            while (received.size() > 17){
                 GPoint p;
                 
                 // check if the received string is valid
@@ -94,10 +102,10 @@ void Network::threadedFunction()
                         receive_queue.push(p);
                         unlock();
                     }
-                    else { ofLogWarning("network.threadedFunction()") << "Unable to lock mutex."; }
+                    else { ofLogWarning("Network::threadedFunction()") << "Unable to lock mutex."; }
                 }
                 else {
-                    ofLogWarning("network.threadedFunction()") << "Received string did not match format: " << received;
+                    ofLogWarning("Network::threadedFunction()") << "Received string did not match format: " << received;
                 }
 
                 // get the next point from the network
@@ -131,7 +139,7 @@ void Network::threadedFunction()
                     
                     if (!tcp_client.isConnected() || fails > 5){
                         connected = false;
-                        ofLog() << "connection seems to be broken";
+                        ofLogWarning("Network::threadedFunction") << "connection seems to be broken. number of failed sending attempts: " << fails;
                         break;
                     }
                 }
@@ -141,7 +149,7 @@ void Network::threadedFunction()
                 // If we reach this else statement, it means that we could not
                 // lock our mutex, and so we do not need to call unlock().
                 // Calling unlock without locking will lead to problems.
-                ofLogWarning("network.threadedFunction()") << "Unable to lock mutex.";
+                ofLogWarning("Network::threadedFunction()") << "Unable to lock mutex.";
             }
         }
     
@@ -149,6 +157,9 @@ void Network::threadedFunction()
             // re-establish the connection
             connectToRemoteHost();
         }
+        
+        // give the other processes some time to do something aswell :)
+        sleep(10);
     }
 }
 
