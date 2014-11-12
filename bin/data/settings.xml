@@ -23,7 +23,15 @@
 			<brush_settings>
 				<brush_Radius>8</brush_Radius>
 				<linewidth>2</linewidth>
+			<color>0, 0, 255, 255</color>
 			</brush_settings>
+		<Wild_Brush_Parameters>
+				<amplitude>8</amplitude>
+				<wavelength>4</wavelength>
+				<nervousity>1</nervousity>
+				<main_line_thickness>4</main_line_thickness>
+				<by_line_thickness>0.5</by_line_thickness>
+			</Wild_Brush_Parameters>
 		</group>
 	</GFrame_Settings>
 </GFrame>

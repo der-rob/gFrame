@@ -10,6 +10,8 @@
 
 void ScrizzleStyle::render(vector<GPoint> &points) {
 
+    glDisable(GL_DEPTH_TEST);
+    
     GPoint *last_used_point;
     last_used_point = &points[0];
     setColor(points[0].getColor());

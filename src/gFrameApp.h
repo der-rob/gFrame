@@ -50,13 +50,25 @@ private:
     // DRAWING
     StrokeList stroke_list;
     int current_style = STYLE_SCRIZZLE;
-    ProfileStyle profileStyle;
-    ScrizzleStyle scrizzleStyle;
-    ofParameterGroup wild;
-    ofParameter<float> amplitude;
+    ofParameter<ofColor> localBrushColor;
     
-    ofParameter<float> brush_width;
-    ofParameter<float> brush_radius;
+    ProfileStyle profileStyle;
+    ofParameter<float> depthSpeed;
+    ofParameter<float> TD_stroke_width;
+    ofParameter<float> TD_fadeout_time;
+    
+    ScrizzleStyle scrizzleStyle;
+    ofParameterGroup wild_parameters;
+    ofParameter<float> W_amplitude;
+    ofParameter<float> W_wavelength;
+//    ofParameter<float> W_stroke_width;
+    ofParameter<float> W_nervosity;
+    ofParameter<float> W_mainLine_thickness;
+    ofParameter<float> W_byLine_thicknes;
+    ofParameter<float> W_fadeout_time;
+    
+    //setup method for the brushes
+    void setupWildBrush();
     
     ofLight light;
 
@@ -76,11 +88,7 @@ private:
     void toPanelsGFrame(ofImage &canvas, ofImage &panels);
     ofImage fiespMask;
     ofImage brazilianOut;
-    
-    //drawing parameter
-    ofParameterGroup localDrawingParameters;
-    ofParameter<int> localPenWidth;
-    ofParameter<ofColor> localPenColor;
+
     
     //OSC
     ofParameter<string> ipad_ip;

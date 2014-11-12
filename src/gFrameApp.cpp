@@ -15,6 +15,9 @@ void gFrameApp::setup(){
     outputRect = ofRectangle(0,0,1024, 768);
     ofSetWindowShape(outputRect.width, outputRect.height);
     
+    //brush setup
+    setupWildBrush();
+    
     //GUI setup
     guiSetup();
     ofAddListener(gui.loadPressedE, this, &gFrameApp::onSettingsReload);
@@ -43,10 +46,6 @@ void gFrameApp::setup(){
     //ipad_ip = "192.168.1.36";
     receiver.setup(8000);
     sender.setup(ipad_ip,ipad_port);
-    
-    //drawing parameters
-    localDrawingParameters.setName("Local drawing parameters");
-    localDrawingParameters.add(localPenColor.set("local pencolor", ofColor::white));
     
     // SETUP LIGHT
     light.enable();
@@ -110,8 +109,14 @@ void gFrameApp::update(){
     
     //update the brush settings
     //scrizzle style
-    scrizzleStyle.setLineWidth(brush_width);
-    scrizzleStyle.setAmplitude(brush_radius);
+    scrizzleStyle.setMainLineThickness(W_mainLine_thickness, W_byLine_thicknes);
+    scrizzleStyle.setAmplitude(W_amplitude);
+    scrizzleStyle.setLength(W_wavelength);
+    scrizzleStyle.setNervousity(W_nervosity);
+    scrizzleStyle.setFadeOutTime(W_fadeout_time);
+    
+    //fadeouttime
+    
     
     //profile style
     
@@ -152,14 +157,14 @@ void gFrameApp::draw(){
 //--------------------------------------------------------------
 void gFrameApp::keyPressed(int key){
     if (key == 'r') {
-        localPenColor = ofColor::red;
+        localBrushColor = ofColor::red;
         
     }
     else if (key == 'b') {
-        localPenColor = ofColor::blue;
+        localBrushColor = ofColor::blue;
     }
     else if (key == 'g') {
-        localPenColor = ofColor::green;
+        localBrushColor = ofColor::green;
     }
     else if(key == 'c') {
         stroke_list.clear();
@@ -190,10 +195,6 @@ void gFrameApp::keyPressed(int key){
         //ofSetWindowShape(mCanvasPositionAndSize.width, mCanvasPositionAndSize.height);
         outputRect.width = mCanvasPositionAndSize.width;
         outputRect.height = mCanvasPositionAndSize.height;
-        scrizzleStyle.setNewPointDistance(outputRect.width/50.0);
-        scrizzleStyle.setLineWidth(1.0);
-        scrizzleStyle.setAmplitude(4.0);
-        scrizzleStyle.setLength(2.0);
         outputmode = SESI;
         orientation = PORTRAIT;
     }
@@ -210,10 +211,6 @@ void gFrameApp::keyPressed(int key){
         //ofSetWindowShape(mCanvasPositionAndSize.width, mCanvasPositionAndSize.height);
         outputRect.width = 512;
         outputRect.height = 768;
-        scrizzleStyle.setNewPointDistance(outputRect.width/50.0);
-        scrizzleStyle.setLineWidth(4.0);
-        scrizzleStyle.setAmplitude(8.0);
-        scrizzleStyle.setLength(4.0);
         outputmode = PROJECTOR_PORTRAIT;
         orientation = PORTRAIT;
     }
@@ -226,7 +223,7 @@ void gFrameApp::mouseMoved(int x, int y){
     GPoint the_point;
     the_point.setLocation(ofVec2f(x,y));
     the_point.setId(0);
-    the_point.setColor(localPenColor);
+    the_point.setColor(localBrushColor);
     the_point.setStyle(current_style);
 //    the_point.lifetime = 0;
 //    all_points.push_back(the_point);
@@ -241,7 +238,7 @@ void gFrameApp::tuioAdded(ofxTuioCursor &cursor) {
     GPoint the_point;
     the_point.setLocation(ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight()));
     the_point.setId(cursor.getFingerId());
-    the_point.setColor(localPenColor);
+    the_point.setColor(localBrushColor);
     the_point.setType(TUIO);
     the_point.setStyle(current_style);
     stroke_list.addToNewStroke(the_point);
@@ -255,7 +252,7 @@ void gFrameApp::tuioUpdated(ofxTuioCursor &cursor) {
     GPoint the_point;
     the_point.setLocation(ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight()));
     the_point.setId(cursor.getFingerId());
-    the_point.setColor(localPenColor);
+    the_point.setColor(localBrushColor);
     the_point.setType(TUIO);
     the_point.setStyle(current_style);
     stroke_list.add(the_point);
@@ -280,7 +277,7 @@ void gFrameApp::onTouchPoint(TouchPointEvent &event) {
     cout << x << " " << y << endl;
     the_point.setLocation(ofVec2f(x, y));
     the_point.setId((int)event.touchPoint.id);
-    the_point.setColor(localPenColor);
+    the_point.setColor(localBrushColor);
     the_point.setType(LOCALFRAME);
     the_point.setStyle(current_style);
     
@@ -324,12 +321,12 @@ void gFrameApp::oscUpdate() {
     {
         ofxOscMessage m;
         receiver.getNextMessage(&m);
-        if (m.getAddress() == "/1/t_red") localPenColor = ofColor::red;
-        else if (m.getAddress() == "/1/t_green") localPenColor = ofColor::green;
-        else if (m.getAddress() == "/1/t_blue") localPenColor = ofColor::blue;
-        else if (m.getAddress() == "/1/t_yellow") localPenColor = ofColor::yellow;
-        else if (m.getAddress() == "/1/t_orange") localPenColor = ofColor::purple;
-        else if (m.getAddress() == "/1/t_pink") localPenColor = ofColor::pink;
+        if (m.getAddress() == "/1/t_red") localBrushColor = ofColor::red;
+        else if (m.getAddress() == "/1/t_green") localBrushColor = ofColor::green;
+        else if (m.getAddress() == "/1/t_blue") localBrushColor = ofColor::blue;
+        else if (m.getAddress() == "/1/t_yellow") localBrushColor = ofColor::yellow;
+        else if (m.getAddress() == "/1/t_orange") localBrushColor = ofColor::purple;
+        else if (m.getAddress() == "/1/t_pink") localBrushColor = ofColor::pink;
         //settings tab
         else if (m.getAddress() == "/settings/timetolive") stroke_list.setLifetime(m.getArgAsFloat(0));
         else if (m.getAddress() == "/settings/pulsing_limits/2") upper_pulsing_limit = m.getArgAsFloat(0);
@@ -350,42 +347,42 @@ void gFrameApp::oscupdate_interface() {
     //red
     update.clear();
     update.setAddress("/color/red");
-    if ((ofColor)localPenColor == ofColor::red) update.addFloatArg(1);
+    if ((ofColor)localBrushColor == ofColor::red) update.addFloatArg(1);
     else update.addFloatArg(0);
     sender.sendMessage(update);
     
     //green
     update.clear();
     update.setAddress("/color/green");
-    if ((ofColor)localPenColor == ofColor::green) update.addFloatArg(1);
+    if ((ofColor)localBrushColor == ofColor::green) update.addFloatArg(1);
     else update.addFloatArg(0);
     sender.sendMessage(update);
     
     //blue
     update.clear();
     update.setAddress("/color/blue");
-    if ((ofColor)localPenColor == ofColor::blue) update.addFloatArg(1);
+    if ((ofColor)localBrushColor == ofColor::blue) update.addFloatArg(1);
     else update.addFloatArg(0);
     sender.sendMessage(update);
     
     //yellow
     update.clear();
     update.setAddress("/color/yellow");
-    if ((ofColor)localPenColor == ofColor::yellow) update.addFloatArg(1);
+    if ((ofColor)localBrushColor == ofColor::yellow) update.addFloatArg(1);
     else update.addFloatArg(0);
     sender.sendMessage(update);
     
     //purple
     update.clear();
     update.setAddress("/color/purple");
-    if ((ofColor)localPenColor == ofColor::purple) update.addFloatArg(1);
+    if ((ofColor)localBrushColor == ofColor::purple) update.addFloatArg(1);
     else update.addFloatArg(0);
     sender.sendMessage(update);
     
     //pink
     update.clear();
     update.setAddress("/color/pink");
-    if ((ofColor)localPenColor == ofColor::pink) update.addFloatArg(1);
+    if ((ofColor)localBrushColor == ofColor::pink) update.addFloatArg(1);
     else update.addFloatArg(0);
     sender.sendMessage(update);
     
@@ -439,7 +436,7 @@ void gFrameApp::dmxUpdate(){ // name of this method is a bit misleading, should 
         LED_level = ofMap(time, 0, LED_pulsing_time, lower_pulsing_limit, upper_pulsing_limit);
     }
     
-    setLEDColor(localPenColor);
+    setLEDColor(localBrushColor);
 }
 
 void gFrameApp::start_pulsing() {
@@ -467,8 +464,8 @@ void gFrameApp::toPanels(ofImage &canvas, ofImage &panels){
         int gapSize = (int)((0.0-74.0)/panels.getHeight()*y+74.0);
         int leftoverPixels = (int)((61.0-9.0)/panels.getHeight()*y+9.0);
         for(int x=0; x<=leftoverPixels; x++){
-            panels.setColor(panels.getWidth()/2+rowWidthHalf+1+x+gapSize, y, localPenColor);
-            panels.setColor(panels.getWidth()/2-rowWidthHalf-1-x-gapSize, y, localPenColor);
+            panels.setColor(panels.getWidth()/2+rowWidthHalf+1+x+gapSize, y, localBrushColor);
+            panels.setColor(panels.getWidth()/2-rowWidthHalf-1-x-gapSize, y, localBrushColor);
         }
     }
     panels.reloadTexture();
@@ -489,8 +486,8 @@ void gFrameApp::toPanelsGFrame(ofImage &canvas, ofImage &panels){
         int gapSize = (int)((0.0-74.0)/panels.getHeight()*y+74.0);
         int leftoverPixels = (int)((61.0-9.0)/panels.getHeight()*y+9.0);
         for(int x=0; x<=leftoverPixels; x++){
-            panels.setColor(panels.getWidth()/2+rowWidthHalf+1+x+gapSize, y, localPenColor);
-            panels.setColor(panels.getWidth()/2-rowWidthHalf-1-x-gapSize, y, localPenColor);
+            panels.setColor(panels.getWidth()/2+rowWidthHalf+1+x+gapSize, y, localBrushColor);
+            panels.setColor(panels.getWidth()/2-rowWidthHalf-1-x-gapSize, y, localBrushColor);
         }
     }
     panels.reloadTexture();
@@ -526,21 +523,40 @@ void gFrameApp::guiSetup() {
     parameters_network.add(remote_port);
 
     ///Brushes
-    
+    localBrushColor.setName("color");
     parameters_brush.setName("brush settings");
-    parameters_brush.add(brush_radius.set("brush Radius", 8.0,2.0,20.0));
-    parameters_brush.add(brush_width.set("linewidth", 2.0, 1.0, 4.0));
-    localPenColor.setName("color");
-    parameters_brush.add(localPenColor);
-    
+    parameters_brush.add(localBrushColor);
+        
     //add the subgroups to main parameter group
     parameters.add(parameters_output);
     parameters.add(parameters_network);
     parameters.add(parameters_osc);
     parameters.add(parameters_brush);
-    
+    parameters.add(wild_parameters);
     //add all parameters to the gui
     gui.add(parameters);    
+}
+
+void gFrameApp::setupWildBrush() {
+    wild_parameters.setName("Wild Brush Parameters");
+    
+    W_amplitude.set("amplitude",8.0,1.0,20);
+    wild_parameters.add(W_amplitude);
+    //wavelength
+    W_wavelength.set("wavelength", 4.0, 1.0, 10.0);
+    wild_parameters.add(W_wavelength);
+    //strokewidth
+    //may be obsolete since amplitude means the same
+    
+    //nervosity aka speed
+    W_nervosity.set("nervousity",1.0,0.5,20.0);
+    wild_parameters.add(W_nervosity);
+    //mainLine_thickness
+    W_mainLine_thickness.set("main line thickness", 4.0, 1.0, 10.0);
+    wild_parameters.add(W_mainLine_thickness);
+    //byline_thickness
+    W_byLine_thicknes.set("by line thickness", 0.5, 0.1, 5.0);
+    wild_parameters.add(W_byLine_thicknes);
 }
 
 void gFrameApp::onSettingsReload() {

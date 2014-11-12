@@ -38,6 +38,7 @@ private:
     float linewidth1 = 4.0;
     float linewidth2 = 2.0;
     float linewidth3 = 2.0;
+    float byLineScale = 0.5;
     
     //aging and fading out
     float startFadeAge = 500;
@@ -51,31 +52,23 @@ public:
     void render(vector<GPoint> &points);
 
     //setters
-    void setAmplitude1(float _ampl) {amplitude1 = _ampl;}
-    void setAmplitude2(float _ampl) {amplitude2 = _ampl;}
-    void setAmplitude3(float _ampl) {amplitude3 = _ampl;}
+    void setAmplitude(float _ampl) {amplitude1 = 0.5 * _ampl; amplitude2 = _ampl; amplitude3 = 1.5 * _ampl;}
+    void setLength(float _length) {length1 = 0.8 * _length; length2 = _length; length3 = 1.2 * _length;}
+    void setMainLineThickness(float _linewidth, float _byLineScale) { linewidth1 = _linewidth; linewidth2 = _byLineScale * _linewidth; linewidth3 = _byLineScale * _linewidth;}
+    void setFadeOutTime(float _fadeOuteTime) {return;};
+    void setNervousity(float _speed) { speed1 = _speed; speed2 = 0.6 * _speed; speed3 = 0.4 * _speed; }
     
-    void setSpeed1(float _speed) {speed1 = _speed;}
-    void setSpeed2(float _speed) {speed2 = _speed;}
-    void setSpeed3(float _speed) {speed3 = _speed;}
-    
-    void setLegth1(float _length) {length1 = _length;}
-    void setLegth2(float _length) {length2 = _length;}
-    void setLegth3(float _length) {length3 = _length;}
     
     void setInterpolatorSteps(int _iSteps) {isteps = _iSteps;}
     
-    void setColor1(ofColor _color) {color1 = _color;}
-    void setColor2(ofColor _color) {color2 = _color;}
-    void setColor3(ofColor _color) {color3 = _color;}
     
     void setStartFadeAge(float _age) {startFadeAge = _age;}
     void setEndFadeAge( float _age) {endFadeAge = _age;}
     
     //these functions will be needed to adjust the line width and otehr parameters for the different screen resolutions
-    void setLength(float _length) {length1 = 0.8 * _length; length2 = _length; length3 = 1.2 * _length;}
-    void setAmplitude(float _ampl) {amplitude1 = 0.5 * _ampl; amplitude2 = _ampl; amplitude3 = 1.5 * _ampl;}
-    void setLineWidth(float _linewidth) { linewidth1 = _linewidth; linewidth2 = 0.5 * _linewidth; linewidth3 = 0.5 * _linewidth;}
+    
+    
+    
     
 //    void setNewPointDistance(int _distance) {new_point_distance = _distance;}
     
