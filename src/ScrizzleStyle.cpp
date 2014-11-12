@@ -10,6 +10,7 @@
 
 void ScrizzleStyle::render(vector<GPoint> &points) {
 
+    glDisable(GL_DEPTH_TEST);
     GPoint *last_used_point;
     last_used_point = &points[0];
     setColor(points[0].getColor());
@@ -26,6 +27,11 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
         //calculate color to fade out when exeeding age
         double age = ((ofGetElapsedTimeMillis()) - points[i].getTimestamp()) / 10.0;
         double alpha;
+        //check if point is too old
+        if (age > endFadeAge) {
+            points.erase(points.begin()+i);
+            continue;
+        }
         if (age < startFadeAge)
             alpha = 255;
         else
@@ -69,6 +75,11 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
         //calculate color to fade out when exeeding age
         double age = ((ofGetElapsedTimeMillis()) - points[i].getTimestamp())/10.0;
         double alpha;
+        //check if point is too old
+        if (age > endFadeAge) {
+            points.erase(points.begin()+i);
+            continue;
+        }
         if (age < startFadeAge)
             alpha = 255;
         else
@@ -115,6 +126,11 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
         //calculate color to fade out when exeeding age
         double age = ((ofGetElapsedTimeMillis()) - points[i].getTimestamp())/10.0;
         double alpha;
+        //check if point is too old
+        if (age > endFadeAge) {
+            points.erase(points.begin()+i);
+            continue;
+        }
         if (age < startFadeAge)
             alpha = 255;
         else
@@ -148,7 +164,7 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
         glVertex2f(v.x, v.y);
     }
     glEnd();
-    
+    glEnable(GL_DEPTH_TEST);
     float last_time = ofGetElapsedTimef();
     counter=last_time;
 }
