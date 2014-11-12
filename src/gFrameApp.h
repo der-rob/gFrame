@@ -52,6 +52,9 @@ private:
     int current_style = STYLE_SCRIZZLE;
     ProfileStyle profileStyle;
     ScrizzleStyle scrizzleStyle;
+    ofParameterGroup wild;
+    ofParameter<float> amplitude;
+    
     ofParameter<float> brush_width;
     ofParameter<float> brush_radius;
     

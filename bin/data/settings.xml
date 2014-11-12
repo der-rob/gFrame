@@ -1,0 +1,29 @@
+<GFrame>
+	<group>
+		<UnknownName>269693129</UnknownName>
+	</group>
+	<Brush_Radius>8</Brush_Radius>
+	<Linewidth>2</Linewidth>
+<GFrame/>
+<GFrame_Settings>
+		<group>
+			<output_settings>
+				<width>1024</width>
+				<height>768</height>
+			</output_settings>
+			<network>
+				<remote_ip>192.168.1.36</remote_ip>
+				<remote_port>9001</remote_port>
+				<host_port>7099</host_port>
+			</network>
+			<osc>
+				<iPad_IP>192.168.1.34</iPad_IP>
+				<iPad_Port>8001</iPad_Port>
+			</osc>
+			<brush_settings>
+				<brush_Radius>8</brush_Radius>
+				<linewidth>2</linewidth>
+			</brush_settings>
+		</group>
+	</GFrame_Settings>
+</GFrame>
