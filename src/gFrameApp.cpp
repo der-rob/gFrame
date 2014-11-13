@@ -387,15 +387,18 @@ void gFrameApp::oscUpdate() {
     while (receiver.hasWaitingMessages())
     {
         ofxOscMessage m;
-        cout << "new osc message" << endl;
         receiver.getNextMessage(&m);
-        if (m.getAddress() == "/1/t_red") localBrushColor = ofColor::red;
+        //brush style
+        if (m.getAddress() == "/1/t_wild") current_style = STYLE_SCRIZZLE;
+        else if (m.getAddress() == "/1/t_threedee") current_style = STYLE_PROFILE;
+        //style color
+        else if (m.getAddress() == "/1/t_red") localBrushColor = ofColor::red;
         else if (m.getAddress() == "/1/t_green") localBrushColor = ofColor::green;
         else if (m.getAddress() == "/1/t_blue") localBrushColor = ofColor::blue;
         else if (m.getAddress() == "/1/t_yellow") localBrushColor = ofColor::yellow;
-        else if (m.getAddress() == "/1/t_orange") localBrushColor = ofColor::purple;
+        else if (m.getAddress() == "/1/t_orange") localBrushColor = ofColor::orange;
         else if (m.getAddress() == "/1/t_pink") localBrushColor = ofColor::pink;
-        //settings tab
+        //brush settings tab
         else if (m.getAddress() == "/settings/timetolive") stroke_list.setLifetime(m.getArgAsFloat(0));
         else if (m.getAddress() == "/settings/pulsing_limits/2") upper_pulsing_limit = m.getArgAsFloat(0);
         else if (m.getAddress() == "/settings/pulsing_limits/1") lower_pulsing_limit = m.getArgAsFloat(0);
@@ -412,44 +415,64 @@ void gFrameApp::oscUpdate() {
 void gFrameApp::oscupdate_interface() {
     ofxOscMessage update;
     
+    //styles
+    update.clear();
+    update.setAddress("/1/t_wild");
+    if (current_style == STYLE_SCRIZZLE) update.addFloatArg(1);
+    else update.addFloatArg(0);
+    sender.sendMessage(update);
+
+    
+    update.clear();
+    update.setAddress("/1/t_threedee");
+    if (current_style == STYLE_PROFILE) update.addFloatArg(1);
+    else update.addFloatArg(0);
+    sender.sendMessage(update);
+
+    update.clear();
+    update.setAddress("/1/t_brush");
+    if (current_style == STYLE_CALIGRAPHY) update.addFloatArg(1);
+    else update.addFloatArg(0);
+    sender.sendMessage(update);
+
     //red
     update.clear();
-    update.setAddress("/color/red");
+    update.setAddress("/1/t_red");
     if ((ofColor)localBrushColor == ofColor::red) update.addFloatArg(1);
     else update.addFloatArg(0);
     sender.sendMessage(update);
     
     //green
     update.clear();
-    update.setAddress("/color/green");
+    update.setAddress("/1/t_green");
     if ((ofColor)localBrushColor == ofColor::green) update.addFloatArg(1);
     else update.addFloatArg(0);
     sender.sendMessage(update);
     
     //blue
     update.clear();
-    update.setAddress("/color/blue");
+    update.setAddress("/1/t_blue");
     if ((ofColor)localBrushColor == ofColor::blue) update.addFloatArg(1);
     else update.addFloatArg(0);
     sender.sendMessage(update);
     
     //yellow
     update.clear();
-    update.setAddress("/color/yellow");
+    update.setAddress("/1/t_yellow");
     if ((ofColor)localBrushColor == ofColor::yellow) update.addFloatArg(1);
     else update.addFloatArg(0);
     sender.sendMessage(update);
     
     //purple
     update.clear();
-    update.setAddress("/color/purple");
-    if ((ofColor)localBrushColor == ofColor::purple) update.addFloatArg(1);
+    update.setAddress("/1/t_orange");
+    if ((ofColor)localBrushColor == ofColor::orange) update.addFloatArg(1);
     else update.addFloatArg(0);
     sender.sendMessage(update);
     
     //pink
     update.clear();
-    update.setAddress("/color/pink");
+    update.setAddress("/1/t_pink");
     if ((ofColor)localBrushColor == ofColor::pink) update.addFloatArg(1);
     else update.addFloatArg(0);
     sender.sendMessage(update);
