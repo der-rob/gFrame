@@ -62,6 +62,7 @@ void gFrameApp::setup(){
     dimSESI = ofRectangle(98,259,93,167);
     dimLED1 = ofRectangle(220,452,768,288);
     dimLED2 = ofRectangle(508, 77, 480, 288);
+    grabOrigin = ofVec2f(0.0,0.0);
     mPanels.allocate(mPanelPositionAndSize.width, mPanelPositionAndSize.height, OF_IMAGE_COLOR);
     mPanels.setColor(0);
 
@@ -152,14 +153,14 @@ void gFrameApp::draw(){
     if(draw_finger_positions){
         drawFingerPositions();
     }
-    
+    grabOrigin = ofVec2f((ofGetWidth()-outputRect.width)/2, (ofGetHeight()-outputRect.height)/2);
     //grab the screen for syphon output
     mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
-    mCanvas.grabScreen(0, 0, outputRect.width, outputRect.height);
+    mCanvas.grabScreen((int)grabOrigin.x, (int)grabOrigin.y, outputRect.width, outputRect.height);
     
     //gui output here
     glDisable(GL_DEPTH_TEST);
-    //gui.draw();
+    gui.draw();
     ofSetColor(200);
     ofDrawBitmapString("r: " + ofToString(network.getReceiveQueueLength()), ofGetWidth()-200, ofGetHeight()-50);
     ofDrawBitmapString("s: " + ofToString(network.getSendQueueLength()), ofGetWidth()-200, ofGetHeight()-25 );
@@ -620,10 +621,9 @@ void gFrameApp::guiSetup() {
     parameters.add(parameters_output);
     parameters.add(parameters_network);
     parameters.add(parameters_osc);
+    parameters.add(parameters_finger);
     parameters.add(parameters_brush);
     parameters.add(parameters_profile_style);
-    parameters.add(parameters_finger);
-    
     parameters.add(wild_parameters);
     //add all parameters to the gui
     gui.add(parameters);    

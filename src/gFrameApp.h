@@ -95,6 +95,7 @@ private:
     ofRectangle mPanelPositionAndSize;
     ofRectangle dimSESI;
     ofRectangle dimLED1, dimLED2;
+    ofVec2f grabOrigin;
     void toPanels(ofImage &canvas, ofImage &panels);
     void toPanelsGFrame(ofImage &canvas, ofImage &panels);
     //ofImage fiespMask;
