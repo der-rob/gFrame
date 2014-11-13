@@ -434,3 +434,19 @@ Es war ein Rundungsproblem. Ich konnte es beheben, indem ich den `zIndex` zu ein
     * dafür hat Robert ja die Syphon Anbindung eingebaut, um das ganze nochmal durch den Madmapper zu jagen! Mal mit ihm besprechen, wie er sich das vorstellt
     
     
+    
+# Test 12.11.2014
+* Mit den PQLabs anbindung kommt man nicht ganz bis zum Rand, mit TUIO auch nicht
+* reaktion auf maus sollte einstellbar sein
+* dmx funktioniert noch nicht
+* zeit für das Löschen der Punkte einstellen
+* verbindet häufig nicht zusammengehörige linien!!!
+* dmx stecker scheint kaputt zu sein
+* dmx darf nicht die farben durchwechseln!
+* lifetime einstellbar machen
+* effekte!
+* evtl interpolation für punkte, weil oft kurze abreißer drin sind
+* min z-speed muss kleiner sein
+* vordere sollten auf hintere einen schatten werfen
+* cpu auslastung auf macmini ist viel zu hoch!
+* syphon output spiegelt sich unten, wenn man oben eine linie zieht
