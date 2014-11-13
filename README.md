@@ -401,6 +401,10 @@ Bei den Variablen, die vom Thread und von außen benutzt werden, muss sichergest
 ### CPU Auslastung durch Netzwerk-Thread
 Die CPU Auslastung ging auch wenn man nicht gezeichnet hat durch den Netzwerk-Thread auf >100% nach oben. Durch einfügen eines `sleep(10)` ging die Auslastung wieder auf <40% zurück.
 
+### Absturz beim Beenden
+Häufiger bekomme ich eine uncaught exception beim Beenden des Programms. Anscheinend hat öfter mal ein Problem damit den Server Thread zu beenden. 
+Habe die entsprechende Zeile nun mit `try{}catch(){}` umschlossen. Das verhindert das hängenbleiben, auch wenn es die Ursache nicht wirklich behebt.
+
 ## Timestamps
 In der ersten Implementierung wird von der Runtime der App ausgegangen. Das ist natürlich im vernetzen System problematisch, weil sich die Startzeit der Apps unterscheiden wird. Eigentlich wäre eine gemeinsame Zeitbasis schön, aber wenn ich so drüber nachdenke, ist das wahrscheinlich gar nicht erforderlich, wenn ich stattdessen den Timestamp ignoriere und immer einen neuen lokalen Timestamp erzeuge.
 Entweder sind die Daten schnell genug da oder eben auch nicht und dann machen die nachträglich eintreffenden Daten mit richtige Timestamp auch keinen Sinn mehr.
@@ -419,6 +423,16 @@ Es war ein Rundungsproblem. Ich konnte es beheben, indem ich den `zIndex` zu ein
   * sollte die Netzwerk-Übertragung vielleicht direkt in die Style-Klassen integriert werden, statt separat gehandelt zu werden? Dann wäre das mit der Handhabung, welche Punkte übertragen werden und welche nicht natürlich ganz einfach
   * alternative: Trennung zwischen Rendering-Style und der Punkteliste wäre vielleicht eine gute Idee.
   
+# Rahmen
+
+## Fehler bei der ID Vergabe
+Der Rahmen macht scheinbar Fehler bei der ID Vergabe. Für IDs, für die kein Out event gefeuert wurde, wird ein neues IN Event ausgelöst. Das führt dazu, dass nicht zusammengehörige Punkte verbunden werden und den Style optisch kaputt machen.
+
+Nun fällt mir die Variable Session ID auf, die jeder Punkt hat. Diese scheint so ziemlich das zu sein, was wir intern als Stroke ID generieren. 
+> Each touch has a session ID that is used to identify a touch over successive frames (http://www.ventuz.com/support/help/V3_02/TUIO.html)
+
+
+
   
 #Netzwerk einrichten
 1. Finde deine IP Adresse heraus
@@ -432,21 +446,3 @@ Es war ein Rundungsproblem. Ich konnte es beheben, indem ich den `zIndex` zu ein
 #Offene Themen
   * Unterschiedliche Screen-Größen! Wie ist damit umzugehen?
     * dafür hat Robert ja die Syphon Anbindung eingebaut, um das ganze nochmal durch den Madmapper zu jagen! Mal mit ihm besprechen, wie er sich das vorstellt
-    
-    
-    
-# Test 12.11.2014
-* Mit den PQLabs anbindung kommt man nicht ganz bis zum Rand, mit TUIO auch nicht
-* reaktion auf maus sollte einstellbar sein
-* dmx funktioniert noch nicht
-* zeit für das Löschen der Punkte einstellen
-* verbindet häufig nicht zusammengehörige linien!!!
-* dmx stecker scheint kaputt zu sein
-* dmx darf nicht die farben durchwechseln!
-* lifetime einstellbar machen
-* effekte!
-* evtl interpolation für punkte, weil oft kurze abreißer drin sind
-* min z-speed muss kleiner sein
-* vordere sollten auf hintere einen schatten werfen
-* cpu auslastung auf macmini ist viel zu hoch!
-* syphon output spiegelt sich unten, wenn man oben eine linie zieht
