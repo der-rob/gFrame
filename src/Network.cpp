@@ -187,7 +187,11 @@ int Network::getSendQueueLength(){
 
 void Network::disconnect(){
     stopThread();
-    tcp_server.close();
+    try{
+        tcp_server.close();
+    } catch (exception e){
+        ofLogError() << "caught an exception while closing the server.";
+    }
     tcp_client.close();
     ofLog() << "network connections closed";
 }
