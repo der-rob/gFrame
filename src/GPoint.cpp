@@ -35,8 +35,9 @@ void GPoint::serialize(string *s){
               ofToString((int)color.b) + "," +
               ofToString(type) + "," +
               ofToString(style_id) + "," +
-              ofToString(stroke_id)
+              ofToString((int)stroke_id)
               );
+    
 }
 
 bool GPoint::unserialize(string s){
