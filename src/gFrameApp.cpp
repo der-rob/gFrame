@@ -311,6 +311,7 @@ void gFrameApp::tuioAdded(ofxTuioCursor &cursor) {
         GPoint the_point;
         the_point.setLocation(ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight()));
         the_point.setId(cursor.getFingerId());
+        the_point.setStrokeId(cursor.getSessionId());
         the_point.setColor(localBrushColor);
         the_point.setType(TUIO);
         the_point.setStyle(current_style);
@@ -329,6 +330,7 @@ void gFrameApp::tuioUpdated(ofxTuioCursor &cursor) {
         GPoint the_point;
         the_point.setLocation(ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight()));
         the_point.setId(cursor.getFingerId());
+        the_point.setStrokeId(cursor.getSessionId());
         the_point.setColor(localBrushColor);
         the_point.setType(TUIO);
         the_point.setStyle(current_style);

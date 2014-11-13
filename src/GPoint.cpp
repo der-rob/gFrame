@@ -34,15 +34,15 @@ void GPoint::serialize(string *s){
               ofToString((int)color.g) + "," +
               ofToString((int)color.b) + "," +
               ofToString(type) + "," +
-              ofToString(stroke_id)  + "," +
-              ofToString(style_id)
+              ofToString(style_id) + "," +
+              ofToString(stroke_id)
               );
 }
 
 bool GPoint::unserialize(string s){
     vector<string> list;
     
-    RegularExpression regEx("(-?[0-9]{1,3},){2}([0-9]{1,3},){6}([0-9]{1,3})"); // accept negative values on the first two arguments (position)
+    RegularExpression regEx("(-?[0-9]{1,3},){2}([0-9]{1,3},){6}([0-9]{1,10})"); // accept negative values on the first two arguments (position) and long numbers on the last (strokeid)
     RegularExpression::Match match;
     int found = regEx.match(s, match);
     
@@ -56,8 +56,8 @@ bool GPoint::unserialize(string s){
         this->finger_id = ofToInt(list[2]);
         this->color = ofColor(ofToInt(list[3]), ofToInt(list[4]), ofToInt(list[5]));
         this->type = ofToInt(list[6]);
-        this->stroke_id = ofToInt(list[7]);
-        this->style_id = ofToInt(list[8]);
+        this->style_id = ofToInt(list[7]);
+        this->stroke_id = ofToInt(list[8]);
         return true;
     }
     else {
