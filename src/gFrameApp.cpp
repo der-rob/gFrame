@@ -48,10 +48,7 @@ void gFrameApp::setup(){
     // SETUP LIGHT
     light.enable();
     light.setPointLight();
-    light.setPosition(0,-300,0);
-    
-    // SETUP OPENGL
-    ofEnableDepthTest(); // IMPORTANT!!!
+    light.setPosition(0,0,0);
     
     // NETWORK
     network.setup(host_port, remote_ip, remote_port);
@@ -161,25 +158,25 @@ void gFrameApp::draw(){
     mCanvas.grabScreen((int)grabOrigin.x, (int)grabOrigin.y, outputRect.width, outputRect.height);
     
     //gui output here
-    glDisable(GL_DEPTH_TEST);
     gui.draw();
-    ofSetColor(200);
+    ofSetColor(255);
     ofDrawBitmapString("style: " + ofToString(current_style), ofGetWidth()-100, ofGetHeight()-55);
     ofDrawBitmapString("r: " + ofToString(network.getReceiveQueueLength()), ofGetWidth()-100, ofGetHeight()-40);
     ofDrawBitmapString("s: " + ofToString(network.getSendQueueLength()), ofGetWidth()-100, ofGetHeight()-25 );
     ofDrawBitmapString("fps: " + ofToString(ofGetFrameRate()), ofGetWidth()-100, ofGetHeight()-10 );
-    glEnable(GL_DEPTH_TEST);
 }
 
 void gFrameApp::drawFingerPositions(){
     
-    // disable depth test so the alpha blending works properly
-    ofDisableDepthTest();
+    ofPushStyle();
+    ofDisableDepthTest(); // disable depth test so the alpha blending works properly
+    ofDisableLighting();
     
     ofColor outerColor = localBrushColor;
     outerColor.set(localBrushColor.get().r, localBrushColor.get().g, localBrushColor.get().b, 30);
     
     ofSetColor(localBrushColor);
+    int i=0;
     for(ofVec2f finger : finger_positions){
         if(!(finger.x == 0 && finger.y == 0)){
             float incr = (float) ((2 * PI) / 32);
@@ -199,9 +196,16 @@ void gFrameApp::drawFingerPositions(){
             
             glVertex2f(finger_position_size + finger.x, finger.y);
             glEnd();
+
+            // draw finger id for debugging
+            ofSetColor(255, 255, 255, 255);
+            ofDrawBitmapString(ofToString(i), finger.x-5, finger.y+5);
         }
+        
+        
+        i++;
     }
-    ofEnableDepthTest();
+    ofPopStyle();
 }
 
 //--------------------------------------------------------------

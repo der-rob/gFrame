@@ -10,6 +10,13 @@
 
 void ProfileStyle::render(vector<GPoint>& points){
     
+    ofPushStyle();
+
+    ofEnableLighting();
+
+    // SETUP OPENGL
+    ofEnableDepthTest(); // IMPORTANT!!!
+    
     GPoint* last_used_point;
     
     if(points.size() > 1){
@@ -188,6 +195,7 @@ void ProfileStyle::render(vector<GPoint>& points){
             mesh.drawWireframe();
         }
     }
+    ofPopStyle();
 }
 
 void ProfileStyle::setFill(bool fill){
