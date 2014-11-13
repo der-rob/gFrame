@@ -99,9 +99,6 @@ private:
     ofVec2f grabOrigin;
     void toPanels(ofImage &canvas, ofImage &panels);
     void toPanelsGFrame(ofImage &canvas, ofImage &panels);
-    //ofImage fiespMask;
-    //ofImage brazilianOut;
-
     
     //OSC
     ofParameter<string> ipad_ip;
@@ -112,6 +109,7 @@ private:
     float last_ipad_update_time = 0;
     
     //DMX
+    bool dmx_on = true;
     ofxDmx dmx;
     ofColor LEDstripColor;
     float upper_pulsing_limit, lower_pulsing_limit;
@@ -137,6 +135,8 @@ private:
     // GUI
     void guiSetup();
     ofxPanel gui;
+    bool draw_gui = true;
+    
     ofParameterGroup parameters;
     ofParameterGroup parameters_osc;
     ofParameterGroup parameters_network;
@@ -168,7 +168,7 @@ private:
 
     ofParameter<bool> input_mouse, input_pqlabs, input_tuio;
     
-    bool draw_gui = true;
+    
 };
 
 

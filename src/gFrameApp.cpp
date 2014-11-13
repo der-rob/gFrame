@@ -86,7 +86,8 @@ void gFrameApp::update(){
     tuioClient.getMessage();
     
     // DMX UPDATE
-//    dmxUpdate();
+    if (dmx_on)
+        dmxUpdate();
     
     //dealing with different output modes
     ofFbo tempFBO;
@@ -232,6 +233,8 @@ void gFrameApp::keyPressed(int key){
         current_style = STYLE_SCRIZZLE;
     else if(key == 'h')
         draw_gui = !draw_gui;
+    else if (key == 'd')
+        dmx_on = !dmx_on;
     
     
     //switch between different output modes
