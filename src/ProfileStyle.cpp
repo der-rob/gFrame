@@ -12,16 +12,14 @@ void ProfileStyle::render(vector<GPoint>& points){
     
     GPoint* last_used_point;
     
-    list<int> ids;
-    
-    if(points.size() > 2){
+    if(points.size() > 1){
         ofMesh mesh;
         float zIndex = 0;
         int angle = 0;
         
         mesh.setMode(OF_PRIMITIVE_TRIANGLES);
         
-        zIndex = ((float) points[0].getTimestamp() - ofGetElapsedTimeMillis())/(10.0/z_speed);
+        zIndex = ((float) points[0].getTimestamp() - ofGetElapsedTimeMillis())/(100.0/z_speed);
         
         // add the first points
         ofVec3f last_1 = ofVec3f(points[0].getLocation().x, points[0].getLocation().y - 5, zIndex/3);
@@ -38,7 +36,7 @@ void ProfileStyle::render(vector<GPoint>& points){
             else last_used_point = &points[all];
             
             // 1) GENERATE 3D POINTS OUT OF 2D LINES
-            zIndex = ((float) points[all].getTimestamp() - ofGetElapsedTimeMillis())/(10.0/z_speed);
+            zIndex = ((float) points[all].getTimestamp() - ofGetElapsedTimeMillis())/(100.0/z_speed);
             
             ofVec2f lastPoint = points[all-1].getLocation();
             ofVec2f currentPoint = points[all].getLocation();
