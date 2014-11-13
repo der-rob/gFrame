@@ -36,7 +36,7 @@ public:
     unsigned long getTimestamp(){return timestamp;}
     ofColor getColor(){return color;}
     int getType(){return type;}
-    int getStrokeId(){return stroke_id;}
+    long getStrokeId(){return stroke_id;}
     int getStyle(){return style_id;}
     
 private:
@@ -45,7 +45,7 @@ private:
     unsigned long timestamp;
     ofColor color;
     int type;
-    int stroke_id;
+    long stroke_id;
     int style_id;
     
     static int instance_count;    

@@ -15,22 +15,14 @@ void StrokeList::setupSync(Network* network){
 
 void StrokeList::addToNewStroke(GPoint point){
     
-    // assign stroke id
-    point.setStrokeId(stroke_count);
     point.setType(TYPE_LOCAL);
-    
-    // increase the stroke count and reset it when it is too big
-    stroke_count++;
-    if(stroke_count == 999) stroke_count = 0;
-    
+        
     vector<GPoint> v;
-//    v.insert(v.begin(), point);
     v.push_back(point);
-//    strokes.insert(strokes.begin(), v);
     strokes.push_back(v);
     
-    // the current stroke for this ID is now the last one in the list
-    currentListForId[point.getId()] = strokes.size()-1;
+    // the current list for this strokeID is now the last one in the list
+//    listForStrokeId[point.getStrokeId()] = strokes.size()-1;
     
     // send the point to the remote server
     if(enableSync){
@@ -39,16 +31,19 @@ void StrokeList::addToNewStroke(GPoint point){
 }
 
 void StrokeList::add(GPoint point){
-    // check if we already have a stroke with this id in the list
-    if(currentListForId.count(point.getId()) == 1){
-        // get the stroke id from the last one on the same list
-        point.setStrokeId(strokes[currentListForId[point.getId()]].back().getStrokeId());
-        point.setType(TYPE_LOCAL);
-        strokes[currentListForId[point.getId()]].push_back(point);
-//        strokes[currentListForId[point.getId()]].insert(strokes[currentListForId[point.getId()]].begin(), point);
+    bool found =false;
+    
+    // check if we already have this stroke id
+    for(int i = 0; i< strokes.size(); i++){
+        if(strokes[i][0].getStrokeId() == point.getStrokeId()){
+            point.setType(TYPE_LOCAL);
+            strokes[i].push_back(point);
+            found = true;
+            break;
+        }
     }
-    // otherwise treat the point like a new stroke
-    else{
+    
+    if(!found){
         addToNewStroke(point);
     }
     
@@ -62,28 +57,16 @@ void StrokeList::update(){
     
     // remove points that have exceeded their lifetime
     for(int i = 0; i < strokes.size(); i++)
-    {
+    {        
         for(int j = 0; j < strokes[i].size(); j++){
             if ((ofGetElapsedTimeMillis()) - strokes[i][j].getTimestamp() > lifetime) {
                 strokes[i].erase(strokes[i].begin() + j);
-//                strokes[i].pop_back();
             }
         }
         
-        // erase the stroke if it is empty
+        // erase the stroke if it is now empty
         if(strokes[i].size() == 0){
             strokes.erase(strokes.begin() + i);
-            
-            // if this vector was the current one for one of the ids, remove it from the currentListForId
-            for(int m = 0; m<currentListForId.size(); m++){
-                if (currentListForId[m] == i) {
-                    currentListForId.erase(currentListForId[m]);
-                }
-                // decrease the following ones by one
-                else if (currentListForId[m] > i){
-                    currentListForId[m]-=1;
-                }
-            }
         }
     }
     
@@ -117,7 +100,8 @@ void StrokeList::update(){
 
 void StrokeList::clear(){
     strokes.clear();
-    currentListForId.clear();
+//    currentListForId.clear();
+//    listForStrokeId.clear();
 }
 
 //void StrokeList::getStrokesById(int id, vector<vector<GPoint> >* list){
