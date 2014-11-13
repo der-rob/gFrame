@@ -230,6 +230,9 @@ void gFrameApp::keyPressed(int key){
         current_style = STYLE_PROFILE;
     else if (key == 's')
         current_style = STYLE_SCRIZZLE;
+    else if(key == 'h')
+        draw_gui = !draw_gui;
+    
     
     //switch between different output modes
     else if (key == '1') {
