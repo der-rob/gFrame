@@ -431,7 +431,7 @@ Der Rahmen macht scheinbar Fehler bei der ID Vergabe. Für IDs, für die kein Ou
 Nun fällt mir die Variable Session ID auf, die jeder Punkt hat. Diese scheint so ziemlich das zu sein, was wir intern als Stroke ID generieren. 
 > Each touch has a session ID that is used to identify a touch over successive frames (http://www.ventuz.com/support/help/V3_02/TUIO.html)
 
-
+Ich habe das nun so umgestrickt, dass die Session ID als Stroke ID verwendet wird und das scheint das Probelm zu beheben!
 
   
 #Netzwerk einrichten
