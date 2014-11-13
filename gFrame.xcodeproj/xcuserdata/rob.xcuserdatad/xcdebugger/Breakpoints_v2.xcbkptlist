@@ -79,7 +79,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "392"
             endingLineNumber = "392"
-            landmarkName = "gFrameApp::setLEDColor(ofColor color)"
+            landmarkName = "gFrameApp::onTouchPoint(TouchPointEvent &amp;event)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -110,22 +110,8 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "389"
-            endingLineNumber = "389">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "src/gFrameApp.cpp"
-            timestampString = "437570168.262111"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "391"
-            endingLineNumber = "391"
-            landmarkName = "gFrameApp::setLEDColor(ofColor color)"
+            endingLineNumber = "389"
+            landmarkName = "gFrameApp::onTouchPoint(TouchPointEvent &amp;event)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -141,7 +127,23 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "391"
             endingLineNumber = "391"
-            landmarkName = "gFrameApp::setLEDColor(ofColor color)"
+            landmarkName = "gFrameApp::onTouchPoint(TouchPointEvent &amp;event)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "src/gFrameApp.cpp"
+            timestampString = "437570168.262111"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "391"
+            endingLineNumber = "391"
+            landmarkName = "gFrameApp::onTouchPoint(TouchPointEvent &amp;event)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -188,9 +190,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "394"
-            endingLineNumber = "394"
-            landmarkName = "gFrameApp::setLEDColor(ofColor color)"
-            landmarkType = "5">
+            endingLineNumber = "394">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -284,7 +284,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "440"
-            endingLineNumber = "440">
+            endingLineNumber = "440"
+            landmarkName = "gFrameApp::oscUpdate()"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -358,11 +360,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "src/gFrameApp.cpp"
-            timestampString = "437578223.280024"
+            timestampString = "437581165.400245"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "689"
-            endingLineNumber = "689"
+            startingLineNumber = "709"
+            endingLineNumber = "709"
             landmarkName = "gFrameApp::guiSetup()"
             landmarkType = "5">
          </BreakpointContent>
@@ -374,11 +376,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "src/gFrameApp.cpp"
-            timestampString = "437578223.280024"
+            timestampString = "437581165.400245"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "689"
-            endingLineNumber = "689"
+            startingLineNumber = "709"
+            endingLineNumber = "709"
             landmarkName = "gFrameApp::guiSetup()"
             landmarkType = "5">
          </BreakpointContent>
@@ -390,11 +392,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "src/gFrameApp.cpp"
-            timestampString = "437578223.280024"
+            timestampString = "437581165.400245"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "689"
-            endingLineNumber = "689"
+            startingLineNumber = "709"
+            endingLineNumber = "709"
             landmarkName = "gFrameApp::guiSetup()"
             landmarkType = "5">
          </BreakpointContent>
