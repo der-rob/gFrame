@@ -160,12 +160,14 @@ void gFrameApp::draw(){
     mCanvas.grabScreen((int)grabOrigin.x, (int)grabOrigin.y, outputRect.width, outputRect.height);
     
     //gui output here
-    gui.draw();
-    ofSetColor(255);
-    ofDrawBitmapString("style: " + ofToString(current_style), ofGetWidth()-100, ofGetHeight()-55);
-    ofDrawBitmapString("r: " + ofToString(network.getReceiveQueueLength()), ofGetWidth()-100, ofGetHeight()-40);
-    ofDrawBitmapString("s: " + ofToString(network.getSendQueueLength()), ofGetWidth()-100, ofGetHeight()-25 );
-    ofDrawBitmapString("fps: " + ofToString(ofGetFrameRate()), ofGetWidth()-100, ofGetHeight()-10 );
+    if(draw_gui){
+        gui.draw();
+        ofSetColor(255);
+        ofDrawBitmapString("style: " + ofToString(current_style), ofGetWidth()-100, ofGetHeight()-55);
+        ofDrawBitmapString("r: " + ofToString(network.getReceiveQueueLength()), ofGetWidth()-100, ofGetHeight()-40);
+        ofDrawBitmapString("s: " + ofToString(network.getSendQueueLength()), ofGetWidth()-100, ofGetHeight()-25 );
+        ofDrawBitmapString("fps: " + ofToString(ofGetFrameRate()), ofGetWidth()-100, ofGetHeight()-10 );
+    }
 }
 
 void gFrameApp::drawFingerPositions(){

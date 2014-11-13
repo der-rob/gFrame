@@ -167,6 +167,8 @@ private:
     ofParameter<float> point_lifetime = 10;
 
     ofParameter<bool> input_mouse, input_pqlabs, input_tuio;
+    
+    bool draw_gui = true;
 };
 
 
