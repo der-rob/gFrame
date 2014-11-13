@@ -10,6 +10,7 @@
 			<output_settings>
 				<width>1024</width>
 				<height>768</height>
+			<UnknownName>0</UnknownName>
 			</output_settings>
 			<network>
 				<remote_ip>192.168.1.36</remote_ip>
@@ -19,14 +20,15 @@
 			<osc>
 				<iPad_IP>192.168.178.30</iPad_IP>
 				<iPad_Port>8001</iPad_Port>
-                <local_OSC_port>8500</local_OSC_port>
+                <local_OSC_port>8000</local_OSC_port>
 			</osc>
 			<brush_settings>
 				<brush_Radius>8</brush_Radius>
 				<linewidth>2</linewidth>
                 <color>255, 0, 0, 255</color>
 			<new_point_distance>10</new_point_distance>
-				<point_lifetime>10</point_lifetime>
+				<point_lifetime>20</point_lifetime>
+			<local_color>255, 255, 255, 255</local_color>
 			</brush_settings>
             <Wild_Brush_Parameters>
 				<amplitude>8</amplitude>
@@ -48,9 +50,9 @@
 				<twist>5</twist>
 			</profile_style>
 			<group>
-				<mouse>0</mouse>
+				<mouse>1</mouse>
 				<pqlabs>0</pqlabs>
-				<tuio>1</tuio>
+				<tuio>0</tuio>
 			</group>
 		</group>
 	</GFrame_Settings>
