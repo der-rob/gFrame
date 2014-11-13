@@ -24,7 +24,7 @@
 			<brush_settings>
 				<brush_Radius>8</brush_Radius>
 				<linewidth>2</linewidth>
-                <color>0, 0, 255, 255</color>
+                <color>255, 0, 0, 255</color>
 			<new_point_distance>10</new_point_distance>
 				<point_lifetime>10</point_lifetime>
 			</brush_settings>
@@ -48,9 +48,9 @@
 				<twist>5</twist>
 			</profile_style>
 			<group>
-				<mouse>1</mouse>
+				<mouse>0</mouse>
 				<pqlabs>0</pqlabs>
-				<tuio>0</tuio>
+				<tuio>1</tuio>
 			</group>
 		</group>
 	</GFrame_Settings>

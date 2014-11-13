@@ -682,7 +682,7 @@ void gFrameApp::guiSetup() {
     ///Brushes
     localBrushColor.setName("color");
     parameters_brush.setName("brush settings");
-    parameters_brush.add(localBrushColor);
+    parameters_brush.add(localBrushColor.set("local color", ofColor(255, 255, 255), ofColor(0,0,0), ofColor(255,255,255)));
     newPointDistance.set("new point distance", 10,1,100);
     parameters_brush.add(newPointDistance);
     parameters_brush.add(point_lifetime.set("point lifetime", 10, 1, 100));
