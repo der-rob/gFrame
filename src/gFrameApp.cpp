@@ -416,10 +416,19 @@ void gFrameApp::oscUpdate() {
         else if (m.getAddress() == "/1/t_orange") localBrushColor = ofColor::orange;
         else if (m.getAddress() == "/1/t_pink") localBrushColor = ofColor::pink;
         //brush settings tab
-        else if (m.getAddress() == "/settings/timetolive") stroke_list.setLifetime(m.getArgAsFloat(0));
-        else if (m.getAddress() == "/settings/pulsing_limits/2") upper_pulsing_limit = m.getArgAsFloat(0);
-        else if (m.getAddress() == "/settings/pulsing_limits/1") lower_pulsing_limit = m.getArgAsFloat(0);
-        else if (m.getAddress() == "/settings/push_clear") stroke_list.clear();
+        //wild aka scrizzle
+        else if (m.getAddress() =="/2/s_w_amplitude") W_amplitude = m.getArgAsFloat(0);
+        else if (m.getAddress() == "/2/s_w_wavelength") W_wavelength = m.getArgAsFloat(0);
+        else if (m.getAddress() == "/2/s_w_mainline") W_mainLine_thickness = m.getArgAsFloat(0);
+        else if (m.getAddress() == "/2/s_w_bylines") W_byLine_thicknes = m.getArgAsFloat(0);
+        else if (m.getAddress() == "/2/s_w_norvosity") W_nervosity = m.getArgAsFloat(0);
+        else if (m.getAddress() == "/2/s_w_fadeouttime") W_fadeout_time = m.getArgAsFloat(0);
+        else if (m.getAddress() == "/2/s_w_fadeduration") W_fadeduration = m.getArgAsFloat(0);
+        //threedee aka profile
+        else if (m.getAddress() == "/2/s_td_depth") m.getArgAsFloat(0);
+        else if (m.getAddress() == "/2/s_td_width") m.getArgAsFloat(0);
+        else if (m.getAddress() == "/2/s_td_zspeed") m.getArgAsFloat(0);
+        else if (m.getAddress() == "/2/s_td_twist") m.getArgAsFloat(0);
     }
     
     
@@ -433,12 +442,12 @@ void gFrameApp::oscupdate_interface() {
     ofxOscMessage update;
     
     //styles
+    
     update.clear();
     update.setAddress("/1/t_wild");
     if (current_style == STYLE_SCRIZZLE) update.addFloatArg(1);
     else update.addFloatArg(0);
     sender.sendMessage(update);
-
     
     update.clear();
     update.setAddress("/1/t_threedee");
@@ -452,41 +461,37 @@ void gFrameApp::oscupdate_interface() {
     else update.addFloatArg(0);
     sender.sendMessage(update);
 
+    //color
     //red
     update.clear();
     update.setAddress("/1/t_red");
     if ((ofColor)localBrushColor == ofColor::red) update.addFloatArg(1);
     else update.addFloatArg(0);
     sender.sendMessage(update);
-    
     //green
     update.clear();
     update.setAddress("/1/t_green");
     if ((ofColor)localBrushColor == ofColor::green) update.addFloatArg(1);
     else update.addFloatArg(0);
     sender.sendMessage(update);
-    
     //blue
     update.clear();
     update.setAddress("/1/t_blue");
     if ((ofColor)localBrushColor == ofColor::blue) update.addFloatArg(1);
     else update.addFloatArg(0);
     sender.sendMessage(update);
-    
     //yellow
     update.clear();
     update.setAddress("/1/t_yellow");
     if ((ofColor)localBrushColor == ofColor::yellow) update.addFloatArg(1);
     else update.addFloatArg(0);
     sender.sendMessage(update);
-    
     //purple
     update.clear();
     update.setAddress("/1/t_orange");
     if ((ofColor)localBrushColor == ofColor::orange) update.addFloatArg(1);
     else update.addFloatArg(0);
     sender.sendMessage(update);
-    
     //pink
     update.clear();
     update.setAddress("/1/t_pink");
@@ -494,36 +499,67 @@ void gFrameApp::oscupdate_interface() {
     else update.addFloatArg(0);
     sender.sendMessage(update);
     
-    //timetolive
+    //brush settings
+    //wild aka scrizzle
+    //amplitude
     update.clear();
-    update.setAddress("/settings/timetolive");
-    update.addFloatArg(stroke_list.getLifetime());
+    update.setAddress("/1/s_w_amplitude");
+    update.addFloatArg(W_amplitude);
     sender.sendMessage(update);
+    //wavelength
     update.clear();
-    update.setAddress("/settings/label_ttl");
-    update.addStringArg(ofToString(stroke_list.getLifetime()));
+    update.setAddress("/1/s_w_wavelength");
+    update.addFloatArg(W_wavelength);
+    sender.sendMessage(update);
+    //mainline
+    update.clear();
+    update.setAddress("/1/s_w_mainline");
+    update.addFloatArg(W_mainLine_thickness);
+    sender.sendMessage(update);
+    //by lines
+    update.clear();
+    update.setAddress("/1/s_w_bylines");
+    update.addFloatArg(W_byLine_thicknes);
+    sender.sendMessage(update);
+    //nervosity
+    update.clear();
+    update.setAddress("/1/s_w_nervosity");
+    update.addFloatArg(W_nervosity);
+    sender.sendMessage(update);
+    //fadeouttime
+    update.clear();
+    update.setAddress("/1/s_w_fadeouttime");
+    update.addFloatArg(W_nervosity);
+    sender.sendMessage(update);
+    //fadeduration
+    update.clear();
+    update.setAddress("/1/s_w_fadeduration");
+    update.addFloatArg(W_fadeduration);
     sender.sendMessage(update);
     
-    //pulsing limits
+    //profile
+    //depth
     update.clear();
-    update.setAddress("/settings/label_upl");
-    update.addStringArg(ofToString(upper_pulsing_limit));
+    update.setAddress("/1/s_td_depth");
+    update.addFloatArg(style_profile_depth);
+    sender.sendMessage(update);
+    //width
+    update.clear();
+    update.setAddress("/1/s_td_width");
+    update.addFloatArg(style_profile_width);
+    sender.sendMessage(update);
+    //z-speed
+    update.clear();
+    update.setAddress("/1/s_td_zspeed");
+    update.addFloatArg(style_profile_zspeed);
+    sender.sendMessage(update);
+    //twist
+    update.clear();
+    update.setAddress("/1/s_td_twist");
+    update.addFloatArg(style_profile_twist);
     sender.sendMessage(update);
     
-    update.clear();
-    update.setAddress("/settings/pulsing_limits/2");
-    update.addFloatArg(upper_pulsing_limit);
-    sender.sendMessage(update);
-    
-    update.clear();
-    update.setAddress("/settings/pulsing_limits/1");
-    update.addFloatArg(lower_pulsing_limit);
-    sender.sendMessage(update);
-    
-    update.clear();
-    update.setAddress("/settings/label_lpl");
-    update.addStringArg(ofToString(lower_pulsing_limit));
-    sender.sendMessage(update);
+    //caligraphy
 }
 
 void gFrameApp::dmxUpdate(){ // name of this method is a bit misleading, should be updateLED or something like that
@@ -676,29 +712,19 @@ void gFrameApp::guiSetup() {
 
 void gFrameApp::setupWildBrush() {
     wild_parameters.setName("Wild Brush Parameters");
-    
-    W_amplitude.set("amplitude",8.0,1.0,20);
-    wild_parameters.add(W_amplitude);
+    wild_parameters.add(W_amplitude.set("amplitude",8.0,0.0,20));
     //wavelength
-    W_wavelength.set("wavelength", 4.0, 1.0, 10.0);
-    wild_parameters.add(W_wavelength);
-    //strokewidth
-    //may be obsolete since amplitude means the same
+    wild_parameters.add(W_wavelength.set("wavelength", 4.0, 1.0, 10.0));
     //fadeouttime
-    W_fadeout_time.set("fadeout time",10.0,2.0,60.0);
-    wild_parameters.add(W_fadeout_time);
+    wild_parameters.add(W_fadeout_time.set("fadeout time",10.0,2.0,60.0));
     //fadeduration
-    W_fadeduration.set("fade duration", 5.0, 2.0, 60);
-    wild_parameters.add(W_fadeduration);
+    wild_parameters.add(W_fadeduration.set("fade duration", 5.0, 0.0, 60));
     //nervosity aka speed
-    W_nervosity.set("nervousity",1.0,0.5,20.0);
-    wild_parameters.add(W_nervosity);
+    wild_parameters.add(W_nervosity.set("nervousity",1.0,0.5,20.0));
     //mainLine_thickness
-    W_mainLine_thickness.set("main line thickness", 4.0, 1.0, 10.0);
-    wild_parameters.add(W_mainLine_thickness);
+    wild_parameters.add(W_mainLine_thickness.set("main line thickness", 4.0, 1.0, 10.0));
     //byline_thickness
-    W_byLine_thicknes.set("by line thickness", 0.5, 0.1, 5.0);
-    wild_parameters.add(W_byLine_thicknes);
+    wild_parameters.add(W_byLine_thicknes.set("by line thickness", 0.5, 0.1, 5.0));
 }
 
 void gFrameApp::onSettingsReload() {
