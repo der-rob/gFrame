@@ -27,15 +27,15 @@ GPoint::GPoint(int x, int y, int finger_id, int color_r, int color_g, int color_
 void GPoint::serialize(string *s){
     s->clear();
     
-    s->append(ofToString(loc.x) + "," +
-              ofToString(loc.y) + "," +
-              ofToString(finger_id) + "," +
-              ofToString((int)color.r) + "," +
-              ofToString((int)color.g) + "," +
-              ofToString((int)color.b) + "," +
-              ofToString(type) + "," +
-              ofToString(style_id) + "," +
-              ofToString((int)stroke_id)
+    s->append(ofToString((int) loc.x) + "," +
+              ofToString((int) loc.y) + "," +
+              ofToString((int) finger_id) + "," +
+              ofToString((int) color.r) + "," +
+              ofToString((int) color.g) + "," +
+              ofToString((int) color.b) + "," +
+              ofToString((int) type) + "," +
+              ofToString((int) style_id) + "," +
+              ofToString((int) stroke_id)
               );
     
 }
@@ -43,7 +43,7 @@ void GPoint::serialize(string *s){
 bool GPoint::unserialize(string s){
     vector<string> list;
     
-    RegularExpression regEx("(-?[0-9]{1,3},){2}([0-9]{1,3},){6}([0-9]{1,10})"); // accept negative values on the first two arguments (position) and long numbers on the last (strokeid)
+    RegularExpression regEx("(-?[0-9]{1,4},){2}([0-9]{1,3},){6}([0-9]{1,10})"); // accept negative values on the first two arguments (position) and long numbers on the last (strokeid)
     RegularExpression::Match match;
     int found = regEx.match(s, match);
     
