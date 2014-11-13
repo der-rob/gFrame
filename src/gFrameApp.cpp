@@ -432,7 +432,7 @@ void gFrameApp::oscUpdate() {
         else if (m.getAddress() == "/2/s_w_wavelength") W_wavelength = m.getArgAsFloat(0);
         else if (m.getAddress() == "/2/s_w_mainline") W_mainLine_thickness = m.getArgAsFloat(0);
         else if (m.getAddress() == "/2/s_w_bylines") W_byLine_thicknes = m.getArgAsFloat(0);
-        else if (m.getAddress() == "/2/s_w_norvosity") W_nervosity = m.getArgAsFloat(0);
+        else if (m.getAddress() == "/2/s_w_nervosity") W_nervosity = m.getArgAsFloat(0);
         else if (m.getAddress() == "/2/s_w_fadeouttime") W_fadeout_time = m.getArgAsFloat(0);
         else if (m.getAddress() == "/2/s_w_fadeduration") W_fadeduration = m.getArgAsFloat(0);
         //threedee aka profile
