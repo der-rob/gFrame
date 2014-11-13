@@ -293,6 +293,7 @@ void gFrameApp::mouseMoved(int x, int y){
         GPoint the_point;
         the_point.setLocation(ofVec2f(x,y));
         the_point.setId(0);
+        the_point.setStrokeId(0);
         the_point.setColor(localBrushColor);
         the_point.setStyle(current_style);
         //    the_point.lifetime = 0;
