@@ -125,6 +125,9 @@ void gFrameApp::update(){
     profileStyle.setLineDepth(style_profile_depth);
     profileStyle.setZSpeed(style_profile_zspeed);
     profileStyle.setTwist(style_profile_twist);
+
+    // lifetime
+    stroke_list.setLifetime(point_lifetime * 1000);
     
     //caligraphy style
 }
@@ -134,7 +137,6 @@ void gFrameApp::draw(){
     
     ofBackground(0);
     ofSetColor(255);
-//    
     
     for(vector<GPoint> stroke : *stroke_list.getAllStrokes()){
         switch(stroke[0].getStyle()){
@@ -162,9 +164,10 @@ void gFrameApp::draw(){
     glDisable(GL_DEPTH_TEST);
     gui.draw();
     ofSetColor(200);
-    ofDrawBitmapString("r: " + ofToString(network.getReceiveQueueLength()), ofGetWidth()-200, ofGetHeight()-50);
-    ofDrawBitmapString("s: " + ofToString(network.getSendQueueLength()), ofGetWidth()-200, ofGetHeight()-25 );
-    ofDrawBitmapString("fps: " + ofToString(ofGetFrameRate()), ofGetWidth()-200, ofGetHeight()-10 );
+    ofDrawBitmapString("style: " + ofToString(current_style), ofGetWidth()-100, ofGetHeight()-55);
+    ofDrawBitmapString("r: " + ofToString(network.getReceiveQueueLength()), ofGetWidth()-100, ofGetHeight()-40);
+    ofDrawBitmapString("s: " + ofToString(network.getSendQueueLength()), ofGetWidth()-100, ofGetHeight()-25 );
+    ofDrawBitmapString("fps: " + ofToString(ofGetFrameRate()), ofGetWidth()-100, ofGetHeight()-10 );
     glEnable(GL_DEPTH_TEST);
 }
 
@@ -205,7 +208,6 @@ void gFrameApp::drawFingerPositions(){
 void gFrameApp::keyPressed(int key){
     if (key == 'r') {
         localBrushColor = ofColor::red;
-        
     }
     else if (key == 'b') {
         localBrushColor = ofColor::blue;
@@ -273,100 +275,109 @@ void gFrameApp::keyPressed(int key){
 //--------------------------------------------------------------
 void gFrameApp::mouseMoved(int x, int y){
     
-    GPoint the_point;
-    the_point.setLocation(ofVec2f(x,y));
-    the_point.setId(0);
-    the_point.setColor(localBrushColor);
-    the_point.setStyle(current_style);
-//    the_point.lifetime = 0;
-//    all_points.push_back(the_point);
-    stroke_list.add(the_point);
-    
-    stop_pulsing();
-    last_points_time = ofGetElapsedTimeMillis();
+    if(input_mouse){
+        GPoint the_point;
+        the_point.setLocation(ofVec2f(x,y));
+        the_point.setId(0);
+        the_point.setColor(localBrushColor);
+        the_point.setStyle(current_style);
+        //    the_point.lifetime = 0;
+        //    all_points.push_back(the_point);
+        stroke_list.add(the_point);
+        
+        stop_pulsing();
+        last_points_time = ofGetElapsedTimeMillis();
+    }
 }
+
 
 //--------------------------------------------------------------
 void gFrameApp::tuioAdded(ofxTuioCursor &cursor) {
-    GPoint the_point;
-    the_point.setLocation(ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight()));
-    the_point.setId(cursor.getFingerId());
-    the_point.setColor(localBrushColor);
-    the_point.setType(TUIO);
-    the_point.setStyle(current_style);
-    stroke_list.addToNewStroke(the_point);
-    
-    finger_positions[cursor.getFingerId()] = ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight());
-    
-    stop_pulsing();
-    last_points_time = ofGetElapsedTimeMillis();
+    if(input_tuio){
+        GPoint the_point;
+        the_point.setLocation(ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight()));
+        the_point.setId(cursor.getFingerId());
+        the_point.setColor(localBrushColor);
+        the_point.setType(TUIO);
+        the_point.setStyle(current_style);
+        stroke_list.addToNewStroke(the_point);
+        
+        finger_positions[cursor.getFingerId()] = ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight());
+        
+        stop_pulsing();
+        last_points_time = ofGetElapsedTimeMillis();
+    }
 }
 
 //--------------------------------------------------------------
 void gFrameApp::tuioUpdated(ofxTuioCursor &cursor) {
-    GPoint the_point;
-    the_point.setLocation(ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight()));
-    the_point.setId(cursor.getFingerId());
-    the_point.setColor(localBrushColor);
-    the_point.setType(TUIO);
-    the_point.setStyle(current_style);
-    stroke_list.add(the_point);
-    
-    finger_positions[cursor.getFingerId()] = ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight());
-    
-    stop_pulsing();
-    last_points_time = ofGetElapsedTimeMillis();
+    if(input_tuio){
+        GPoint the_point;
+        the_point.setLocation(ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight()));
+        the_point.setId(cursor.getFingerId());
+        the_point.setColor(localBrushColor);
+        the_point.setType(TUIO);
+        the_point.setStyle(current_style);
+        stroke_list.add(the_point);
+        
+        finger_positions[cursor.getFingerId()] = ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight());
+        
+        stop_pulsing();
+        last_points_time = ofGetElapsedTimeMillis();
+    }
 }
 
 void gFrameApp::tuioRemoved(ofxTuioCursor & cursor){
-    finger_positions[cursor.getFingerId()] = ofVec2f(0, 0);
+    if(input_tuio){
+        finger_positions[cursor.getFingerId()] = ofVec2f(0, 0);
+    }
 }
 
 
 //--------------------------------------------------------------
 void gFrameApp::onTouchPoint(TouchPointEvent &event) {
     
-    GPoint the_point;
-    int x,y;
-    if (orientation == PORTRAIT) {
-        int temp = x;
-        x = outputRect.width-ofMap(event.touchPoint.y, 0, 1050, 0, outputRect.width);
-        y = outputRect.height-ofMap(event.touchPoint.x, 0, 1680, 0, outputRect.height);;
-    } else {
-        x = ofMap(event.touchPoint.x, 0, 1680, 0, outputRect.width);
-        y = ofMap(event.touchPoint.y, 0, 1050, 0, outputRect.height);
-    }
-    cout << x << " " << y << endl;
-    the_point.setLocation(ofVec2f(x, y));
-    the_point.setId((int)event.touchPoint.id);
-    the_point.setColor(localBrushColor);
-    the_point.setType(LOCALFRAME);
-    the_point.setStyle(current_style);
-    
-    switch (event.touchPoint.point_event)
-    {
-        case TP_DOWN:
-        {
-            stroke_list.addToNewStroke(the_point);
-            finger_positions[event.touchPoint.id] = ofVec2f(x, y);
-            break;
+    if(input_pqlabs){
+        GPoint the_point;
+        int x,y;
+        if (orientation == PORTRAIT) {
+            int temp = x;
+            x = outputRect.width-ofMap(event.touchPoint.y, 0, 1050, 0, outputRect.width);
+            y = outputRect.height-ofMap(event.touchPoint.x, 0, 1680, 0, outputRect.height);;
+        } else {
+            x = ofMap(event.touchPoint.x, 0, 1680, 0, outputRect.width);
+            y = ofMap(event.touchPoint.y, 0, 1050, 0, outputRect.height);
         }
-        case TP_MOVE:
+        cout << x << " " << y << endl;
+        the_point.setLocation(ofVec2f(x, y));
+        the_point.setId((int)event.touchPoint.id);
+        the_point.setColor(localBrushColor);
+        the_point.setType(LOCALFRAME);
+        the_point.setStyle(current_style);
+        
+        switch (event.touchPoint.point_event)
         {
-            stroke_list.add(the_point);
-            finger_positions[event.touchPoint.id] = ofVec2f(x, y);
-            break;
+            case TP_DOWN:
+            {
+                stroke_list.addToNewStroke(the_point);
+                finger_positions[event.touchPoint.id] = ofVec2f(x, y);
+                break;
+            }
+            case TP_MOVE:
+            {
+                stroke_list.add(the_point);
+                finger_positions[event.touchPoint.id] = ofVec2f(x, y);
+                break;
+            }
+            case TP_UP:
+                finger_positions[event.touchPoint.id] = ofVec2f(0, 0);
+                break;
         }
-        case TP_UP:
-            finger_positions[event.touchPoint.id] = ofVec2f(0, 0);
-            break;
+        
+        //stop pulsing LEDs
+        stop_pulsing();
+        last_points_time = ofGetElapsedTimeMillis();
     }
-    
-    //stop pulsing LEDs
-    stop_pulsing();
-    last_points_time = ofGetElapsedTimeMillis();
-    
-    
 }
 
 //--------------------------------------------------------------
@@ -621,24 +632,26 @@ void gFrameApp::guiSetup() {
     parameters_brush.add(localBrushColor);
     newPointDistance.set("new point distance", 10,1,100);
     parameters_brush.add(newPointDistance);
+    parameters_brush.add(point_lifetime.set("point lifetime", 10, 1, 100));
         
 //    parameters_brush.add(brush_radius.set("brush Radius", 8.0,2.0,20.0));
 //    parameters_brush.add(brush_width.set("linewidth", 2.0, 1.0, 4.0));
-    localBrushColor.setName("color");
-    parameters_brush.add(localBrushColor);
     
     parameters_profile_style.setName("profile style");
     parameters_profile_style.add(style_profile_depth.set("depth", 10, 2, 50));
     parameters_profile_style.add(style_profile_width.set("width", 10, 2, 50));
-    parameters_profile_style.add(style_profile_zspeed.set("z-speed", 1, 1, 15));
-    parameters_profile_style.add(style_profile_twist.set("depth", 5, 2, 20));
-    
+    parameters_profile_style.add(style_profile_zspeed.set("z-speed", 1, 1, 100));
+    parameters_profile_style.add(style_profile_twist.set("twist", 5, 2, 20));
     
     // finger positions
     parameters_finger.setName("finger positions");
     parameters_finger.add(draw_finger_positions.set("draw finger positions", true));
     parameters_finger.add(finger_position_size.set("finger circle radius", 30, 2, 100));
     
+    // input settings
+    parameters_input.add(input_mouse.set("mouse", false));
+    parameters_input.add(input_pqlabs.set("pqlabs", false));
+    parameters_input.add(input_tuio.set("tuio", true));
     
     //add the subgroups to main parameter group
     parameters.add(parameters_output);
@@ -648,6 +661,8 @@ void gFrameApp::guiSetup() {
     parameters.add(parameters_brush);
     parameters.add(parameters_profile_style);
     parameters.add(wild_parameters);
+    parameters.add(parameters_input);
+
     //add all parameters to the gui
     gui.add(parameters);    
 }

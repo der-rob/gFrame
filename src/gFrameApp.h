@@ -142,6 +142,7 @@ private:
     ofParameterGroup parameters_network;
     ofParameterGroup parameters_output;
     ofParameterGroup parameters_profile_style;
+    ofParameterGroup parameters_input;
     
     ofParameter<string> gui_outputmode;
     ofParameter<string> gui_direction;
@@ -162,6 +163,10 @@ private:
     ofParameter<int> style_profile_width = 10;
     ofParameter<int> style_profile_zspeed = 1;
     ofParameter<int> style_profile_twist = 5;
+    
+    ofParameter<float> point_lifetime = 10;
+
+    ofParameter<bool> input_mouse, input_pqlabs, input_tuio;
 };
 
 
