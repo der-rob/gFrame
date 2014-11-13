@@ -57,9 +57,7 @@ void StrokeList::update(){
     
     // remove points that have exceeded their lifetime
     for(int i = 0; i < strokes.size(); i++)
-    {
-        long current_stroke_id = strokes[i].front().getStrokeId();
-        
+    {        
         for(int j = 0; j < strokes[i].size(); j++){
             if ((ofGetElapsedTimeMillis()) - strokes[i][j].getTimestamp() > lifetime) {
                 strokes[i].erase(strokes[i].begin() + j);
