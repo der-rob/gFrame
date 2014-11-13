@@ -14,6 +14,8 @@
 		<string>github.com:der-rob/gFrame.git</string>
 		<key>1C584D82D8F91B619E103DBEA051F0CCC0070ED3</key>
 		<string>https://github.com/kylemcdonald/ofxDmx.git</string>
+		<key>58A3853D38D93A23232297F53ECAE65CBADA82FE</key>
+		<string>https://github.com/jvcleave/ofxPQLabs.git</string>
 		<key>65FAA983A662D43645B6C2BEE45CDCC6359DE6D9</key>
 		<string>https://github.com/memo/ofxMSAInterpolator.git</string>
 		<key>6B5D1DE462D521A98972DF70F1147E20268C546A</key>
@@ -33,6 +35,8 @@
 		<string>../..</string>
 		<key>1C584D82D8F91B619E103DBEA051F0CCC0070ED3</key>
 		<string>../../../addons/ofxDmx</string>
+		<key>58A3853D38D93A23232297F53ECAE65CBADA82FE</key>
+		<string>../../../addons/ofxPQLabs</string>
 		<key>65FAA983A662D43645B6C2BEE45CDCC6359DE6D9</key>
 		<string>../../../addons/ofxMSAInterpolator</string>
 		<key>6B5D1DE462D521A98972DF70F1147E20268C546A</key>
@@ -83,6 +87,14 @@
 			<string>65FAA983A662D43645B6C2BEE45CDCC6359DE6D9</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ofxMSAInterpolator</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>58A3853D38D93A23232297F53ECAE65CBADA82FE</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ofxPQLabs</string>
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
