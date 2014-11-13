@@ -25,6 +25,8 @@
 				<brush_Radius>8</brush_Radius>
 				<linewidth>2</linewidth>
                 <color>0, 0, 255, 255</color>
+			<new_point_distance>10</new_point_distance>
+				<point_lifetime>10</point_lifetime>
 			</brush_settings>
             <Wild_Brush_Parameters>
 				<amplitude>8</amplitude>
@@ -32,7 +34,24 @@
 				<nervousity>1</nervousity>
 				<main_line_thickness>4</main_line_thickness>
 				<by_line_thickness>0.5</by_line_thickness>
+			<fadeout_time>10</fadeout_time>
+				<fade_duration>5</fade_duration>
 			</Wild_Brush_Parameters>
+		<finger_positions>
+				<draw_finger_positions>1</draw_finger_positions>
+				<finger_circle_radius>30</finger_circle_radius>
+			</finger_positions>
+			<profile_style>
+				<depth>10</depth>
+				<width>10</width>
+				<z-speed>1</z-speed>
+				<twist>5</twist>
+			</profile_style>
+			<group>
+				<mouse>1</mouse>
+				<pqlabs>0</pqlabs>
+				<tuio>0</tuio>
+			</group>
 		</group>
 	</GFrame_Settings>
 </GFrame>

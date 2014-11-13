@@ -62,6 +62,8 @@ void gFrameApp::setup(){
     grabOrigin = ofVec2f(0.0,0.0);
     mPanels.allocate(mPanelPositionAndSize.width, mPanelPositionAndSize.height, OF_IMAGE_COLOR);
     mPanels.setColor(0);
+//    mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
+//    mCanvas.grabScreen(0,0, outputRect.width, outputRect.height);
 
     // initialize finger positions
     for(ofVec2f finger : finger_positions){
@@ -602,6 +604,7 @@ void gFrameApp::toPanelsGFrame(ofImage &canvas, ofImage &panels){
 void gFrameApp::guiSetup() {
     //GUI Setup
     gui.setup();
+    gui.setPosition(ofGetWidth() - gui.getWidth() - 10, 10);
     gui.setName("GFrame Settings");
     
     ///output settings
@@ -637,9 +640,7 @@ void gFrameApp::guiSetup() {
     newPointDistance.set("new point distance", 10,1,100);
     parameters_brush.add(newPointDistance);
     parameters_brush.add(point_lifetime.set("point lifetime", 10, 1, 100));
-        
-//    parameters_brush.add(brush_radius.set("brush Radius", 8.0,2.0,20.0));
-//    parameters_brush.add(brush_width.set("linewidth", 2.0, 1.0, 4.0));
+
     
     parameters_profile_style.setName("profile style");
     parameters_profile_style.add(style_profile_depth.set("depth", 10, 2, 50));
@@ -668,7 +669,9 @@ void gFrameApp::guiSetup() {
     parameters.add(parameters_input);
 
     //add all parameters to the gui
-    gui.add(parameters);    
+    gui.add(parameters);
+    //minimize gui elements
+    gui.minimizeAll();
 }
 
 void gFrameApp::setupWildBrush() {
