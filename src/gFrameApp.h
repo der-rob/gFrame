@@ -84,13 +84,21 @@ private:
     
     ofxSyphonServer syphonMainOut;
     //brazil support
+//    About LED1 and LED2 into the mask (attached):
+//    LED 2 (x,y) = 508,77
+//          resoluton: 480x288
+//    
+//    LED 1 (x,y) = 220,452
+//          resolution: 768x288
+
     ofImage mPanels, mCanvas;
     ofRectangle mPanelPositionAndSize;
-    ofRectangle mCanvasPositionAndSize;
+    ofRectangle dimSESI;
+    ofRectangle dimLED1, dimLED2;
     void toPanels(ofImage &canvas, ofImage &panels);
     void toPanelsGFrame(ofImage &canvas, ofImage &panels);
-    ofImage fiespMask;
-    ofImage brazilianOut;
+    //ofImage fiespMask;
+    //ofImage brazilianOut;
 
     
     //OSC

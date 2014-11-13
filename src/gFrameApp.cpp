@@ -59,11 +59,11 @@ void gFrameApp::setup(){
 
     //brazil support
     mPanelPositionAndSize = ofRectangle(37,259,214,167);
-    mCanvasPositionAndSize = ofRectangle(98,259,93,167);
-    mCanvas.allocate(mCanvasPositionAndSize.width, mCanvasPositionAndSize.height, OF_IMAGE_COLOR);
+    dimSESI = ofRectangle(98,259,93,167);
+    dimLED1 = ofRectangle(220,452,768,288);
+    dimLED2 = ofRectangle(508, 77, 480, 288);
     mPanels.allocate(mPanelPositionAndSize.width, mPanelPositionAndSize.height, OF_IMAGE_COLOR);
     mPanels.setColor(0);
-//    fiespMask.loadImage("SP_Urban_MASK_025.png");
 
     // initialize finger positions
     for(ofVec2f finger : finger_positions){
@@ -89,25 +89,26 @@ void gFrameApp::update(){
 //    dmxUpdate();
     
     //dealing with different output modes
-    //might be crushed down to a simple if statement if there are no options to deal with for the other outut modes
+    ofFbo tempFBO;
+            tempFBO.allocate(1024, 768);
+            tempFBO.begin();
+            ofBackground(0);
+    
     switch (outputmode) {
         case SESI:
         {
             toPanelsGFrame(mCanvas, mPanels);
-            ofFbo tempFBO;
-            tempFBO.allocate(1024, 768);
-            tempFBO.begin();
-            ofBackground(0);
-            //fiespMask.draw(0,0);
             mPanels.draw(mPanelPositionAndSize.x,mPanelPositionAndSize.y);
-            tempFBO.end();
-            syphonMainOut.publishTexture(&tempFBO.getTextureReference());
             break;
         }
         default:
-            syphonMainOut.publishTexture(&mCanvas.getTextureReference());
+            mCanvas.draw(outputRect.x, outputRect.y, outputRect.width, outputRect.height);
+//            syphonMainOut.publishTexture(&mCanvas.getTextureReference());
             break;
     }
+    tempFBO.end();
+    
+    syphonMainOut.publishTexture(&tempFBO.getTextureReference());
     
     //update the brush settings
     //scrizzle style
@@ -118,13 +119,11 @@ void gFrameApp::update(){
     scrizzleStyle.setFadeOutTime(W_fadeout_time*1000.0, W_fadeduration*1000.0);
     scrizzleStyle.setNewPointDistance(newPointDistance);
     
+    //profile style
     profileStyle.setLineWidth(style_profile_width);
     profileStyle.setLineDepth(style_profile_depth);
     profileStyle.setZSpeed(style_profile_zspeed);
     profileStyle.setTwist(style_profile_twist);
-    
-    
-    //profile style
     
     //caligraphy style
 }
@@ -154,13 +153,13 @@ void gFrameApp::draw(){
         drawFingerPositions();
     }
     
-    //some texture juggling if outputmode is SESI
+    //grab the screen for syphon output
     mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
     mCanvas.grabScreen(0, 0, outputRect.width, outputRect.height);
     
-    //debug output here
+    //gui output here
     glDisable(GL_DEPTH_TEST);
-    gui.draw();
+    //gui.draw();
     ofSetColor(200);
     ofDrawBitmapString("r: " + ofToString(network.getReceiveQueueLength()), ofGetWidth()-200, ofGetHeight()-50);
     ofDrawBitmapString("s: " + ofToString(network.getSendQueueLength()), ofGetWidth()-200, ofGetHeight()-25 );
@@ -224,24 +223,28 @@ void gFrameApp::keyPressed(int key){
     //switch between different output modes
     else if (key == '1') {
         //ofSetWindowShape(768, 288);
-        outputRect.width = 768;
-        outputRect.height = 288;
-        scrizzleStyle.setNewPointDistance(outputRect.width/50.0);
+        outputRect.width = dimLED1.width;
+        outputRect.height = dimLED1.height;
+        outputRect.x =dimLED1.x;
+        outputRect.y = dimLED1.y;
         outputmode = LED1;
         orientation = LANDSCAPE;
     }
     else if (key == '2') {
         //ofSetWindowShape(480, 288);
-        outputRect.width = 480;
-        outputRect.height = 288;
-        scrizzleStyle.setNewPointDistance(outputRect.width/50.0);
+        outputRect.width = dimLED2.width;
+        outputRect.height = dimLED2.height;
+        outputRect.x =dimLED2.x;
+        outputRect.y = dimLED2.y;
         outputmode = LED2;
         orientation = LANDSCAPE;
     }
     else if (key == '3') {
         //ofSetWindowShape(mCanvasPositionAndSize.width, mCanvasPositionAndSize.height);
-        outputRect.width = mCanvasPositionAndSize.width;
-        outputRect.height = mCanvasPositionAndSize.height;
+        outputRect.width = dimSESI.width;
+        outputRect.height = dimSESI.height;
+        outputRect.x =dimSESI.x;
+        outputRect.y = dimSESI.y;
         outputmode = SESI;
         orientation = PORTRAIT;
     }
@@ -249,15 +252,17 @@ void gFrameApp::keyPressed(int key){
         //ofSetWindowShape(1024, 768);
         outputRect.width = 1024;
         outputRect.height =768;
-        scrizzleStyle.setNewPointDistance(outputRect.width/25.0);
-     
+        outputRect.x = 0;
+        outputRect.y = 0;
         outputmode = PROJECTOR;
         orientation = LANDSCAPE;
     }
     else if (key == '5') {
-        //ofSetWindowShape(mCanvasPositionAndSize.width, mCanvasPositionAndSize.height);
+        //ofSetWindowShape(dimSESI.width, dimSESI.height);
         outputRect.width = 512;
         outputRect.height = 768;
+        outputRect.x = 0;
+        outputRect.y = 0;
         outputmode = PROJECTOR_PORTRAIT;
         orientation = PORTRAIT;
     }

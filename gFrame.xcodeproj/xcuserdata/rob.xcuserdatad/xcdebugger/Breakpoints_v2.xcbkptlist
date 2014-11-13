@@ -10,13 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "src/gFrameApp.cpp"
-            timestampString = "437507289.030854"
+            timestampString = "437557167.381862"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "319"
-            endingLineNumber = "319"
-            landmarkName = "gFrameApp::oscUpdate()"
-            landmarkType = "5">
+            startingLineNumber = "328"
+            endingLineNumber = "328">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
