@@ -1,60 +1,60 @@
-<GFrame>
+<general_settings>
 	<group>
-		<UnknownName>269693129</UnknownName>
-	</group>
-	<Brush_Radius>8</Brush_Radius>
-	<Linewidth>2</Linewidth>
-<GFrame/>
-<GFrame_Settings>
-		<group>
-			<output_settings>
-				<width>1024</width>
-				<height>768</height>
-			<UnknownName>0</UnknownName>
+		<output_settings>
+			<width>1024</width>
+			<height>768</height>
 			<DMX_on>0</DMX_on>
-			</output_settings>
-			<network>
-				<remote_ip>192.168.1.36</remote_ip>
-				<remote_port>9001</remote_port>
-				<host_port>9000</host_port>
-			</network>
-			<osc>
-				<iPad_IP>192.168.178.30</iPad_IP>
-				<iPad_Port>8001</iPad_Port>
-                <local_OSC_port>8123</local_OSC_port>
-			</osc>
-			<brush_settings>
-				<brush_Radius>8</brush_Radius>
-				<linewidth>2</linewidth>
-                <color>255, 0, 0, 255</color>
-			<new_point_distance>10</new_point_distance>
-				<point_lifetime>20</point_lifetime>
-			<local_color>255, 255, 255, 255</local_color>
-			</brush_settings>
-            <Wild_Brush_Parameters>
-				<amplitude>8</amplitude>
-				<wavelength>4</wavelength>
-				<nervousity>1</nervousity>
-				<main_line_thickness>4</main_line_thickness>
-				<by_line_thickness>0.5</by_line_thickness>
-			<fadeout_time>10</fadeout_time>
-				<fade_duration>5</fade_duration>
-			</Wild_Brush_Parameters>
+		</output_settings>
+		<network>
+			<host_port>0</host_port>
+			<remote_ip/>
+			<remote_port>0</remote_port>
+		</network>
+		<osc>
+			<iPad_IP>192.168.178.30</iPad_IP>
+			<iPad_Port>0</iPad_Port>
+			<local_OSC_port>0</local_OSC_port>
+		</osc>
 		<finger_positions>
-				<draw_finger_positions>1</draw_finger_positions>
-				<finger_circle_radius>30</finger_circle_radius>
-			</finger_positions>
+			<draw_finger_positions>1</draw_finger_positions>
+			<finger_circle_radius>47</finger_circle_radius>
+		</finger_positions>
+		<brush_settings>
+			<new_point_distance>10</new_point_distance>
+			<point_lifetime>30</point_lifetime>
+			<local_color>255, 255, 255, 255</local_color>
+		</brush_settings>
+		<input_selection>
+			<mouse>1</mouse>
+			<pqlabs>0</pqlabs>
+			<tuio>0</tuio>
+		</input_selection>
+	<dmx_settings>
+			<DMX_on>1</DMX_on>
+			<upper_PL>1</upper_PL>
+			<lower_PL>0</lower_PL>
+			<LED_brightness>0.5</LED_brightness>
+			<LED_freqency>1</LED_freqency>
+		</dmx_settings>
+	</group>
+<general_settings/>
+<style_settings>
+		<group>
 			<profile_style>
 				<depth>10</depth>
-				<width>10</width>
+				<width>19</width>
 				<z-speed>1</z-speed>
 				<twist>5</twist>
 			</profile_style>
-			<group>
-				<mouse>1</mouse>
-				<pqlabs>0</pqlabs>
-				<tuio>0</tuio>
-			</group>
+			<Wild_Brush_Parameters>
+				<amplitude>8</amplitude>
+				<wavelength>4</wavelength>
+				<fadeout_time>10</fadeout_time>
+				<fade_duration>5</fade_duration>
+				<nervousity>1</nervousity>
+				<main_line_thickness>4</main_line_thickness>
+				<by_line_thickness>0.5</by_line_thickness>
+			</Wild_Brush_Parameters>
 		</group>
-	</GFrame_Settings>
-</GFrame>
+	</style_settings>
+</general_settings>

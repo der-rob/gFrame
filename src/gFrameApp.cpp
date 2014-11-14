@@ -11,15 +11,17 @@ void gFrameApp::setup(){
 
     //dimensions for final output
     outputRect = ofRectangle(0,0,1024, 768);
-    ofSetWindowShape(outputRect.width, outputRect.height);
-    
-    //brush setup
-    setupWildBrush();
-    
+
     //GUI setup
     guiSetup();
+    styleGuiSetup();
     ofAddListener(gui.loadPressedE, this, &gFrameApp::onSettingsReload);
+    ofAddListener(gui.savePressedE, this, &gFrameApp::onSettingsSave);
+    ofAddListener(style_gui.loadPressedE, this, &gFrameApp::onStyleSettingsreload);
+    ofAddListener(style_gui.savePressedE, this, &gFrameApp::onStyleSettingsSave);
+    
     gui.loadFromFile("settings.xml");
+    style_gui.loadFromFile("stylesettings.xml");
     
     //Syphon stuff
     syphonMainOut.setName("gFrame Main Out");
@@ -43,7 +45,13 @@ void gFrameApp::setup(){
     
     //OSC
     receiver.setup(local_osc_port);
+    try {
     sender.setup(ipad_ip,ipad_port);
+    }
+    catch (exception e) {
+        ofLogError() << "unable to connect to ipad";
+        use_ipad = false;
+    }
     
     // SETUP LIGHT
     light.enable();
@@ -82,12 +90,13 @@ void gFrameApp::exit(){
 void gFrameApp::update(){
     
     stroke_list.update();
-    oscUpdate();
+    if (use_ipad)
+        oscUpdate();
     tuioClient.getMessage();
     
     // DMX UPDATE
     if (dmx_on)
-        dmxUpdate();
+        updateLEDpulsing();
     
     //dealing with different output modes
     ofFbo tempFBO;
@@ -137,7 +146,7 @@ void gFrameApp::draw(){
     
     ofBackground(0);
     ofSetColor(255);
-    
+
     for(vector<GPoint> stroke : *stroke_list.getAllStrokes()){
         switch(stroke[0].getStyle()){
             case STYLE_PROFILE:
@@ -163,6 +172,7 @@ void gFrameApp::draw(){
     //gui output here
     if(draw_gui){
         gui.draw();
+        style_gui.draw();
         ofSetColor(255);
         ofDrawBitmapString("clients: " + ofToString(network.isConnected()), ofGetWidth()-120, ofGetHeight()-85);
         ofDrawBitmapString("connected: " + ofToString(network.getNumClients()), ofGetWidth()-120, ofGetHeight()-70);
@@ -312,7 +322,17 @@ void gFrameApp::mouseMoved(int x, int y){
 void gFrameApp::tuioAdded(ofxTuioCursor &cursor) {
     if(input_tuio){
         GPoint the_point;
-        the_point.setLocation(ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight()));
+        int x,y;
+        if (orientation == PORTRAIT) {
+            int temp = x;
+            x = outputRect.width-cursor.getY()*outputRect.width + outputRect.x;
+            y = outputRect.height-cursor.getX()*outputRect.height + outputRect.y;
+        } else {
+            x = cursor.getX()*outputRect.width+outputRect.x;
+            y = cursor.getY()*outputRect.height+outputRect.y;
+        }
+
+        the_point.setLocation(ofVec2f(x, y));
         the_point.setId(cursor.getFingerId());
         the_point.setStrokeId(cursor.getSessionId());
         the_point.setColor(localBrushColor);
@@ -331,7 +351,17 @@ void gFrameApp::tuioAdded(ofxTuioCursor &cursor) {
 void gFrameApp::tuioUpdated(ofxTuioCursor &cursor) {
     if(input_tuio){
         GPoint the_point;
-        the_point.setLocation(ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight()));
+        int x,y;
+        if (orientation == PORTRAIT) {
+            int temp = x;
+            x = outputRect.width-cursor.getY()*outputRect.width + outputRect.x;
+            y = outputRect.height-cursor.getX()*outputRect.height + outputRect.y;
+        } else {
+            x = cursor.getX()*outputRect.width+outputRect.x;
+            y = cursor.getY()*outputRect.height+outputRect.y;
+        }
+        
+        the_point.setLocation(ofVec2f(x, y));
         the_point.setId(cursor.getFingerId());
         the_point.setStrokeId(cursor.getSessionId());
         the_point.setColor(localBrushColor);
@@ -398,21 +428,7 @@ void gFrameApp::onTouchPoint(TouchPointEvent &event) {
         last_points_time = ofGetElapsedTimeMillis();
     }
 }
-
 //--------------------------------------------------------------
-void gFrameApp::setLEDColor(ofColor color){
-    int r,g,b;
-    float fr = 0,fg = 0,fb = 0;
-    r = (int)color.r; fr = (float)r * LED_level;
-    g = (int)color.g; fg = (float)g * LED_level;
-    b = (int)color.b; fb = (float)b * LED_level;
-    //dmx channels are 2, 3 & 4
-    dmx.setLevel(2, (int)fg);     //green
-    dmx.setLevel(3, (int)fr);     //red
-    dmx.setLevel(4, (int)fb);     //blue
-    dmx.update();
-}
-
 void gFrameApp::oscUpdate() {
     while (receiver.hasWaitingMessages())
     {
@@ -428,7 +444,9 @@ void gFrameApp::oscUpdate() {
         else if (m.getAddress() == "/1/t_yellow") localBrushColor = ofColor::yellow;
         else if (m.getAddress() == "/1/t_orange") localBrushColor = ofColor::orange;
         else if (m.getAddress() == "/1/t_pink") localBrushColor = ofColor::pink;
-        //brush settings tab
+        else if (m.getAddress() == "/1/b_clearcanvas") stroke_list.clear();
+
+        //style settings tab
         //wild aka scrizzle
         else if (m.getAddress() =="/2/s_w_amplitude") W_amplitude = m.getArgAsFloat(0);
         else if (m.getAddress() == "/2/s_w_wavelength") W_wavelength = m.getArgAsFloat(0);
@@ -442,6 +460,13 @@ void gFrameApp::oscUpdate() {
         else if (m.getAddress() == "/2/s_td_width") style_profile_width = m.getArgAsFloat(0);
         else if (m.getAddress() == "/2/s_td_zspeed") style_profile_zspeed = m.getArgAsFloat(0);
         else if (m.getAddress() == "/2/s_td_twist") style_profile_twist = m.getArgAsFloat(0);
+        
+        //admin tab
+        else if (m.getAddress() == "/3/t_dmxon") dmx_on = m.getArgAsInt32(0);
+        else if (m.getAddress() == "/3/s_upper") upper_pulsing_limit = m.getArgAsFloat(0);
+        else if (m.getAddress() == "/3/s_lower") lower_pulsing_limit = m.getArgAsFloat(0);
+        else if (m.getAddress() == "/3/s_brightness") LED_brightness = m.getArgAsFloat(0);
+        else if (m.getAddress() == "/3/s_frequency") LED_frequency = m.getArgAsFloat(0);
     }
     
     
@@ -569,13 +594,41 @@ void gFrameApp::oscupdate_interface() {
     //twist
     update.clear();
     update.setAddress("/2/s_td_twist");
-    update.addFloatArg(style_profile_twist.get());
+    update.addFloatArg(style_profile_twist);
     sender.sendMessage(update);
     
     //caligraphy
+    
+    //admin settings
+    update.clear();
+    update.setAddress("/3/t_dmxon");
+    if (dmx_on) update.addFloatArg(1);
+    else update.addFloatArg(0);
+    sender.sendMessage(update);
+    //upper
+    update.clear();
+    update.setAddress("/3/s_upper");
+    update.addFloatArg(upper_pulsing_limit);
+    sender.sendMessage(update);
+    //lower
+    update.clear();
+    update.setAddress("/3/s_lower");
+    update.addFloatArg(lower_pulsing_limit);
+    sender.sendMessage(update);
+    //brightness
+    update.clear();
+    update.setAddress("/3/s_brightness");
+    update.addFloatArg(LED_brightness);
+    sender.sendMessage(update);
+    //frequency
+    update.clear();
+    update.setAddress("/3/s_frequency");
+    update.addFloatArg(LED_frequency);
+    sender.sendMessage(update);
+    
 }
-
-void gFrameApp::dmxUpdate(){ // name of this method is a bit misleading, should be updateLED or something like that
+//--------------------------------------------------------------
+void gFrameApp::updateLEDpulsing(){
     //create triangle wave for pulsing led lights
     int time = abs(((int)ofGetElapsedTimeMillis() % (LED_pulsing_time*2)) - LED_pulsing_time);
     
@@ -587,7 +640,7 @@ void gFrameApp::dmxUpdate(){ // name of this method is a bit misleading, should 
         if (LED_level - new_level < 0)
             start_pulsing();
     }
-    
+    float ledlevel2;
     if (LED_pulsing) {
         //int time = abs(((int)ofGetElapsedTimeMillis() % (LED_pulsing_time*2)) - LED_pulsing_time);
         LED_level = ofMap(time, 0, LED_pulsing_time, lower_pulsing_limit, upper_pulsing_limit);
@@ -606,6 +659,20 @@ void gFrameApp::stop_pulsing() {
     LED_level = 1.0;
 }
 
+void gFrameApp::setLEDColor(ofColor color){
+    //send to color to the dmx device
+    int r,g,b;
+    float fr = 0,fg = 0,fb = 0;
+    r = (int)color.r; fr = (float)r * LED_level;
+    g = (int)color.g; fg = (float)g * LED_level;
+    b = (int)color.b; fb = (float)b * LED_level;
+    //dmx channels are 2, 3 & 4
+    dmx.setLevel(2, (int)fr);     //red
+    dmx.setLevel(3, (int)fg);     //green
+    dmx.setLevel(4, (int)fb);     //blue
+    dmx.update();
+}
+//--------------------------------------------------------------
 void gFrameApp::toPanels(ofImage &canvas, ofImage &panels){
     if(!(canvas.getWidth() == 214 && canvas.getHeight() == 167))
         return;
@@ -654,16 +721,23 @@ void gFrameApp::guiSetup() {
     //GUI Setup
     gui.setup();
     gui.setPosition(ofGetWidth() - gui.getWidth() - 10, 10);
-    gui.setName("GFrame Settings");
+    gui.setName("general settings");
     
     ///output settings
     parameters_output.setName("output settings");
     outputwidth.setName("width");
     outputheight.setName("height");
-    dmx_on.setName("DMX on");
+    
     parameters_output.add(outputwidth);
     parameters_output.add(outputheight);
-    parameters_output.add(dmx_on);
+    
+    //DMX & LEDs
+    dmx_settings.setName("dmx settings");
+    dmx_settings.add(dmx_on.set("DMX on", false));
+    dmx_settings.add(upper_pulsing_limit.set("upper PL",0,0,1));
+    dmx_settings.add(lower_pulsing_limit.set("lower PL", 0,0,1));
+    dmx_settings.add(LED_brightness.set("LED brightness",0.5,0,1));
+    dmx_settings.add(LED_frequency.set("LED freqency",1.0,0.1,5.0));
     
     ///OSC
     parameters_osc.setName("osc");
@@ -684,20 +758,13 @@ void gFrameApp::guiSetup() {
     parameters_network.add(remote_ip);
     parameters_network.add(remote_port);
 
-    ///Brushes
-    localBrushColor.setName("color");
+    ///general brush settings
     parameters_brush.setName("brush settings");
-    parameters_brush.add(localBrushColor.set("local color", ofColor(255, 255, 255), ofColor(0,0,0), ofColor(255,255,255)));
     newPointDistance.set("new point distance", 10,1,100);
     parameters_brush.add(newPointDistance);
     parameters_brush.add(point_lifetime.set("point lifetime", 10, 1, 100));
-
-    
-    parameters_profile_style.setName("profile style");
-    parameters_profile_style.add(style_profile_depth.set("depth", 10, 2, 50));
-    parameters_profile_style.add(style_profile_width.set("width", 10, 2, 50));
-    parameters_profile_style.add(style_profile_zspeed.set("z-speed", 1, 1, 100));
-    parameters_profile_style.add(style_profile_twist.set("twist", 5, 2, 20));
+    localBrushColor.setName("color");
+    parameters_brush.add(localBrushColor.set("local color", ofColor(255, 255, 255), ofColor(0,0,0), ofColor(255,255,255)));
     
     // finger positions
     parameters_finger.setName("finger positions");
@@ -705,18 +772,17 @@ void gFrameApp::guiSetup() {
     parameters_finger.add(finger_position_size.set("finger circle radius", 30, 2, 100));
     
     // input settings
+    parameters_input.setName("input selection");
     parameters_input.add(input_mouse.set("mouse", false));
     parameters_input.add(input_pqlabs.set("pqlabs", false));
     parameters_input.add(input_tuio.set("tuio", true));
     
     //add the subgroups to main parameter group
-    parameters.add(parameters_output);
+    parameters.add(dmx_settings);
     parameters.add(parameters_network);
     parameters.add(parameters_osc);
     parameters.add(parameters_finger);
     parameters.add(parameters_brush);
-    parameters.add(parameters_profile_style);
-    parameters.add(wild_parameters);
     parameters.add(parameters_input);
 
     //add all parameters to the gui
@@ -724,32 +790,62 @@ void gFrameApp::guiSetup() {
     //minimize gui elements
     gui.minimizeAll();
 }
-
-void gFrameApp::setupWildBrush() {
+void gFrameApp::styleGuiSetup() {
+    //more specific style settings
+    style_gui.setup();
+    style_gui.setName("style settings");
+    style_gui.setPosition(ofGetWidth() - 2*style_gui.getWidth() - 20, 10);
+    
+    parameters_profile_style.setName("profile style");
+    parameters_profile_style.add(style_profile_depth.set("depth", 10, 2, 50));
+    parameters_profile_style.add(style_profile_width.set("width", 10, 2, 50));
+    parameters_profile_style.add(style_profile_zspeed.set("z-speed", 1, 1, 100));
+    parameters_profile_style.add(style_profile_twist.set("twist", 5, 2, 20));
+    style_settings.add(parameters_profile_style);
+    
     wild_parameters.setName("Wild Brush Parameters");
     wild_parameters.add(W_amplitude.set("amplitude",8.0,0.0,20));
-    //wavelength
     wild_parameters.add(W_wavelength.set("wavelength", 4.0, 1.0, 10.0));
-    //fadeouttime
     wild_parameters.add(W_fadeout_time.set("fadeout time",10.0,2.0,60.0));
-    //fadeduration
     wild_parameters.add(W_fadeduration.set("fade duration", 5.0, 0.0, 60));
-    //nervosity aka speed
     wild_parameters.add(W_nervosity.set("nervousity",1.0,0.5,20.0));
-    //mainLine_thickness
     wild_parameters.add(W_mainLine_thickness.set("main line thickness", 4.0, 1.0, 10.0));
-    //byline_thickness
     wild_parameters.add(W_byLine_thicknes.set("by line thickness", 0.5, 0.1, 5.0));
+    style_settings.add(wild_parameters);
+    
+    style_gui.add(style_settings);
 }
 
 void gFrameApp::onSettingsReload() {
+    gui.loadFromFile("settings.xml");
     //network
     network.disconnect();
     network.setup(host_port, remote_ip, remote_port);
     //osc
     receiver.setup(local_osc_port);
-    sender.setup(ipad_ip,ipad_port);
+    try {
+        sender.setup(ipad_ip,ipad_port);
+        use_ipad = true;
+    } catch (exception e) {
+        ofLogError() << "unable to connect to iPad on " << ipad_ip <<":"<< ipad_port << endl;
+        use_ipad = false;
+    }
     //clean stroklist
     stroke_list.clear();
+    
     cout << "New settings loaded" << endl;
+}
+
+void gFrameApp::onSettingsSave() {
+    gui.saveToFile("settings.xml");
+}
+
+void gFrameApp::onStyleSettingsreload() {
+    style_gui.loadFromFile("stylesettings.xml");
+    ofLog() << "style settings reloaded";
+}
+
+void gFrameApp::onStyleSettingsSave() {
+    style_gui.saveToFile("stylesettings.xml");
+    ofLog() << "style settings saved";    
 }

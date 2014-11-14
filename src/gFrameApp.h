@@ -38,7 +38,7 @@ public:
     void keyPressed(int key);
     
     // DMX
-    void dmxUpdate();
+    void updateLEDpulsing();
     void setLEDColor(ofColor ledColor);
     void start_pulsing();
     void stop_pulsing();
@@ -56,23 +56,21 @@ private:
     ofParameter<int> newPointDistance;
     
     ProfileStyle profileStyle;
-    ofParameter<float> depthSpeed;
-    ofParameter<float> TD_stroke_width;
-    ofParameter<float> TD_fadeout_time;
+    ofParameter<int> style_profile_depth = 10;
+    ofParameter<int> style_profile_width = 10;
+    ofParameter<int> style_profile_zspeed = 1;
+    ofParameter<int> style_profile_twist = 5;
+
     
     ScrizzleStyle scrizzleStyle;
     ofParameterGroup wild_parameters;
     ofParameter<float> W_amplitude;
     ofParameter<float> W_wavelength;
-//    ofParameter<float> W_stroke_width;
     ofParameter<float> W_nervosity;
     ofParameter<float> W_mainLine_thickness;
     ofParameter<float> W_byLine_thicknes;
     ofParameter<float> W_fadeout_time;
     ofParameter<float> W_fadeduration;
-    
-    //setup method for the brushes
-    void setupWildBrush();
     
     ofLight light;
 
@@ -84,13 +82,6 @@ private:
     Orientation orientation = LANDSCAPE;
     
     ofxSyphonServer syphonMainOut;
-    //brazil support
-//    About LED1 and LED2 into the mask (attached):
-//    LED 2 (x,y) = 508,77
-//          resoluton: 480x288
-//    
-//    LED 1 (x,y) = 220,452
-//          resolution: 768x288
 
     ofImage mPanels, mCanvas;
     ofRectangle mPanelPositionAndSize;
@@ -104,18 +95,23 @@ private:
     ofParameter<string> ipad_ip;
     ofParameter<int> ipad_port;
     ofParameter<int> local_osc_port;
+    ofParameter<bool> use_ipad = true;
     ofxOscReceiver receiver;
     ofxOscSender sender;
     float last_ipad_update_time = 0;
     
     //DMX
+    ofParameterGroup dmx_settings;
     ofParameter<bool> dmx_on = true;
     ofxDmx dmx;
     ofColor LEDstripColor;
-    float upper_pulsing_limit, lower_pulsing_limit;
+    ofParameter<float> upper_pulsing_limit, lower_pulsing_limit;
+    ofParameter<int> LED_pulsing_time;
+    ofParameter<float> LED_level;
+    ofParameter<float> LED_brightness;
+    ofParameter<float> LED_frequency;
+    
     bool LED_pulsing;
-    int LED_pulsing_time;
-    float LED_level;
     float last_points_time;
         
     //TUIO support
@@ -134,10 +130,13 @@ private:
 
     // GUI
     void guiSetup();
+    void styleGuiSetup();
     ofxPanel gui;
+    ofxPanel style_gui;
     bool draw_gui = true;
     
     ofParameterGroup parameters;
+    ofParameterGroup style_settings;
     ofParameterGroup parameters_osc;
     ofParameterGroup parameters_network;
     ofParameterGroup parameters_output;
@@ -150,19 +149,16 @@ private:
     ofParameterGroup parameters_brush;
     
     //eventhandlers for gui inputs
+    void onSettingsSave();
     void onSettingsReload();
+    void onStyleSettingsSave();
+    void onStyleSettingsreload();
     
     // current finger positions
     ofVec2f finger_positions[20];
     ofParameterGroup parameters_finger;
     ofParameter<bool> draw_finger_positions = true;
     ofParameter<int> finger_position_size = 20;
-    
-    // profile style parameters
-    ofParameter<int> style_profile_depth = 10;
-    ofParameter<int> style_profile_width = 10;
-    ofParameter<int> style_profile_zspeed = 1;
-    ofParameter<int> style_profile_twist = 5;
     
     ofParameter<float> point_lifetime = 10;
 
