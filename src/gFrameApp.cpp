@@ -215,8 +215,8 @@ void gFrameApp::drawFingerPositions(){
             glEnd();
 
             // draw finger id for debugging
-            ofSetColor(255, 255, 255, 255);
-            ofDrawBitmapString(ofToString(i), finger.x-5, finger.y+5);
+//            ofSetColor(255, 255, 255, 255);
+//            ofDrawBitmapString(ofToString(i), finger.x-5, finger.y+5);
         }
         
         
