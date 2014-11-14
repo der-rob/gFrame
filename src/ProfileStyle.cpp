@@ -89,7 +89,37 @@ void ProfileStyle::render(vector<GPoint>& points){
                                                      ofMap(points[all].getColor().r, 0, 255, 0.0, 1.0),
                                                      ofMap(points[all].getColor().g, 0, 255, 0.0, 1.0),
                                                      ofMap(points[all].getColor().b, 0, 255, 0.0, 1.0)
-                                                     );           
+                                                     );
+            
+            ofColor colorCurrent_top = points[all].getColor();
+            colorCurrent_top.setBrightness(colorCurrent_top.getBrightness()/2);
+            ofColor colorLast_top = points[all-1].getColor();
+            colorLast_top.setBrightness(colorLast_top.getBrightness()/2);
+            ofFloatColor colorCurrent_topF = ofFloatColor(
+                                                          ofMap(colorCurrent_top.r, 0, 255, 0.0, 1.0),
+                                                          ofMap(colorCurrent_top.g, 0, 255, 0.0, 1.0),
+                                                          ofMap(colorCurrent_top.b, 0, 255, 0.0, 1.0)
+                                                        );
+            ofFloatColor colorLast_topF = ofFloatColor(
+                                                          ofMap(colorLast_top.r, 0, 255, 0.0, 1.0),
+                                                          ofMap(colorLast_top.g, 0, 255, 0.0, 1.0),
+                                                          ofMap(colorLast_top.b, 0, 255, 0.0, 1.0)
+                                                          );
+            
+            ofColor colorCurrent_bottom = points[all].getColor();
+            colorCurrent_bottom.setSaturation(colorCurrent_bottom.getSaturation()/2);
+            ofColor colorLast_bottom = points[all-1].getColor();
+            colorLast_bottom.setSaturation(colorLast_bottom.getSaturation()/2);
+            ofFloatColor colorCurrent_bottomF = ofFloatColor(
+                                                          ofMap(colorCurrent_bottom.r, 0, 255, 0.0, 1.0),
+                                                          ofMap(colorCurrent_bottom.g, 0, 255, 0.0, 1.0),
+                                                          ofMap(colorCurrent_bottom.b, 0, 255, 0.0, 1.0)
+                                                          );
+            ofFloatColor colorLast_bottomF = ofFloatColor(
+                                                       ofMap(colorLast_bottom.r, 0, 255, 0.0, 1.0),
+                                                       ofMap(colorLast_bottom.g, 0, 255, 0.0, 1.0),
+                                                       ofMap(colorLast_bottom.b, 0, 255, 0.0, 1.0)
+                                                       );
             
             // front
             mesh.addVertex(last_1);
@@ -115,23 +145,23 @@ void ProfileStyle::render(vector<GPoint>& points){
             // top
             mesh.addVertex(last_1);
             mesh.addNormal(normalTop);
-            mesh.addColor(colorLast);
+            mesh.addColor(colorLast_topF);
             mesh.addVertex(point_4);
             mesh.addNormal(normalTop);
-            mesh.addColor(colorCurrent);
+            mesh.addColor(colorCurrent_topF);
             mesh.addVertex(point_1);
             mesh.addNormal(normalTop);
-            mesh.addColor(colorLast);
+            mesh.addColor(colorCurrent_top);
             
             mesh.addVertex(last_1);
             mesh.addNormal(normalTop);
-            mesh.addColor(colorLast);
+            mesh.addColor(colorLast_topF);
             mesh.addVertex(last_4);
             mesh.addNormal(normalTop);
-            mesh.addColor(colorLast);
+            mesh.addColor(colorLast_topF);
             mesh.addVertex(point_4);
             mesh.addNormal(normalTop);
-            mesh.addColor(colorCurrent);
+            mesh.addColor(colorCurrent_topF);
             
             // back
             mesh.addVertex(last_4);
@@ -157,23 +187,23 @@ void ProfileStyle::render(vector<GPoint>& points){
             // bottom
             mesh.addVertex(last_2);
             mesh.addNormal(normalBottom);
-            mesh.addColor(colorLast);
+            mesh.addColor(colorLast_bottomF);
             mesh.addVertex(last_3);
             mesh.addNormal(normalBottom);
-            mesh.addColor(colorLast);
+            mesh.addColor(colorLast_bottomF);
             mesh.addVertex(point_3);
             mesh.addNormal(normalBottom);
-            mesh.addColor(colorCurrent);
+            mesh.addColor(colorCurrent_bottomF);
             
             mesh.addVertex(last_2);
             mesh.addNormal(normalBottom);
-            mesh.addColor(colorLast);
+            mesh.addColor(colorLast_bottomF);
             mesh.addVertex(point_2);
             mesh.addNormal(normalBottom);
-            mesh.addColor(colorCurrent);
+            mesh.addColor(colorCurrent_bottomF);
             mesh.addVertex(point_3);
             mesh.addNormal(normalBottom);
-            mesh.addColor(colorCurrent);
+            mesh.addColor(colorCurrent_bottomF);
             
             
             last_1 = point_1;
