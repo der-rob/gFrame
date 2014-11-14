@@ -109,7 +109,7 @@ private:
     float last_ipad_update_time = 0;
     
     //DMX
-    bool dmx_on = true;
+    ofParameter<bool> dmx_on = true;
     ofxDmx dmx;
     ofColor LEDstripColor;
     float upper_pulsing_limit, lower_pulsing_limit;

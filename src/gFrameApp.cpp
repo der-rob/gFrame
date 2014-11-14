@@ -432,14 +432,14 @@ void gFrameApp::oscUpdate() {
         else if (m.getAddress() == "/2/s_w_wavelength") W_wavelength = m.getArgAsFloat(0);
         else if (m.getAddress() == "/2/s_w_mainline") W_mainLine_thickness = m.getArgAsFloat(0);
         else if (m.getAddress() == "/2/s_w_bylines") W_byLine_thicknes = m.getArgAsFloat(0);
-        else if (m.getAddress() == "/2/s_w_norvosity") W_nervosity = m.getArgAsFloat(0);
+        else if (m.getAddress() == "/2/s_w_nervosity") W_nervosity = m.getArgAsFloat(0);
         else if (m.getAddress() == "/2/s_w_fadeouttime") W_fadeout_time = m.getArgAsFloat(0);
         else if (m.getAddress() == "/2/s_w_fadeduration") W_fadeduration = m.getArgAsFloat(0);
         //threedee aka profile
-        else if (m.getAddress() == "/2/s_td_depth") m.getArgAsFloat(0);
-        else if (m.getAddress() == "/2/s_td_width") m.getArgAsFloat(0);
-        else if (m.getAddress() == "/2/s_td_zspeed") m.getArgAsFloat(0);
-        else if (m.getAddress() == "/2/s_td_twist") m.getArgAsFloat(0);
+        else if (m.getAddress() == "/2/s_td_depth") style_profile_depth = m.getArgAsFloat(0);
+        else if (m.getAddress() == "/2/s_td_width") style_profile_width = m.getArgAsFloat(0);
+        else if (m.getAddress() == "/2/s_td_zspeed") style_profile_zspeed = m.getArgAsFloat(0);
+        else if (m.getAddress() == "/2/s_td_twist") style_profile_twist = m.getArgAsFloat(0);
     }
     
     
@@ -514,60 +514,60 @@ void gFrameApp::oscupdate_interface() {
     //wild aka scrizzle
     //amplitude
     update.clear();
-    update.setAddress("/1/s_w_amplitude");
+    update.setAddress("/2/s_w_amplitude");
     update.addFloatArg(W_amplitude);
     sender.sendMessage(update);
     //wavelength
     update.clear();
-    update.setAddress("/1/s_w_wavelength");
+    update.setAddress("/2/s_w_wavelength");
     update.addFloatArg(W_wavelength);
     sender.sendMessage(update);
     //mainline
     update.clear();
-    update.setAddress("/1/s_w_mainline");
+    update.setAddress("/2/s_w_mainline");
     update.addFloatArg(W_mainLine_thickness);
     sender.sendMessage(update);
     //by lines
     update.clear();
-    update.setAddress("/1/s_w_bylines");
+    update.setAddress("/2/s_w_bylines");
     update.addFloatArg(W_byLine_thicknes);
     sender.sendMessage(update);
     //nervosity
     update.clear();
-    update.setAddress("/1/s_w_nervosity");
+    update.setAddress("/2/s_w_nervosity");
     update.addFloatArg(W_nervosity);
     sender.sendMessage(update);
     //fadeouttime
     update.clear();
-    update.setAddress("/1/s_w_fadeouttime");
-    update.addFloatArg(W_nervosity);
+    update.setAddress("/2/s_w_fadeouttime");
+    update.addFloatArg(W_fadeout_time);
     sender.sendMessage(update);
     //fadeduration
     update.clear();
-    update.setAddress("/1/s_w_fadeduration");
+    update.setAddress("/2/s_w_fadeduration");
     update.addFloatArg(W_fadeduration);
     sender.sendMessage(update);
     
     //profile
     //depth
     update.clear();
-    update.setAddress("/1/s_td_depth");
+    update.setAddress("/2/s_td_depth");
     update.addFloatArg(style_profile_depth);
     sender.sendMessage(update);
     //width
     update.clear();
-    update.setAddress("/1/s_td_width");
+    update.setAddress("/2/s_td_width");
     update.addFloatArg(style_profile_width);
     sender.sendMessage(update);
     //z-speed
     update.clear();
-    update.setAddress("/1/s_td_zspeed");
+    update.setAddress("/2/s_td_zspeed");
     update.addFloatArg(style_profile_zspeed);
     sender.sendMessage(update);
     //twist
     update.clear();
-    update.setAddress("/1/s_td_twist");
-    update.addFloatArg(style_profile_twist);
+    update.setAddress("/2/s_td_twist");
+    update.addFloatArg(style_profile_twist.get());
     sender.sendMessage(update);
     
     //caligraphy
@@ -658,8 +658,10 @@ void gFrameApp::guiSetup() {
     parameters_output.setName("output settings");
     outputwidth.setName("width");
     outputheight.setName("height");
+    dmx_on.setName("DMX on");
     parameters_output.add(outputwidth);
     parameters_output.add(outputheight);
+    parameters_output.add(dmx_on);
     
     ///OSC
     parameters_osc.setName("osc");
