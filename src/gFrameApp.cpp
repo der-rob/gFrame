@@ -320,7 +320,17 @@ void gFrameApp::mouseMoved(int x, int y){
 void gFrameApp::tuioAdded(ofxTuioCursor &cursor) {
     if(input_tuio){
         GPoint the_point;
-        the_point.setLocation(ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight()));
+        int x,y;
+        if (orientation == PORTRAIT) {
+            int temp = x;
+            x = outputRect.width-cursor.getY()*outputRect.width + outputRect.x;
+            y = outputRect.height-cursor.getX()*outputRect.height + outputRect.y;
+        } else {
+            x = cursor.getX()*outputRect.width+outputRect.x;
+            y = cursor.getY()*outputRect.height+outputRect.y;
+        }
+
+        the_point.setLocation(ofVec2f(x, y));
         the_point.setId(cursor.getFingerId());
         the_point.setStrokeId(cursor.getSessionId());
         the_point.setColor(localBrushColor);
@@ -339,7 +349,17 @@ void gFrameApp::tuioAdded(ofxTuioCursor &cursor) {
 void gFrameApp::tuioUpdated(ofxTuioCursor &cursor) {
     if(input_tuio){
         GPoint the_point;
-        the_point.setLocation(ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight()));
+        int x,y;
+        if (orientation == PORTRAIT) {
+            int temp = x;
+            x = outputRect.width-cursor.getY()*outputRect.width + outputRect.x;
+            y = outputRect.height-cursor.getX()*outputRect.height + outputRect.y;
+        } else {
+            x = cursor.getX()*outputRect.width+outputRect.x;
+            y = cursor.getY()*outputRect.height+outputRect.y;
+        }
+        
+        the_point.setLocation(ofVec2f(x, y));
         the_point.setId(cursor.getFingerId());
         the_point.setStrokeId(cursor.getSessionId());
         the_point.setColor(localBrushColor);
