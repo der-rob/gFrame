@@ -13,7 +13,11 @@
 		<osc>
 			<iPad_IP>192.168.178.30</iPad_IP>
 			<iPad_Port>8001</iPad_Port>
+<<<<<<< HEAD
 			<local_OSC_port>8123</local_OSC_port>
+=======
+			<local_OSC_port>8567</local_OSC_port>
+>>>>>>> gui_refining
 		</osc>
 		<finger_positions>
 			<draw_finger_positions>1</draw_finger_positions>
