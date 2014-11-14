@@ -6,18 +6,15 @@
 			<DMX_on>0</DMX_on>
 		</output_settings>
 		<network>
-			<host_port>0</host_port>
-			<remote_ip>0</remote_ip>
-			<remote_port>0</remote_port>
+			<host_port>9000</host_port>
+			<remote_ip>192.168.178.36</remote_ip>
+			<remote_port>9001</remote_port>
 		</network>
 		<osc>
 			<iPad_IP>192.168.178.30</iPad_IP>
 			<iPad_Port>8001</iPad_Port>
-<<<<<<< HEAD
-			<local_OSC_port>8123</local_OSC_port>
-=======
-			<local_OSC_port>8567</local_OSC_port>
->>>>>>> gui_refining
+			<local_OSC_port>8678</local_OSC_port>
+
 		</osc>
 		<finger_positions>
 			<draw_finger_positions>1</draw_finger_positions>
@@ -34,7 +31,7 @@
 			<tuio>0</tuio>
 		</input_selection>
 	<dmx_settings>
-			<DMX_on>1</DMX_on>
+			<DMX_on>0</DMX_on>
 			<upper_PL>1</upper_PL>
 			<lower_PL>0</lower_PL>
 			<LED_brightness>0.5</LED_brightness>

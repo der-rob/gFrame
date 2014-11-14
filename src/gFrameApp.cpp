@@ -419,7 +419,8 @@ void gFrameApp::oscUpdate() {
         else if (m.getAddress() == "/3/s_lower") lower_pulsing_limit = m.getArgAsFloat(0);
         else if (m.getAddress() == "/3/s_brightness") LED_brightness = m.getArgAsFloat(0);
         else if (m.getAddress() == "/3/s_frequency") LED_frequency = m.getArgAsFloat(0);
-    }
+        else if (m.getAddress() == "/3/s_lifetime") point_lifetime = m.getArgAsFloat(0);
+        else if (m.getAddress() == "/3/s_newpointdistance") newPointDistance = m.getArgAsFloat(0);}
     
     
     if (ofGetElapsedTimef() - last_ipad_update_time > 0.04) {
@@ -578,6 +579,32 @@ void gFrameApp::oscupdate_interface() {
     update.addFloatArg(LED_frequency);
     sender.sendMessage(update);
     
+    //remote_ip
+    update.clear();
+    update.setAddress("/3/l_remoteip");
+    update.addStringArg(remote_ip);
+    sender.sendMessage(update);
+    //connected
+    update.clear();
+    update.setAddress("/3/led_connected");
+    if (network.getNumClients() > 0)
+        update.addFloatArg(1);
+    else
+        update.addFloatArg(0);
+    sender.sendMessage(update);
+    
+    //lifetime
+    update.clear();
+    update.setAddress("/3/s_lifetime");
+    update.addFloatArg(point_lifetime);
+    sender.sendMessage(update);
+
+    //new point distance
+    update.clear();
+    update.setAddress("/3/s_newpointdistance");
+    update.addFloatArg(newPointDistance);
+    sender.sendMessage(update);
+
 }
 //--------------------------------------------------------------
 void gFrameApp::updateLEDpulsing(){
@@ -739,8 +766,6 @@ void gFrameApp::guiSetup() {
 
     //add all parameters to the gui
     gui.add(parameters);
-    //minimize gui elements
-    gui.minimizeAll();
 }
 void gFrameApp::styleGuiSetup() {
     //more specific style settings

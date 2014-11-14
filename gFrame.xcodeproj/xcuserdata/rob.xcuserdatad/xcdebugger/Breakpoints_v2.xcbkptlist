@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "src/gFrameApp.cpp"
-            timestampString = "437668040.393504"
+            timestampString = "437677844.388685"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "433"
-            endingLineNumber = "433"
-            landmarkName = "gFrameApp::oscUpdate()"
+            startingLineNumber = "434"
+            endingLineNumber = "434"
+            landmarkName = "gFrameApp::oscupdate_interface()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -26,12 +26,44 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "src/gFrameApp.cpp"
-            timestampString = "437668040.393504"
+            timestampString = "437677844.388685"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "471"
-            endingLineNumber = "471"
-            landmarkName = "gFrameApp::oscUpdate()"
+            startingLineNumber = "472"
+            endingLineNumber = "472"
+            landmarkName = "gFrameApp::oscupdate_interface()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "src/gFrameApp.cpp"
+            timestampString = "437672559.557536"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "352"
+            endingLineNumber = "352"
+            landmarkName = "gFrameApp::tuioUpdated(ofxTuioCursor &amp;cursor)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "src/gFrameApp.cpp"
+            timestampString = "437672602.008728"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "323"
+            endingLineNumber = "323"
+            landmarkName = "gFrameApp::tuioAdded(ofxTuioCursor &amp;cursor)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
