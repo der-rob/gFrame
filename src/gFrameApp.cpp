@@ -27,8 +27,6 @@ void gFrameApp::setup(){
     syphonMainOut.setName("gFrame Main Out");
     
     //TUIO setup
-    pqlabsframe.connect("127.0.0.1");
-    ofAddListener(pqlabsframe.touchEventDispatcher, this, &gFrameApp::onTouchPoint);
     tuioClient.start(3333);
     ofAddListener(tuioClient.cursorAdded,this,&gFrameApp::tuioAdded);
 	ofAddListener(tuioClient.cursorUpdated,this,&gFrameApp::tuioUpdated);
@@ -80,7 +78,6 @@ void gFrameApp::setup(){
     
 }
 void gFrameApp::exit(){
-//    pqlabsframe.~ofxPQLabs();
     setLEDColor(ofColor::black);
     dmx.disconnect();
     network.disconnect();
@@ -340,7 +337,7 @@ void gFrameApp::tuioAdded(ofxTuioCursor &cursor) {
         the_point.setStyle(current_style);
         stroke_list.addToNewStroke(the_point);
         
-        finger_positions[cursor.getFingerId()] = ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight());
+        finger_positions[cursor.getFingerId()] = ofVec2f(x, y);
         
         stop_pulsing();
         last_points_time = ofGetElapsedTimeMillis();
@@ -369,7 +366,7 @@ void gFrameApp::tuioUpdated(ofxTuioCursor &cursor) {
         the_point.setStyle(current_style);
         stroke_list.add(the_point);
         
-        finger_positions[cursor.getFingerId()] = ofVec2f(cursor.getX()*ofGetWidth(), cursor.getY()*ofGetHeight());
+        finger_positions[cursor.getFingerId()] = ofVec2f(x, y);
         
         stop_pulsing();
         last_points_time = ofGetElapsedTimeMillis();
@@ -383,51 +380,6 @@ void gFrameApp::tuioRemoved(ofxTuioCursor & cursor){
 }
 
 
-//--------------------------------------------------------------
-void gFrameApp::onTouchPoint(TouchPointEvent &event) {
-    
-    if(input_pqlabs){
-        GPoint the_point;
-        int x,y;
-        if (orientation == PORTRAIT) {
-            int temp = x;
-            x = outputRect.width-ofMap(event.touchPoint.y, 0, 1050, 0, outputRect.width);
-            y = outputRect.height-ofMap(event.touchPoint.x, 0, 1680, 0, outputRect.height);;
-        } else {
-            x = ofMap(event.touchPoint.x, 0, 1680, 0, outputRect.width);
-            y = ofMap(event.touchPoint.y, 0, 1050, 0, outputRect.height);
-        }
-        cout << x << " " << y << endl;
-        the_point.setLocation(ofVec2f(x, y));
-        the_point.setId((int)event.touchPoint.id);
-        the_point.setColor(localBrushColor);
-        the_point.setType(LOCALFRAME);
-        the_point.setStyle(current_style);
-        
-        switch (event.touchPoint.point_event)
-        {
-            case TP_DOWN:
-            {
-                stroke_list.addToNewStroke(the_point);
-                finger_positions[event.touchPoint.id] = ofVec2f(x, y);
-                break;
-            }
-            case TP_MOVE:
-            {
-                stroke_list.add(the_point);
-                finger_positions[event.touchPoint.id] = ofVec2f(x, y);
-                break;
-            }
-            case TP_UP:
-                finger_positions[event.touchPoint.id] = ofVec2f(0, 0);
-                break;
-        }
-        
-        //stop pulsing LEDs
-        stop_pulsing();
-        last_points_time = ofGetElapsedTimeMillis();
-    }
-}
 //--------------------------------------------------------------
 void gFrameApp::oscUpdate() {
     while (receiver.hasWaitingMessages())

@@ -15,7 +15,6 @@
 #include "StrokeList.h"
 #include "ScrizzleStyle.h"
 #include "Network.h"
-#include "ofxPQLabs.h"
 #include "ofxGui.h"
 
 
@@ -116,11 +115,11 @@ private:
         
     //TUIO support
     ofxTuioClient   tuioClient;
-    ofxPQLabs pqlabsframe;
+//    ofxPQLabs pqlabsframe;
     void tuioAdded(ofxTuioCursor & tuioCursor);
 	void tuioRemoved(ofxTuioCursor & tuioCursor);
 	void tuioUpdated(ofxTuioCursor & tuioCursor);
-    void onTouchPoint(TouchPointEvent &event);
+//    void onTouchPoint(TouchPointEvent &event);
     
     // NETWORK
     Network network;
