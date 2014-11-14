@@ -164,10 +164,12 @@ void gFrameApp::draw(){
     if(draw_gui){
         gui.draw();
         ofSetColor(255);
-        ofDrawBitmapString("style: " + ofToString(current_style), ofGetWidth()-100, ofGetHeight()-55);
-        ofDrawBitmapString("r: " + ofToString(network.getReceiveQueueLength()), ofGetWidth()-100, ofGetHeight()-40);
-        ofDrawBitmapString("s: " + ofToString(network.getSendQueueLength()), ofGetWidth()-100, ofGetHeight()-25 );
-        ofDrawBitmapString("fps: " + ofToString(ofGetFrameRate()), ofGetWidth()-100, ofGetHeight()-10 );
+        ofDrawBitmapString("clients: " + ofToString(network.isConnected()), ofGetWidth()-120, ofGetHeight()-85);
+        ofDrawBitmapString("connected: " + ofToString(network.getNumClients()), ofGetWidth()-120, ofGetHeight()-70);
+        ofDrawBitmapString("style: " + ofToString(current_style), ofGetWidth()-120, ofGetHeight()-55);
+        ofDrawBitmapString("r: " + ofToString(network.getReceiveQueueLength()), ofGetWidth()-120, ofGetHeight()-40);
+        ofDrawBitmapString("s: " + ofToString(network.getSendQueueLength()), ofGetWidth()-120, ofGetHeight()-25 );
+        ofDrawBitmapString("fps: " + ofToString(ofGetFrameRate(), 2), ofGetWidth()-120, ofGetHeight()-10 );
     }
 }
 

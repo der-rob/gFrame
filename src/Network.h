@@ -27,28 +27,28 @@ public:
     
     int getReceiveQueueLength();
     int getSendQueueLength();
+    bool isConnected();
+    int getNumClients();
     
     void threadedFunction();
 
 private:
-    
-    ofxTCPServer tcp_server;
-    ofxTCPClient tcp_client;
-    
     void connectToRemoteHost();
     
     int local_server_port;
     string remote_server_ip;
     int remote_server_port;
-    
-    bool connected;
+
     float last_connection_check;
 
 protected:
+    ofxTCPServer tcp_server;
+    ofxTCPClient tcp_client;
+    
     queue<GPoint> send_queue;
     queue<GPoint> receive_queue;
-
-
+    
+    bool connected;
 };
 
 #endif /* defined(__NetworkTest__Network__) */

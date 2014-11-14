@@ -195,3 +195,13 @@ void Network::disconnect(){
     tcp_client.close();
     ofLog() << "network connections closed";
 }
+
+bool Network::isConnected(){
+    ofScopedLock lock(mutex);
+    return connected;
+}
+
+int Network::getNumClients(){
+    ofScopedLock lock(mutex);
+    return tcp_server.getNumClients();
+}
