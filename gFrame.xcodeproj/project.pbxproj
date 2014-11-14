@@ -223,6 +223,8 @@
 		D4605484196DC7480040C381 /* ofxOscSender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxOscSender.cpp; sourceTree = "<group>"; };
 		D4605485196DC7480040C381 /* ofxOscSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOscSender.h; sourceTree = "<group>"; };
 		D46A05011A12764D00AE3BB3 /* settings.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = settings.xml; sourceTree = "<group>"; };
+		D46CE3311A1656A100A84CBB /* 2014111_gframe_osc.touchosc */ = {isa = PBXFileReference; lastKnownFileType = file; path = 2014111_gframe_osc.touchosc; sourceTree = "<group>"; };
+		D46CE3321A1656A100A84CBB /* 20141114_gframe_osc.touchosc */ = {isa = PBXFileReference; lastKnownFileType = file; path = 20141114_gframe_osc.touchosc; sourceTree = "<group>"; };
 		D47F10E71A124B7000F558E8 /* gFrameIcon.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = gFrameIcon.iconset; sourceTree = "<group>"; };
 		D48625481A001C770076E13F /* BaseStyle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseStyle.cpp; sourceTree = "<group>"; };
 		D48625491A001C770076E13F /* BaseStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseStyle.h; sourceTree = "<group>"; };
@@ -836,6 +838,8 @@
 		D4E4AD2C196F3D5300ECA630 /* touchosc */ = {
 			isa = PBXGroup;
 			children = (
+				D46CE3311A1656A100A84CBB /* 2014111_gframe_osc.touchosc */,
+				D46CE3321A1656A100A84CBB /* 20141114_gframe_osc.touchosc */,
 				D4E4AD2D196F3D5300ECA630 /* gFrame_layout_2.touchosc */,
 			);
 			path = touchosc;
