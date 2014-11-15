@@ -31,7 +31,7 @@ void gFrameApp::setup(){
     syphonMainOut.setName("gFrame Main Out");
     
     //TUIO setup
-    tuioClient.start(3333);
+    tuioClient.start(tuioPort);
     ofAddListener(tuioClient.cursorAdded,this,&gFrameApp::tuioAdded);
 	ofAddListener(tuioClient.cursorUpdated,this,&gFrameApp::tuioUpdated);
     ofAddListener(tuioClient.cursorRemoved,this,&gFrameApp::tuioRemoved);
@@ -799,6 +799,7 @@ void gFrameApp::guiSetup() {
     
     // input settings
     parameters_input.setName("input selection");
+    parameters_input.add(tuioPort.set("TUIO port", 3333));
     parameters_input.add(input_mouse.set("mouse", false));
     parameters_input.add(input_pqlabs.set("pqlabs", false));
     parameters_input.add(input_tuio.set("tuio", true));
@@ -854,6 +855,8 @@ void gFrameApp::onSettingsReload() {
         ofLogError() << "unable to connect to iPad on " << ipad_ip <<":"<< ipad_port << endl;
         use_ipad = false;
     }
+    //tuio
+    tuioClient.start(tuioPort);
     //clean stroklist
     stroke_list.clear();
     

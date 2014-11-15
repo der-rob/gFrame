@@ -117,6 +117,7 @@ private:
         
     //TUIO support
     ofxTuioClient   tuioClient;
+    ofParameter<int> tuioPort = 3333;
 //    ofxPQLabs pqlabsframe;
     void tuioAdded(ofxTuioCursor & tuioCursor);
 	void tuioRemoved(ofxTuioCursor & tuioCursor);
