@@ -13,7 +13,7 @@
 		<osc>
 			<iPad_IP>192.168.178.30</iPad_IP>
 			<iPad_Port>8001</iPad_Port>
-			<local_OSC_port>8678</local_OSC_port>
+			<local_OSC_port>8679</local_OSC_port>
 
 		</osc>
 		<finger_positions>
@@ -23,12 +23,12 @@
 		<brush_settings>
 			<new_point_distance>10</new_point_distance>
 			<point_lifetime>30</point_lifetime>
-			<local_color>255, 255, 255, 255</local_color>
+			<local_color>255, 165, 0, 255</local_color>
 		</brush_settings>
 		<input_selection>
 			<mouse>1</mouse>
 			<pqlabs>0</pqlabs>
-			<tuio>0</tuio>
+			<tuio>1</tuio>
 		</input_selection>
 	<dmx_settings>
 			<DMX_on>0</DMX_on>

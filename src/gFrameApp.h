@@ -74,6 +74,8 @@ private:
     ofLight light;
 
     //output
+    bool draw_on_main_screen = true;
+    ofFbo syphonFBO, canvasFBO;
     ofParameter<int> outputwidth = 1024;
     ofParameter<int> outputheight = 768;
     ofRectangle outputRect;

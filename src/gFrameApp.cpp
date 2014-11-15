@@ -23,6 +23,10 @@ void gFrameApp::setup(){
     gui.loadFromFile("settings.xml");
     style_gui.loadFromFile("stylesettings.xml");
     
+    //need to call this here, otherwise would get a BAD ACCESS FAULT
+    gui.draw();
+    style_gui.draw();
+    
     //Syphon stuff
     syphonMainOut.setName("gFrame Main Out");
     
@@ -61,6 +65,9 @@ void gFrameApp::setup(){
     stroke_list.setupSync(&network);
 
     //brazil support
+    syphonFBO.allocate(1024, 768);
+    canvasFBO.allocate(outputRect.width, outputRect.height);
+    mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
     mPanelPositionAndSize = ofRectangle(37,259,214,167);
     dimSESI = ofRectangle(98,259,93,167);
     dimLED1 = ofRectangle(220,452,768,288);
@@ -68,8 +75,6 @@ void gFrameApp::setup(){
     grabOrigin = ofVec2f(0.0,0.0);
     mPanels.allocate(mPanelPositionAndSize.width, mPanelPositionAndSize.height, OF_IMAGE_COLOR);
     mPanels.setColor(0);
-//    mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
-//    mCanvas.grabScreen(0,0, outputRect.width, outputRect.height);
 
     // initialize finger positions
     for(ofVec2f finger : finger_positions){
@@ -95,12 +100,47 @@ void gFrameApp::update(){
     if (dmx_on)
         updateLEDpulsing();
     
-    //dealing with different output modes
-    ofFbo tempFBO;
-            tempFBO.allocate(1024, 768);
-            tempFBO.begin();
-            ofBackground(0);
+    canvasFBO.begin();
+    ofBackground(0);
+    for(vector<GPoint> stroke : *stroke_list.getAllStrokes()){
+        switch(stroke[0].getStyle()){
+            case STYLE_PROFILE:
+                profileStyle.render(stroke);
+                break;
+            case STYLE_SCRIZZLE:
+                scrizzleStyle.render(stroke);
+                break;
+            default:
+                profileStyle.render(stroke);
+                break;
+        }
+    }
     
+    if(draw_finger_positions){
+        drawFingerPositions();
+    }
+    
+    canvasFBO.end();
+    
+    canvasFBO.readToPixels(mCanvas.getPixelsRef());
+    mCanvas.reloadTexture();
+    
+    syphonFBO.begin();
+    ofBackground(0);
+    ofSetColor(255);
+#ifdef DEBUG
+    //LED 1
+    ofCircle(220, 452, 10);
+    ofCircle(220, 452+288, 10);
+    ofCircle(220+768, 452, 10);
+    ofCircle(220+768, 452+288, 10);
+    //LED 2
+    ofCircle(508, 77, 10);
+    ofCircle(508+480, 77, 10);
+    ofCircle(508, 77+288, 10);
+    ofCircle(508+480, 77+288, 10);
+#endif
+    //dealing with different output modes
     switch (outputmode) {
         case SESI:
         {
@@ -109,13 +149,13 @@ void gFrameApp::update(){
             break;
         }
         default:
-            mCanvas.draw(outputRect.x, outputRect.y, outputRect.width, outputRect.height);
+            mCanvas.draw(outputRect.x, outputRect.y);
 //            syphonMainOut.publishTexture(&mCanvas.getTextureReference());
             break;
     }
-    tempFBO.end();
+    syphonFBO.end();
     
-    syphonMainOut.publishTexture(&tempFBO.getTextureReference());
+    syphonMainOut.publishTexture(&syphonFBO.getTextureReference());
     
     //update the brush settings
     //scrizzle style
@@ -143,28 +183,20 @@ void gFrameApp::draw(){
     
     ofBackground(0);
     ofSetColor(255);
-
-    for(vector<GPoint> stroke : *stroke_list.getAllStrokes()){
-        switch(stroke[0].getStyle()){
-            case STYLE_PROFILE:
-                profileStyle.render(stroke);
-                break;
-            case STYLE_SCRIZZLE:
-                scrizzleStyle.render(stroke);
-                break;
-            default:
-                profileStyle.render(stroke);
-                break;
-        }
-    }
     
-    if(draw_finger_positions){
-        drawFingerPositions();
+    //show size of drawing area
+    ofSetColor(255,0, 0);
+    ofCircle(grabOrigin, 10);
+    ofCircle(grabOrigin.x+outputRect.width, grabOrigin.y,10);
+    ofCircle(grabOrigin.x, grabOrigin.y + outputRect.height,10);
+    ofCircle(grabOrigin.x+outputRect.width, grabOrigin.y+outputRect.height,10);
+    ofSetColor(255);
+    
+    //switching of the main screen might improve the performance
+    if (draw_on_main_screen)
+    {
+        mCanvas.draw(0,0);
     }
-    grabOrigin = ofVec2f((ofGetWidth()-outputRect.width)/2, (ofGetHeight()-outputRect.height)/2);
-    //grab the screen for syphon output
-    mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
-    mCanvas.grabScreen((int)grabOrigin.x, (int)grabOrigin.y, outputRect.width, outputRect.height);
     
     //gui output here
     if(draw_gui){
@@ -210,13 +242,12 @@ void gFrameApp::drawFingerPositions(){
             
             glVertex2f(finger_position_size + finger.x, finger.y);
             glEnd();
-
+#ifdef DEBUG
             // draw finger id for debugging
-//            ofSetColor(255, 255, 255, 255);
-//            ofDrawBitmapString(ofToString(i), finger.x-5, finger.y+5);
+            ofSetColor(255, 255, 255, 255);
+            ofDrawBitmapString(ofToString(i), finger.x-5, finger.y+5);
+#endif
         }
-        
-        
         i++;
     }
     ofPopStyle();
@@ -244,6 +275,8 @@ void gFrameApp::keyPressed(int key){
         draw_gui = !draw_gui;
     else if (key == 'd')
         dmx_on = !dmx_on;
+    else if(key == 'f')
+        draw_on_main_screen = !draw_on_main_screen;
     
     
     //switch between different output modes
@@ -255,6 +288,8 @@ void gFrameApp::keyPressed(int key){
         outputRect.y = dimLED1.y;
         outputmode = LED1;
         orientation = LANDSCAPE;
+        canvasFBO.allocate(outputRect.width, outputRect.height);
+        mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
     }
     else if (key == '2') {
         //ofSetWindowShape(480, 288);
@@ -264,6 +299,8 @@ void gFrameApp::keyPressed(int key){
         outputRect.y = dimLED2.y;
         outputmode = LED2;
         orientation = LANDSCAPE;
+        canvasFBO.allocate(outputRect.width, outputRect.height);
+        mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
     }
     else if (key == '3') {
         //ofSetWindowShape(mCanvasPositionAndSize.width, mCanvasPositionAndSize.height);
@@ -273,6 +310,8 @@ void gFrameApp::keyPressed(int key){
         outputRect.y = dimSESI.y;
         outputmode = SESI;
         orientation = PORTRAIT;
+        canvasFBO.allocate(outputRect.width, outputRect.height);
+        mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
     }
     else if (key == '4') {
         //ofSetWindowShape(1024, 768);
@@ -282,6 +321,8 @@ void gFrameApp::keyPressed(int key){
         outputRect.y = 0;
         outputmode = PROJECTOR;
         orientation = LANDSCAPE;
+        canvasFBO.allocate(outputRect.width, outputRect.height);
+        mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
     }
     else if (key == '5') {
         //ofSetWindowShape(dimSESI.width, dimSESI.height);
@@ -291,6 +332,8 @@ void gFrameApp::keyPressed(int key){
         outputRect.y = 0;
         outputmode = PROJECTOR_PORTRAIT;
         orientation = PORTRAIT;
+        canvasFBO.allocate(outputRect.width, outputRect.height);
+        mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
     }
 
 }
@@ -300,7 +343,11 @@ void gFrameApp::mouseMoved(int x, int y){
     
     if(input_mouse){
         GPoint the_point;
-        the_point.setLocation(ofVec2f(x,y));
+        //rescale mouse position
+        float x_norm = ofMap(x, 0, ofGetWidth(), 0.0, outputRect.width);//+(ofGetWidth()-outputRect.width)/2;
+        float y_norm = ofMap(y, 0, ofGetHeight(), 0.0, outputRect.height);//+(ofGetHeight()-outputRect.height)/2;
+        
+        the_point.setLocation(ofVec2f(x_norm,y_norm));
         the_point.setId(0);
         the_point.setStrokeId(0);
         the_point.setColor(localBrushColor);
@@ -322,11 +369,11 @@ void gFrameApp::tuioAdded(ofxTuioCursor &cursor) {
         int x,y;
         if (orientation == PORTRAIT) {
             int temp = x;
-            x = outputRect.width-cursor.getY()*outputRect.width + outputRect.x;
-            y = outputRect.height-cursor.getX()*outputRect.height + outputRect.y;
+            x = outputRect.width-cursor.getY()*outputRect.width;
+            y = outputRect.height-cursor.getX()*outputRect.height;
         } else {
-            x = cursor.getX()*outputRect.width+outputRect.x;
-            y = cursor.getY()*outputRect.height+outputRect.y;
+            x = cursor.getX()*outputRect.width;
+            y = cursor.getY()*outputRect.height;
         }
 
         the_point.setLocation(ofVec2f(x, y));
@@ -351,11 +398,11 @@ void gFrameApp::tuioUpdated(ofxTuioCursor &cursor) {
         int x,y;
         if (orientation == PORTRAIT) {
             int temp = x;
-            x = outputRect.width-cursor.getY()*outputRect.width + outputRect.x;
-            y = outputRect.height-cursor.getX()*outputRect.height + outputRect.y;
+            x = outputRect.width-cursor.getY()*outputRect.width;
+            y = outputRect.height-cursor.getX()*outputRect.height;
         } else {
-            x = cursor.getX()*outputRect.width+outputRect.x;
-            y = cursor.getY()*outputRect.height+outputRect.y;
+            x = cursor.getX()*outputRect.width;
+            y = cursor.getY()*outputRect.height;
         }
         
         the_point.setLocation(ofVec2f(x, y));
