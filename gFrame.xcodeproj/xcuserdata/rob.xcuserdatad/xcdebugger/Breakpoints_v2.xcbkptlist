@@ -15,7 +15,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "192"
             endingLineNumber = "192"
-            landmarkName = "ScrizzleStyle::render(vector&lt;GPoint&gt; &amp;points, int width, int height)"
+            landmarkName = "ScrizzleStyle::render(vector&lt;GPoint&gt; &amp;points, int _width, int _height)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

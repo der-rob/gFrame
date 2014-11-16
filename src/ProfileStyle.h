@@ -9,14 +9,21 @@
 #ifndef __StyleTest__ProfileStyle__
 #define __StyleTest__ProfileStyle__
 
+
 #include <iostream>
 #include "ofMain.h"
 #include "GPoint.h"
 
-class ProfileStyle {
+#ifndef Included_BaseStyle_H
+#define Included_BaseStyle_H
+#include "BaseStyle.h"
+#endif
+
+class ProfileStyle : public BaseStyle {
     
 public:
     void render(vector<GPoint> &points);
+    void render(vector<GPoint> &points, int width, int height);
     
     void setFill(bool fill);
     void toggleFill();

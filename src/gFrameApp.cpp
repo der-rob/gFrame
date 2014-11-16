@@ -105,7 +105,7 @@ void gFrameApp::update(){
     for(vector<GPoint> stroke : *stroke_list.getAllStrokes()){
         switch(stroke[0].getStyle()){
             case STYLE_PROFILE:
-                profileStyle.render(stroke);
+                profileStyle.render(stroke, (int)outputRect.width, (int)outputRect.height);
                 break;
             case STYLE_SCRIZZLE:
                 scrizzleStyle.render(stroke, (int)outputRect.width, (int)outputRect.height);
@@ -173,6 +173,7 @@ void gFrameApp::update(){
     profileStyle.setLineDepth(style_profile_depth);
     profileStyle.setZSpeed(style_profile_zspeed);
     profileStyle.setTwist(style_profile_twist);
+    profileStyle.setNewPointDistance(newPointDistance);
 
     // lifetime
     stroke_list.setLifetime(point_lifetime * 1000);
