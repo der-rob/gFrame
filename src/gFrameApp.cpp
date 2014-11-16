@@ -108,8 +108,10 @@ void gFrameApp::update(){
                 profileStyle.render(stroke);
                 break;
             case STYLE_SCRIZZLE:
-                scrizzleStyle.render(stroke);
+                scrizzleStyle.render(stroke, (int)outputRect.width, (int)outputRect.height);
                 break;
+            case STYLE_CALIGRAPHY:
+                //caligraphyStyle.render(stroke);
             default:
                 profileStyle.render(stroke);
                 break;
@@ -117,7 +119,7 @@ void gFrameApp::update(){
     }
     
     if(draw_finger_positions){
-        drawFingerPositions();
+        drawFingerPositions((int)outputRect.width, (int)outputRect.height);
     }
     
     canvasFBO.end();
@@ -212,7 +214,7 @@ void gFrameApp::draw(){
     }
 }
 
-void gFrameApp::drawFingerPositions(){
+void gFrameApp::drawFingerPositions(int _width, int _height){
     
     ofPushStyle();
     ofDisableDepthTest(); // disable depth test so the alpha blending works properly
@@ -224,23 +226,25 @@ void gFrameApp::drawFingerPositions(){
     ofSetColor(localBrushColor);
     int i=0;
     for(ofVec2f finger : finger_positions){
-        if(!(finger.x == 0 && finger.y == 0)){
+        int px = finger.x * _width;
+        int py = finger.y * _height;
+        if(!(px == 0 && py == 0)){
             float incr = (float) ((2 * PI) / 32);
             
             glBegin(GL_TRIANGLE_FAN);
             ofSetColor(localBrushColor);
-            glVertex2f(finger.x, finger.y);
+            glVertex2f(px, py);
             
             ofSetColor(outerColor);
             
             for(int i = 0; i < 32; i++){
                 float angle = incr * i;
-                float x = ((float) cos(angle) * finger_position_size) + finger.x;
-                float y = ((float) sin(angle) * finger_position_size) + finger.y;
+                float x = ((float) cos(angle) * finger_position_size) + px;
+                float y = ((float) sin(angle) * finger_position_size) + py;
                 glVertex2f(x, y);
             }
             
-            glVertex2f(finger_position_size + finger.x, finger.y);
+            glVertex2f(finger_position_size + px, py);
             glEnd();
 #ifdef DEBUG
             // draw finger id for debugging
@@ -271,6 +275,8 @@ void gFrameApp::keyPressed(int key){
         current_style = STYLE_PROFILE;
     else if (key == 's')
         current_style = STYLE_SCRIZZLE;
+    else if (key == 'k')
+        current_style = STYLE_CALIGRAPHY;
     else if(key == 'h')
         draw_gui = !draw_gui;
     else if (key == 'd')
@@ -344,8 +350,10 @@ void gFrameApp::mouseMoved(int x, int y){
     if(input_mouse){
         GPoint the_point;
         //rescale mouse position
-        float x_norm = ofMap(x, 0, ofGetWidth(), 0.0, outputRect.width);//+(ofGetWidth()-outputRect.width)/2;
-        float y_norm = ofMap(y, 0, ofGetHeight(), 0.0, outputRect.height);//+(ofGetHeight()-outputRect.height)/2;
+        //float x_norm = ofMap(x, 0, ofGetWidth(), 0.0, outputRect.width);
+        float x_norm = ofMap(x, 0, ofGetWidth(), 0.0, 1.0);
+        //float y_norm = ofMap(y, 0, ofGetHeight(), 0.0, outputRect.height);
+        float y_norm = ofMap(y, 0, ofGetHeight(), 0.0, 1.0);
         
         the_point.setLocation(ofVec2f(x_norm,y_norm));
         the_point.setId(0);
@@ -366,14 +374,18 @@ void gFrameApp::mouseMoved(int x, int y){
 void gFrameApp::tuioAdded(ofxTuioCursor &cursor) {
     if(input_tuio){
         GPoint the_point;
-        int x,y;
+        float x,y;
         if (orientation == PORTRAIT) {
-            int temp = x;
-            x = outputRect.width-cursor.getY()*outputRect.width;
-            y = outputRect.height-cursor.getX()*outputRect.height;
+//            x = outputRect.width-cursor.getY()*outputRect.width;
+//            y = outputRect.height-cursor.getX()*outputRect.height;
+            //normalized value
+            x = 1-cursor.getY();
+            y = 1-cursor.getX();
         } else {
-            x = cursor.getX()*outputRect.width;
-            y = cursor.getY()*outputRect.height;
+//            x = cursor.getX()*outputRect.width;
+//            y = cursor.getY()*outputRect.height;
+            x = cursor.getX();
+            y = cursor.getY();
         }
 
         the_point.setLocation(ofVec2f(x, y));
@@ -395,14 +407,18 @@ void gFrameApp::tuioAdded(ofxTuioCursor &cursor) {
 void gFrameApp::tuioUpdated(ofxTuioCursor &cursor) {
     if(input_tuio){
         GPoint the_point;
-        int x,y;
+        float x,y;
         if (orientation == PORTRAIT) {
-            int temp = x;
-            x = outputRect.width-cursor.getY()*outputRect.width;
-            y = outputRect.height-cursor.getX()*outputRect.height;
+            //            x = outputRect.width-cursor.getY()*outputRect.width;
+            //            y = outputRect.height-cursor.getX()*outputRect.height;
+            //normalized value
+            x = 1-cursor.getY();
+            y = 1-cursor.getX();
         } else {
-            x = cursor.getX()*outputRect.width;
-            y = cursor.getY()*outputRect.height;
+            //            x = cursor.getX()*outputRect.width;
+            //            y = cursor.getY()*outputRect.height;
+            x = cursor.getX();
+            y = cursor.getY();
         }
         
         the_point.setLocation(ofVec2f(x, y));

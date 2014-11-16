@@ -29,7 +29,7 @@
 			<mouse>1</mouse>
 			<pqlabs>0</pqlabs>
 			<tuio>1</tuio>
-		<TUIO_port>3300</TUIO_port>
+		<TUIO_port>3000</TUIO_port>
 		</input_selection>
 	<dmx_settings>
 			<DMX_on>0</DMX_on>

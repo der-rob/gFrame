@@ -14,8 +14,6 @@
 class ScrizzleStyle : public BaseStyle {
 
 private:
-    //generall brush parameters
-//    int new_point_distance = ofGetWidth()/50.0;
     //amplitude
     float amplitude1 = 4.0;
     float amplitude2 = 8.0;
@@ -41,8 +39,6 @@ private:
     float byLineScale = 0.5;
     
     //aging and fading out
-//    float fadeouttime = 5.0;
-//    float fadeduration = 1.0;
     float startFadeAge = 500;
     float endFadeAge = 1000;
 
@@ -52,6 +48,7 @@ private:
 public:
     double counter = 0;
     void render(vector<GPoint> &points);
+    void render(vector<GPoint> &points, int width, int height);
 
     //setters
     void setAmplitude(float _ampl) {amplitude1 = 0.5 * _ampl; amplitude2 = _ampl; amplitude3 = 1.5 * _ampl;}

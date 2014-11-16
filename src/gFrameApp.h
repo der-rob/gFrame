@@ -14,6 +14,7 @@
 #include "ProfileStyle.h"
 #include "StrokeList.h"
 #include "ScrizzleStyle.h"
+//#include "CaligraphyStyle.h"
 #include "Network.h"
 #include "ofxGui.h"
 
@@ -31,7 +32,7 @@ public:
     void setup();
     void update();
     void draw();
-    void drawFingerPositions();
+    void drawFingerPositions(int _width, int _height);
     void exit();
     void mouseMoved(int x, int y);
     void keyPressed(int key);
@@ -70,6 +71,10 @@ private:
     ofParameter<float> W_byLine_thicknes;
     ofParameter<float> W_fadeout_time;
     ofParameter<float> W_fadeduration;
+    
+//    CaligraphyStyle caligraphyStyle;
+    ofParameter<float> C_width;
+    ofParameter<float> C_sensitivity;
     
     ofLight light;
 
