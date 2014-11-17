@@ -65,8 +65,8 @@ void gFrameApp::setup(){
     stroke_list.setupSync(&network);
 
     //brazil support
-    syphonFBO.allocate(1024, 768);
-    canvasFBO.allocate(outputRect.width, outputRect.height);
+    syphonFBO.allocate(1024, 768, GL_RGBA, 2);
+    canvasFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 2);
     mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
     mPanelPositionAndSize = ofRectangle(37,259,214,167);
     dimSESI = ofRectangle(98,259,93,167);
