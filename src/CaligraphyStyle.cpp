@@ -16,6 +16,8 @@ CaligraphyStyle::CaligraphyStyle(){
 void CaligraphyStyle::render(vector<GPoint> &points, int width, int height){
     if(points.size() > 1){
         
+        interpolator1.clear(); interpolator2.clear();
+        
         ofMesh m;
         m.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
         
@@ -41,11 +43,19 @@ void CaligraphyStyle::render(vector<GPoint> &points, int width, int height){
             v2.scale(ofMap(v2.length(), 0, 200, 20, 2, true));
             v2+= currentPoint;
             
-            m.addVertex(v1);
-            m.addColor(points[cur].getColor());
-            m.addVertex(v2);
-            m.addColor(points[cur].getColor());
+            interpolator1.push_back(v1);
+            interpolator2.push_back(v2);
         }
+        
+        float step = 1.0/(points.size()*10.0);
+        for(float f=0; f<1; f+=step){
+            m.addVertex(interpolator1.sampleAt(f));
+            m.addColor(points[(int) ((f/step)/10.0)].getColor());
+            m.addVertex(interpolator2.sampleAt(f));
+            m.addColor(points[(int) ((f/step)/10.0)].getColor());
+        }
+        
+        
         
         m.draw();
     }

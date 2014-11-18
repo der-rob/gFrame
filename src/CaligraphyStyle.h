@@ -29,7 +29,7 @@ public:
 private:
     ofPath path;
     bool fill;
-    msa::InterpolatorT<ofVec2f> interpolator;
+    msa::InterpolatorT<ofPoint> interpolator1, interpolator2;
 };
 
 #endif
