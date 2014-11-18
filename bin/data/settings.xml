@@ -11,7 +11,7 @@
 			<remote_port>9001</remote_port>
 		</network>
 		<osc>
-			<iPad_IP>192.168.178.30</iPad_IP>
+			<iPad_IP>192.168.10.101</iPad_IP>
 			<iPad_Port>8001</iPad_Port>
 			<local_OSC_port>8679</local_OSC_port>
 
@@ -43,10 +43,10 @@
 <style_settings>
 		<group>
 			<profile_style>
-				<depth>10</depth>
-				<width>19</width>
-				<z-speed>1</z-speed>
-				<twist>5</twist>
+				<depth>17</depth>
+				<width>5</width>
+				<z-speed>3</z-speed>
+				<twist>2</twist>
 			</profile_style>
 			<Wild_Brush_Parameters>
 				<amplitude>8</amplitude>

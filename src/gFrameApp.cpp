@@ -706,9 +706,9 @@ void gFrameApp::setLEDColor(ofColor color){
     //send to color to the dmx device
     int r,g,b;
     float fr = 0,fg = 0,fb = 0;
-    r = (int)color.r; fr = (float)r * LED_level;
-    g = (int)color.g; fg = (float)g * LED_level;
-    b = (int)color.b; fb = (float)b * LED_level;
+    r = (int)color.r; fr = (float)r * LED_level*LED_brightness;
+    g = (int)color.g; fg = (float)g * LED_level*LED_brightness;
+    b = (int)color.b; fb = (float)b * LED_level*LED_brightness;
     //dmx channels are 2, 3 & 4
     dmx.setLevel(2, (int)fr);     //red
     dmx.setLevel(3, (int)fg);     //green
@@ -779,8 +779,8 @@ void gFrameApp::guiSetup() {
     dmx_settings.add(dmx_on.set("DMX on", false));
     dmx_settings.add(upper_pulsing_limit.set("upper PL",0,0,1));
     dmx_settings.add(lower_pulsing_limit.set("lower PL", 0,0,1));
-    dmx_settings.add(LED_brightness.set("LED brightness",0.5,0,1));
-    dmx_settings.add(LED_frequency.set("LED freqency",1.0,0.1,5.0));
+    dmx_settings.add(LED_brightness.set("LED brightness",1.0,0.0,1));
+    dmx_settings.add(LED_frequency.set("LED freqency",2000,500,5000));
     
     ///OSC
     parameters_osc.setName("osc");
