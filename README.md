@@ -104,8 +104,15 @@ Ich habe den Drawing Style jetzt in eine separate Klasse gepackt. Außerdem habe
 Vielleicht wäre es einfacher, nicht jedes Mal alles zu zeichnen, sondern einfach das clearen den Screens auszuschalten?
 Das geht über `ofSetBackgroundAuto(false);`. Nun reicht es, nur den aktuellen Vektor zu zeichnen. Das Problem ist dann nur noch bei längerem Zeichnen eines Vektors vorhanden. Sobald man absetzt und einen neuen beginnt, ist alles wieder gut.
 
-Ich dachte zuester, dass das mit dem fehlenden redraw ein Problem gibt, wenn es mehrere Benutzer gibt, aber dann kann man ja einfach einen FBO/VBO (?) benutzen den man separat behandeln kann.
-Das Problem ist aber, dass beispielsweise ein ausfaden in diesem Fall nicht möglich ist.
+Das bringt aber Probleme mit sich, sobald auch gleichzeitig noch andere Styles gezeichnet werden (z.B. von remote) außerdem ist es nicht auszuschließen, dass auch sehr lange Striche gezeichnet werden.
+
+Umstellung auf ofMesh löst zwar die Performance und Überlagerungsprobleme, allerdings werden die Linien dadurch auch eckiger 
+
+![image](Doku/Bildschirmfoto 2014-11-18 um 16.08.31.png)
+
+Ich habe einen Versuch gemacht, die Linie mit dem MSA::Interpolator zu interpolieren, aber das hat noch keine befriedigenden Ergebnisse gebracht:
+
+![test msa interpolator](Doku/Bildschirmfoto 2014-11-18 um 17.01.05.png)
 
 ###Offene Punkte:
 

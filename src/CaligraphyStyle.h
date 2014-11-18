@@ -14,18 +14,22 @@
 #include "ofMain.h"
 #include "GPoint.h"
 
+#include "MSACore.h"
+#include "MSAInterpolator.h"
+
 
 class CaligraphyStyle {
     
 public:
     CaligraphyStyle();
-    void render(vector<GPoint>& points);
+    void render(vector<GPoint> &points, int width, int height);
     void setFill(bool fill);
     void toggleFill();
     
 private:
     ofPath path;
     bool fill;
+    msa::InterpolatorT<ofVec2f> interpolator;
 };
 
 #endif

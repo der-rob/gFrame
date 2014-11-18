@@ -14,7 +14,7 @@
 #include "ProfileStyle.h"
 #include "StrokeList.h"
 #include "ScrizzleStyle.h"
-//#include "CaligraphyStyle.h"
+#include "CaligraphyStyle.h"
 #include "Network.h"
 #include "ofxGui.h"
 
@@ -51,7 +51,7 @@ private:
     
     // DRAWING
     StrokeList stroke_list;
-    int current_style = STYLE_SCRIZZLE;
+    int current_style = STYLE_CALIGRAPHY;
     ofParameter<ofColor> localBrushColor;
     ofParameter<int> newPointDistance;
     
@@ -72,7 +72,7 @@ private:
     ofParameter<float> W_fadeout_time;
     ofParameter<float> W_fadeduration;
     
-//    CaligraphyStyle caligraphyStyle;
+    CaligraphyStyle caligraphyStyle;
     ofParameter<float> C_width;
     ofParameter<float> C_sensitivity;
     

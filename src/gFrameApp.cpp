@@ -111,7 +111,8 @@ void gFrameApp::update(){
                 scrizzleStyle.render(stroke, (int)outputRect.width, (int)outputRect.height);
                 break;
             case STYLE_CALIGRAPHY:
-                //caligraphyStyle.render(stroke);
+                caligraphyStyle.render(stroke, (int)outputRect.width, (int)outputRect.height);
+                break;
             default:
                 profileStyle.render(stroke);
                 break;
