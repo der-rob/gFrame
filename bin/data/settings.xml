@@ -7,12 +7,12 @@
 		</output_settings>
 		<network>
 			<host_port>9000</host_port>
-			<remote_ip>192.168.178.36</remote_ip>
+			<remote_ip>192.168.87.128</remote_ip>
 			<remote_port>9001</remote_port>
 		</network>
 		<osc>
 			<iPad_IP>192.168.10.101</iPad_IP>
-			<iPad_Port>8001</iPad_Port>
+			<iPad_Port>8000</iPad_Port>
 			<local_OSC_port>8679</local_OSC_port>
 
 		</osc>
@@ -29,7 +29,7 @@
 			<mouse>1</mouse>
 			<pqlabs>0</pqlabs>
 			<tuio>1</tuio>
-		<TUIO_port>3000</TUIO_port>
+		<TUIO_port>3334</TUIO_port>
 		</input_selection>
 	<dmx_settings>
 			<DMX_on>0</DMX_on>

@@ -457,7 +457,7 @@ void gFrameApp::oscUpdate() {
         //brush style
         if (m.getAddress() == "/1/t_wild") current_style = STYLE_SCRIZZLE;
         else if (m.getAddress() == "/1/t_threedee") current_style = STYLE_PROFILE;
-        else if (m.getAddress() == "/1/t_caligraphy") current_style = STYLE_PROFILE;
+        else if (m.getAddress() == "/1/t_caligraphy") current_style = STYLE_CALIGRAPHY;
         //style color
         else if (m.getAddress() == "/1/t_red") localBrushColor = ofColor::red;
         else if (m.getAddress() == "/1/t_green") localBrushColor = ofColor::green;
@@ -482,7 +482,7 @@ void gFrameApp::oscUpdate() {
         else if (m.getAddress() == "/2/s_td_zspeed") style_profile_zspeed = m.getArgAsFloat(0);
         else if (m.getAddress() == "/2/s_td_twist") style_profile_twist = m.getArgAsFloat(0);
         //caligraphy
-        
+        else if (m.getAddress() == "/2/s_c_width") C_width = m.getArgAsFloat(0);
         //admin tab
         else if (m.getAddress() == "/3/t_dmxon") dmx_on = m.getArgAsInt32(0);
         else if (m.getAddress() == "/3/s_upper") upper_pulsing_limit = m.getArgAsFloat(0);
@@ -620,6 +620,12 @@ void gFrameApp::oscupdate_interface() {
     sender.sendMessage(update);
     
     //caligraphy
+    //twist
+    update.clear();
+    update.setAddress("/2/s_c_width");
+    update.addFloatArg(C_width);
+    sender.sendMessage(update);
+
     
     //admin settings
     update.clear();
