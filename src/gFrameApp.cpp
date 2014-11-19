@@ -175,6 +175,9 @@ void gFrameApp::update(){
     profileStyle.setZSpeed(style_profile_zspeed);
     profileStyle.setTwist(style_profile_twist);
     profileStyle.setNewPointDistance(newPointDistance);
+    
+    //caligraphy style
+    caligraphyStyle.setStrokeWidth(C_width);
 
     // lifetime
     stroke_list.setLifetime(point_lifetime * 1000);
@@ -454,6 +457,7 @@ void gFrameApp::oscUpdate() {
         //brush style
         if (m.getAddress() == "/1/t_wild") current_style = STYLE_SCRIZZLE;
         else if (m.getAddress() == "/1/t_threedee") current_style = STYLE_PROFILE;
+        else if (m.getAddress() == "/1/t_caligraphy") current_style = STYLE_PROFILE;
         //style color
         else if (m.getAddress() == "/1/t_red") localBrushColor = ofColor::red;
         else if (m.getAddress() == "/1/t_green") localBrushColor = ofColor::green;
@@ -477,6 +481,7 @@ void gFrameApp::oscUpdate() {
         else if (m.getAddress() == "/2/s_td_width") style_profile_width = m.getArgAsFloat(0);
         else if (m.getAddress() == "/2/s_td_zspeed") style_profile_zspeed = m.getArgAsFloat(0);
         else if (m.getAddress() == "/2/s_td_twist") style_profile_twist = m.getArgAsFloat(0);
+        //caligraphy
         
         //admin tab
         else if (m.getAddress() == "/3/t_dmxon") dmx_on = m.getArgAsInt32(0);
@@ -486,7 +491,6 @@ void gFrameApp::oscUpdate() {
         else if (m.getAddress() == "/3/s_frequency") LED_frequency = m.getArgAsFloat(0);
         else if (m.getAddress() == "/3/s_lifetime") point_lifetime = m.getArgAsFloat(0);
         else if (m.getAddress() == "/3/s_newpointdistance") newPointDistance = m.getArgAsFloat(0);}
-    
     
     if (ofGetElapsedTimef() - last_ipad_update_time > 0.04) {
         oscupdate_interface();
@@ -512,7 +516,7 @@ void gFrameApp::oscupdate_interface() {
     sender.sendMessage(update);
 
     update.clear();
-    update.setAddress("/1/t_brush");
+    update.setAddress("/1/t_caligraphy");
     if (current_style == STYLE_CALIGRAPHY) update.addFloatArg(1);
     else update.addFloatArg(0);
     sender.sendMessage(update);
@@ -856,6 +860,9 @@ void gFrameApp::styleGuiSetup() {
     wild_parameters.add(W_byLine_thicknes.set("by line thickness", 0.5, 0.1, 5.0));
     style_settings.add(wild_parameters);
     
+    caligraphy_parameters.setName("Caligraphy");
+    caligraphy_parameters.add(C_width.set("width", 20, 5, 40));
+    style_settings.add(caligraphy_parameters);
     style_gui.add(style_settings);
 }
 

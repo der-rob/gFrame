@@ -36,11 +36,11 @@ void CaligraphyStyle::render(vector<GPoint> &points, int width, int height){
             ofPoint v1, v2;
             
             v1 = ofPoint(-dy, dx);
-            v1.scale(ofMap(v1.length(), 0, 200, 20, 2, true));
+            v1.scale(ofMap(v1.length(), 0, 200, stroke_width, 2, true));
             v1 += currentPoint;
             
             v2 = ofPoint(dy, -dx);
-            v2.scale(ofMap(v2.length(), 0, 200, 20, 2, true));
+            v2.scale(ofMap(v2.length(), 0, 200, stroke_width, 2, true));
             v2+= currentPoint;
             
             interpolator1.push_back(v1);
