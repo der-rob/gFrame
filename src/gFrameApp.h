@@ -73,8 +73,12 @@ private:
     ofParameter<float> W_fadeduration;
     
     CaligraphyStyle caligraphyStyle;
-    ofParameter<float> C_width;
-    ofParameter<float> C_sensitivity;
+    ofParameterGroup caligraphy_parameters;
+    ofParameter<int> C_width_min;
+    ofParameter<int> C_width_max;
+    ofParameter<float> C_fadeout_time;
+    ofParameter<float> C_fadeduration;
+    
     
     ofLight light;
 
