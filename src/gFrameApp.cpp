@@ -156,7 +156,11 @@ void gFrameApp::update(){
             break;
         }
         default:
-            syphonMainOut.publishTexture(&canvasFBO.getTextureReference());
+            syphonFBO.begin();
+            ofBackground(0);
+            canvasFBO.draw(outputRect.x, outputRect.y);
+            syphonFBO.end();
+            syphonMainOut.publishTexture(&syphonFBO.getTextureReference());
             break;
     }
     
