@@ -465,7 +465,7 @@ void gFrameApp::oscUpdate() {
         //brush style
         if (m.getAddress() == "/1/t_wild") current_style = STYLE_SCRIZZLE;
         else if (m.getAddress() == "/1/t_threedee") current_style = STYLE_PROFILE;
-        else if (m.getAddress() == "/1/t_caligraphy") current_style = STYLE_CALIGRAPHY;
+        else if (m.getAddress() == "/1/t_brush") current_style = STYLE_CALIGRAPHY;
         //style color
         else if (m.getAddress() == "/1/t_red") localBrushColor = ofColor::red;
         else if (m.getAddress() == "/1/t_green") localBrushColor = ofColor::green;
