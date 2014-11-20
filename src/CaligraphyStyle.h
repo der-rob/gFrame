@@ -30,6 +30,7 @@ public:
     
 private:
     ofPath path;
+    int stroke_width = 20;
     bool fill;
     int min_width = 1;
     int max_width = 20;

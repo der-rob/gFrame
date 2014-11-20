@@ -79,7 +79,6 @@ private:
     ofParameter<float> C_fadeout_time;
     ofParameter<float> C_fadeduration;
     
-    
     ofLight light;
 
     //output
