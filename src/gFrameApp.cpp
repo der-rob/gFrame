@@ -125,12 +125,10 @@ void gFrameApp::update(){
     
     canvasFBO.end();
     
-    canvasFBO.readToPixels(mCanvas.getPixelsRef());
-    mCanvas.reloadTexture();
+//    canvasFBO.readToPixels(mCanvas.getPixelsRef());
+//    mCanvas.reloadTexture();
     
-    syphonFBO.begin();
-    ofBackground(0);
-    ofSetColor(255);
+
 #ifdef DEBUG
     //LED 1
     ofCircle(220, 452, 10);
@@ -143,22 +141,24 @@ void gFrameApp::update(){
     ofCircle(508, 77+288, 10);
     ofCircle(508+480, 77+288, 10);
 #endif
+    
     //dealing with different output modes
     switch (outputmode) {
         case SESI:
         {
+            syphonFBO.begin();
+            ofBackground(0);
+            ofSetColor(255);
             toPanelsGFrame(mCanvas, mPanels);
             mPanels.draw(mPanelPositionAndSize.x,mPanelPositionAndSize.y);
+            syphonFBO.end();
+            syphonMainOut.publishTexture(&syphonFBO.getTextureReference());
             break;
         }
         default:
-            mCanvas.draw(outputRect.x, outputRect.y);
-//            syphonMainOut.publishTexture(&mCanvas.getTextureReference());
+            syphonMainOut.publishTexture(&canvasFBO.getTextureReference());
             break;
     }
-    syphonFBO.end();
-    
-    syphonMainOut.publishTexture(&syphonFBO.getTextureReference());
     
     //update the brush settings
     //scrizzle style
@@ -203,7 +203,8 @@ void gFrameApp::draw(){
     //switching of the main screen might improve the performance
     if (draw_on_main_screen)
     {
-        mCanvas.draw(0,0);
+//        mCanvas.draw(0,0);
+        canvasFBO.draw(0, 0, ofGetWidth(), ofGetHeight());
     }
     
     //gui output here
