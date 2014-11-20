@@ -149,6 +149,8 @@ void gFrameApp::update(){
             syphonFBO.begin();
             ofBackground(0);
             ofSetColor(255);
+            canvasFBO.readToPixels(mCanvas.getPixelsRef());
+            mCanvas.reloadTexture();
             toPanelsGFrame(mCanvas, mPanels);
             mPanels.draw(mPanelPositionAndSize.x,mPanelPositionAndSize.y);
             syphonFBO.end();
