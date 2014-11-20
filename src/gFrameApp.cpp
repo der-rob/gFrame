@@ -529,7 +529,7 @@ void gFrameApp::oscupdate_interface() {
     sender.sendMessage(update);
 
     update.clear();
-    update.setAddress("/1/t_caligraphy");
+    update.setAddress("/1/t_brush");
     if (current_style == STYLE_CALIGRAPHY) update.addFloatArg(1);
     else update.addFloatArg(0);
     sender.sendMessage(update);
