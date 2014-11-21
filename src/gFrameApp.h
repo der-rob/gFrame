@@ -83,6 +83,7 @@ private:
 
     //output
     bool draw_on_main_screen = true;
+    bool fullscreen;
     ofFbo syphonFBO, canvasFBO;
     ofParameter<int> outputwidth = 1024;
     ofParameter<int> outputheight = 768;

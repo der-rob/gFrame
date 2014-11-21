@@ -11,7 +11,7 @@
 			<remote_port>9001</remote_port>
 		</network>
 		<osc>
-			<iPad_IP>192.168.10.101</iPad_IP>
+			<iPad_IP>192.168.10.104</iPad_IP>
 			<iPad_Port>8001</iPad_Port>
 			<local_OSC_port>8679</local_OSC_port>
 
@@ -29,7 +29,7 @@
 			<mouse>1</mouse>
 			<pqlabs>0</pqlabs>
 			<tuio>1</tuio>
-		<TUIO_port>3000</TUIO_port>
+		<TUIO_port>2345</TUIO_port>
 		</input_selection>
 	<dmx_settings>
 			<DMX_on>0</DMX_on>
@@ -57,6 +57,27 @@
 				<main_line_thickness>4</main_line_thickness>
 				<by_line_thickness>0.5</by_line_thickness>
 			</Wild_Brush_Parameters>
+		<profile_parameters>
+				<depth>10</depth>
+				<width>10</width>
+				<z-speed>1</z-speed>
+				<twist>5</twist>
+			</profile_parameters>
+			<wild_parameters>
+				<amplitude>0.945441</amplitude>
+				<wavelength>4</wavelength>
+				<fadeout_time>10</fadeout_time>
+				<fade_duration>5</fade_duration>
+				<nervousity>1</nervousity>
+				<main_line_thickness>1.80029</main_line_thickness>
+				<by_line_thickness>0.5</by_line_thickness>
+			</wild_parameters>
+			<caligraphy_parameters>
+				<width_min>1</width_min>
+				<width_max>20</width_max>
+				<fadeout_time>10</fadeout_time>
+				<fade_duration>5</fade_duration>
+			</caligraphy_parameters>
 		</group>
 	</style_settings>
 </general_settings>

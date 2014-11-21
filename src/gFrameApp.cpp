@@ -9,6 +9,7 @@ void gFrameApp::setup(){
     ofBackground(ofColor::black);
     ofSetWindowShape(1024, 768);
 
+
     //dimensions for final output
     outputRect = ofRectangle(0,0,1024, 768);
 
@@ -118,18 +119,18 @@ void gFrameApp::update(){
                 break;
         }
     }
-    
     if(draw_finger_positions){
         drawFingerPositions((int)outputRect.width, (int)outputRect.height);
     }
-    
     canvasFBO.end();
     
-//    canvasFBO.readToPixels(mCanvas.getPixelsRef());
-//    mCanvas.reloadTexture();
+    canvasFBO.readToPixels(mCanvas.getPixelsRef());
+    mCanvas.reloadTexture();
     
-
-#ifdef DEBUG
+    syphonFBO.begin();
+    ofBackground(0);
+    ofSetColor(255);
+#if DEBUG
     //LED 1
     ofCircle(220, 452, 10);
     ofCircle(220, 452+288, 10);
@@ -141,30 +142,20 @@ void gFrameApp::update(){
     ofCircle(508, 77+288, 10);
     ofCircle(508+480, 77+288, 10);
 #endif
-    
     //dealing with different output modes
     switch (outputmode) {
         case SESI:
         {
-            syphonFBO.begin();
-            ofBackground(0);
-            ofSetColor(255);
-            canvasFBO.readToPixels(mCanvas.getPixelsRef());
-            mCanvas.reloadTexture();
             toPanelsGFrame(mCanvas, mPanels);
             mPanels.draw(mPanelPositionAndSize.x,mPanelPositionAndSize.y);
-            syphonFBO.end();
-            syphonMainOut.publishTexture(&syphonFBO.getTextureReference());
             break;
         }
         default:
-            syphonFBO.begin();
-            ofBackground(0);
-            canvasFBO.draw(outputRect.x, outputRect.y);
-            syphonFBO.end();
-            syphonMainOut.publishTexture(&syphonFBO.getTextureReference());
+            mCanvas.draw(outputRect.x, outputRect.y);
             break;
     }
+    syphonFBO.end();
+    syphonMainOut.publishTexture(&syphonFBO.getTextureReference());
     
     //update the brush settings
     //scrizzle style
@@ -210,7 +201,7 @@ void gFrameApp::draw(){
     if (draw_on_main_screen)
     {
 //        mCanvas.draw(0,0);
-        canvasFBO.draw(0, 0, ofGetWidth(), ofGetHeight());
+        syphonFBO.draw(0, 0, ofGetWidth(), ofGetHeight());
     }
     
     //gui output here
@@ -259,7 +250,7 @@ void gFrameApp::drawFingerPositions(int _width, int _height){
             
             glVertex2f(finger_position_size + px, py);
             glEnd();
-#ifdef DEBUG
+#if DEBUG
             // draw finger id for debugging
             ofSetColor(255, 255, 255, 255);
             ofDrawBitmapString(ofToString(i), finger.x-5, finger.y+5);
@@ -353,6 +344,12 @@ void gFrameApp::keyPressed(int key){
         orientation = PORTRAIT;
         canvasFBO.allocate(outputRect.width, outputRect.height);
         mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
+    }
+    if (key == 'x') {
+        fullscreen = !fullscreen;
+        ofSetFullscreen(fullscreen);
+        style_gui.setPosition(ofGetWidth() - 2*style_gui.getWidth() - 20, 10);
+        gui.setPosition(ofGetWidth() - gui.getWidth() - 10, 10);
     }
 
 }
