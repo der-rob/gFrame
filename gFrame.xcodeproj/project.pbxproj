@@ -31,6 +31,11 @@
 		D40A14161A112C5D0067C957 /* ofxSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D40A140B1A112C5D0067C957 /* ofxSlider.cpp */; };
 		D40A14171A112C5D0067C957 /* ofxSliderGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D40A140D1A112C5D0067C957 /* ofxSliderGroup.cpp */; };
 		D40A14181A112C5D0067C957 /* ofxToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D40A140F1A112C5D0067C957 /* ofxToggle.cpp */; };
+		D44504F81AF00B0100D041D6 /* ftDrawForce.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44504BE1AF00B0100D041D6 /* ftDrawForce.cpp */; };
+		D44504F91AF00B0100D041D6 /* ftFluidSimulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44504CC1AF00B0100D041D6 /* ftFluidSimulation.cpp */; };
+		D44504FA1AF00B0100D041D6 /* ftVelocityMask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44504D71AF00B0100D041D6 /* ftVelocityMask.cpp */; };
+		D44504FB1AF00B0100D041D6 /* ftOpticalFlow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44504DC1AF00B0100D041D6 /* ftOpticalFlow.cpp */; };
+		D44504FC1AF00B0100D041D6 /* ftParticleFlow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44504E41AF00B0100D041D6 /* ftParticleFlow.cpp */; };
 		D4605411196C52650040C381 /* ofxDmx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D460540B196C52650040C381 /* ofxDmx.cpp */; };
 		D4605486196DC7480040C381 /* IpEndpointName.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4605460196DC7480040C381 /* IpEndpointName.cpp */; };
 		D4605487196DC7480040C381 /* NetworkingUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4605465196DC7480040C381 /* NetworkingUtils.cpp */; };
@@ -176,6 +181,53 @@
 		D422928B1973E92B007A533C /* ofxTuioCursor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuioCursor.h; sourceTree = "<group>"; };
 		D422928C1973E92B007A533C /* ofxTuioObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuioObject.h; sourceTree = "<group>"; };
 		D422928D1973E92B007A533C /* ofxTuioPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTuioPoint.h; sourceTree = "<group>"; };
+		D44504BE1AF00B0100D041D6 /* ftDrawForce.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ftDrawForce.cpp; sourceTree = "<group>"; };
+		D44504BF1AF00B0100D041D6 /* ftDrawForce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftDrawForce.h; sourceTree = "<group>"; };
+		D44504C01AF00B0100D041D6 /* ftDrawForceShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftDrawForceShader.h; sourceTree = "<group>"; };
+		D44504C21AF00B0100D041D6 /* ftContrastShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftContrastShader.h; sourceTree = "<group>"; };
+		D44504C31AF00B0100D041D6 /* ftEOGShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftEOGShader.h; sourceTree = "<group>"; };
+		D44504C41AF00B0100D041D6 /* ftGaussianBlurShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftGaussianBlurShader.h; sourceTree = "<group>"; };
+		D44504C51AF00B0100D041D6 /* ftHSLShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftHSLShader.h; sourceTree = "<group>"; };
+		D44504C61AF00B0100D041D6 /* ftLuminanceShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftLuminanceShader.h; sourceTree = "<group>"; };
+		D44504C71AF00B0100D041D6 /* ftTimeBlurShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftTimeBlurShader.h; sourceTree = "<group>"; };
+		D44504C91AF00B0100D041D6 /* ftAdvectShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftAdvectShader.h; sourceTree = "<group>"; };
+		D44504CA1AF00B0100D041D6 /* ftDiffuseShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftDiffuseShader.h; sourceTree = "<group>"; };
+		D44504CB1AF00B0100D041D6 /* ftDivergenceShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftDivergenceShader.h; sourceTree = "<group>"; };
+		D44504CC1AF00B0100D041D6 /* ftFluidSimulation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ftFluidSimulation.cpp; sourceTree = "<group>"; };
+		D44504CD1AF00B0100D041D6 /* ftFluidSimulation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftFluidSimulation.h; sourceTree = "<group>"; };
+		D44504CE1AF00B0100D041D6 /* ftJacobiShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftJacobiShader.h; sourceTree = "<group>"; };
+		D44504CF1AF00B0100D041D6 /* ftSmokeBuoyancyShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftSmokeBuoyancyShader.h; sourceTree = "<group>"; };
+		D44504D01AF00B0100D041D6 /* ftSubstractGradientShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftSubstractGradientShader.h; sourceTree = "<group>"; };
+		D44504D11AF00B0100D041D6 /* ftVorticityFirstPassShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftVorticityFirstPassShader.h; sourceTree = "<group>"; };
+		D44504D21AF00B0100D041D6 /* ftVorticitySecondPassShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftVorticitySecondPassShader.h; sourceTree = "<group>"; };
+		D44504D31AF00B0100D041D6 /* ftFbo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftFbo.h; sourceTree = "<group>"; };
+		D44504D41AF00B0100D041D6 /* ftShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftShader.h; sourceTree = "<group>"; };
+		D44504D51AF00B0100D041D6 /* ftSwapBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftSwapBuffer.h; sourceTree = "<group>"; };
+		D44504D71AF00B0100D041D6 /* ftVelocityMask.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ftVelocityMask.cpp; sourceTree = "<group>"; };
+		D44504D81AF00B0100D041D6 /* ftVelocityMask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftVelocityMask.h; sourceTree = "<group>"; };
+		D44504D91AF00B0100D041D6 /* ftVelocityMaskShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftVelocityMaskShader.h; sourceTree = "<group>"; };
+		D44504DA1AF00B0100D041D6 /* ofxFlowTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxFlowTools.h; sourceTree = "<group>"; };
+		D44504DC1AF00B0100D041D6 /* ftOpticalFlow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ftOpticalFlow.cpp; sourceTree = "<group>"; };
+		D44504DD1AF00B0100D041D6 /* ftOpticalFlow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftOpticalFlow.h; sourceTree = "<group>"; };
+		D44504DE1AF00B0100D041D6 /* ftOpticalFlowShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftOpticalFlowShader.h; sourceTree = "<group>"; };
+		D44504E01AF00B0100D041D6 /* ftAgeLifespanMassSizeParticleShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftAgeLifespanMassSizeParticleShader.h; sourceTree = "<group>"; };
+		D44504E11AF00B0100D041D6 /* ftDrawParticleShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftDrawParticleShader.h; sourceTree = "<group>"; };
+		D44504E21AF00B0100D041D6 /* ftInitPositionShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftInitPositionShader.h; sourceTree = "<group>"; };
+		D44504E31AF00B0100D041D6 /* ftMoveParticleShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftMoveParticleShader.h; sourceTree = "<group>"; };
+		D44504E41AF00B0100D041D6 /* ftParticleFlow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ftParticleFlow.cpp; sourceTree = "<group>"; };
+		D44504E51AF00B0100D041D6 /* ftParticleFlow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftParticleFlow.h; sourceTree = "<group>"; };
+		D44504E71AF00B0100D041D6 /* ftAddForceShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftAddForceShader.h; sourceTree = "<group>"; };
+		D44504E81AF00B0100D041D6 /* ftClampLengthShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftClampLengthShader.h; sourceTree = "<group>"; };
+		D44504E91AF00B0100D041D6 /* ftDensityFloatMultiplier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftDensityFloatMultiplier.h; sourceTree = "<group>"; };
+		D44504EA1AF00B0100D041D6 /* ftDensityVec2Multiplier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftDensityVec2Multiplier.h; sourceTree = "<group>"; };
+		D44504EB1AF00B0100D041D6 /* ftToScalar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftToScalar.h; sourceTree = "<group>"; };
+		D44504EC1AF00B0100D041D6 /* ftToScalarShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftToScalarShader.h; sourceTree = "<group>"; };
+		D44504EE1AF00B0100D041D6 /* ftDisplayScalar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftDisplayScalar.h; sourceTree = "<group>"; };
+		D44504EF1AF00B0100D041D6 /* ftDisplayScalarShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftDisplayScalarShader.h; sourceTree = "<group>"; };
+		D44504F01AF00B0100D041D6 /* ftTemperatureField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftTemperatureField.h; sourceTree = "<group>"; };
+		D44504F11AF00B0100D041D6 /* ftTemperatureFieldShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftTemperatureFieldShader.h; sourceTree = "<group>"; };
+		D44504F21AF00B0100D041D6 /* ftVelocityField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftVelocityField.h; sourceTree = "<group>"; };
+		D44504F31AF00B0100D041D6 /* ftVelocityFieldShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftVelocityFieldShader.h; sourceTree = "<group>"; };
 		D46053EB196C52640040C381 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		D4605408196C52650040C381 /* license.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.md; sourceTree = "<group>"; };
 		D4605409196C52650040C381 /* readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.md; sourceTree = "<group>"; };
@@ -357,6 +409,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				D445049F1AF00B0100D041D6 /* ofxFlowTools */,
 				D40A13FE1A112C5D0067C957 /* ofxGui */,
 				6C7223431A093BB1004D5BF6 /* ofxNetwork */,
 				D486254E1A001C990076E13F /* ofxMSACore */,
@@ -519,6 +572,133 @@
 				D422928D1973E92B007A533C /* ofxTuioPoint.h */,
 			);
 			path = src;
+			sourceTree = "<group>";
+		};
+		D445049F1AF00B0100D041D6 /* ofxFlowTools */ = {
+			isa = PBXGroup;
+			children = (
+				D44504BC1AF00B0100D041D6 /* src */,
+			);
+			name = ofxFlowTools;
+			path = ../../../addons/ofxFlowTools;
+			sourceTree = "<group>";
+		};
+		D44504BC1AF00B0100D041D6 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				D44504BD1AF00B0100D041D6 /* drawforces */,
+				D44504C11AF00B0100D041D6 /* filters */,
+				D44504C81AF00B0100D041D6 /* fluid */,
+				D44504D31AF00B0100D041D6 /* ftFbo.h */,
+				D44504D41AF00B0100D041D6 /* ftShader.h */,
+				D44504D51AF00B0100D041D6 /* ftSwapBuffer.h */,
+				D44504D61AF00B0100D041D6 /* mask */,
+				D44504DA1AF00B0100D041D6 /* ofxFlowTools.h */,
+				D44504DB1AF00B0100D041D6 /* opticalflow */,
+				D44504DF1AF00B0100D041D6 /* particles */,
+				D44504E61AF00B0100D041D6 /* tools */,
+				D44504ED1AF00B0100D041D6 /* visualisation */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		D44504BD1AF00B0100D041D6 /* drawforces */ = {
+			isa = PBXGroup;
+			children = (
+				D44504BE1AF00B0100D041D6 /* ftDrawForce.cpp */,
+				D44504BF1AF00B0100D041D6 /* ftDrawForce.h */,
+				D44504C01AF00B0100D041D6 /* ftDrawForceShader.h */,
+			);
+			path = drawforces;
+			sourceTree = "<group>";
+		};
+		D44504C11AF00B0100D041D6 /* filters */ = {
+			isa = PBXGroup;
+			children = (
+				D44504C21AF00B0100D041D6 /* ftContrastShader.h */,
+				D44504C31AF00B0100D041D6 /* ftEOGShader.h */,
+				D44504C41AF00B0100D041D6 /* ftGaussianBlurShader.h */,
+				D44504C51AF00B0100D041D6 /* ftHSLShader.h */,
+				D44504C61AF00B0100D041D6 /* ftLuminanceShader.h */,
+				D44504C71AF00B0100D041D6 /* ftTimeBlurShader.h */,
+			);
+			path = filters;
+			sourceTree = "<group>";
+		};
+		D44504C81AF00B0100D041D6 /* fluid */ = {
+			isa = PBXGroup;
+			children = (
+				D44504C91AF00B0100D041D6 /* ftAdvectShader.h */,
+				D44504CA1AF00B0100D041D6 /* ftDiffuseShader.h */,
+				D44504CB1AF00B0100D041D6 /* ftDivergenceShader.h */,
+				D44504CC1AF00B0100D041D6 /* ftFluidSimulation.cpp */,
+				D44504CD1AF00B0100D041D6 /* ftFluidSimulation.h */,
+				D44504CE1AF00B0100D041D6 /* ftJacobiShader.h */,
+				D44504CF1AF00B0100D041D6 /* ftSmokeBuoyancyShader.h */,
+				D44504D01AF00B0100D041D6 /* ftSubstractGradientShader.h */,
+				D44504D11AF00B0100D041D6 /* ftVorticityFirstPassShader.h */,
+				D44504D21AF00B0100D041D6 /* ftVorticitySecondPassShader.h */,
+			);
+			path = fluid;
+			sourceTree = "<group>";
+		};
+		D44504D61AF00B0100D041D6 /* mask */ = {
+			isa = PBXGroup;
+			children = (
+				D44504D71AF00B0100D041D6 /* ftVelocityMask.cpp */,
+				D44504D81AF00B0100D041D6 /* ftVelocityMask.h */,
+				D44504D91AF00B0100D041D6 /* ftVelocityMaskShader.h */,
+			);
+			path = mask;
+			sourceTree = "<group>";
+		};
+		D44504DB1AF00B0100D041D6 /* opticalflow */ = {
+			isa = PBXGroup;
+			children = (
+				D44504DC1AF00B0100D041D6 /* ftOpticalFlow.cpp */,
+				D44504DD1AF00B0100D041D6 /* ftOpticalFlow.h */,
+				D44504DE1AF00B0100D041D6 /* ftOpticalFlowShader.h */,
+			);
+			path = opticalflow;
+			sourceTree = "<group>";
+		};
+		D44504DF1AF00B0100D041D6 /* particles */ = {
+			isa = PBXGroup;
+			children = (
+				D44504E01AF00B0100D041D6 /* ftAgeLifespanMassSizeParticleShader.h */,
+				D44504E11AF00B0100D041D6 /* ftDrawParticleShader.h */,
+				D44504E21AF00B0100D041D6 /* ftInitPositionShader.h */,
+				D44504E31AF00B0100D041D6 /* ftMoveParticleShader.h */,
+				D44504E41AF00B0100D041D6 /* ftParticleFlow.cpp */,
+				D44504E51AF00B0100D041D6 /* ftParticleFlow.h */,
+			);
+			path = particles;
+			sourceTree = "<group>";
+		};
+		D44504E61AF00B0100D041D6 /* tools */ = {
+			isa = PBXGroup;
+			children = (
+				D44504E71AF00B0100D041D6 /* ftAddForceShader.h */,
+				D44504E81AF00B0100D041D6 /* ftClampLengthShader.h */,
+				D44504E91AF00B0100D041D6 /* ftDensityFloatMultiplier.h */,
+				D44504EA1AF00B0100D041D6 /* ftDensityVec2Multiplier.h */,
+				D44504EB1AF00B0100D041D6 /* ftToScalar.h */,
+				D44504EC1AF00B0100D041D6 /* ftToScalarShader.h */,
+			);
+			path = tools;
+			sourceTree = "<group>";
+		};
+		D44504ED1AF00B0100D041D6 /* visualisation */ = {
+			isa = PBXGroup;
+			children = (
+				D44504EE1AF00B0100D041D6 /* ftDisplayScalar.h */,
+				D44504EF1AF00B0100D041D6 /* ftDisplayScalarShader.h */,
+				D44504F01AF00B0100D041D6 /* ftTemperatureField.h */,
+				D44504F11AF00B0100D041D6 /* ftTemperatureFieldShader.h */,
+				D44504F21AF00B0100D041D6 /* ftVelocityField.h */,
+				D44504F31AF00B0100D041D6 /* ftVelocityFieldShader.h */,
+			);
+			path = visualisation;
 			sourceTree = "<group>";
 		};
 		D46053EA196C52640040C381 /* ofxDmx */ = {
@@ -983,8 +1163,11 @@
 				D40A14151A112C5D0067C957 /* ofxPanel.cpp in Sources */,
 				D48625711A001C9A0076E13F /* testApp.cpp in Sources */,
 				6CEACF3C19F957AD00EB7DE6 /* ProfileStyle.cpp in Sources */,
+				D44504F81AF00B0100D041D6 /* ftDrawForce.cpp in Sources */,
+				D44504F91AF00B0100D041D6 /* ftFluidSimulation.cpp in Sources */,
 				D4091B06196AB67B00F109F1 /* ofxSyphonClient.mm in Sources */,
 				D4091B05196AB67B00F109F1 /* SyphonNameboundClient.m in Sources */,
+				D44504FC1AF00B0100D041D6 /* ftParticleFlow.cpp in Sources */,
 				D460548F196DC7480040C381 /* ofxOscBundle.cpp in Sources */,
 				D4A778C51976A26E005E4026 /* ofxEasingQuint.cpp in Sources */,
 				D486256F1A001C9A0076E13F /* MSACoreGL.cpp in Sources */,
@@ -998,6 +1181,7 @@
 				D486256E1A001C9A0076E13F /* README.md in Sources */,
 				D40A14131A112C5D0067C957 /* ofxGuiGroup.cpp in Sources */,
 				D4A778BC1976A26E005E4026 /* ofxEasingBack.cpp in Sources */,
+				D44504FB1AF00B0100D041D6 /* ftOpticalFlow.cpp in Sources */,
 				6C7223541A093BB1004D5BF6 /* ofxUDPManager.cpp in Sources */,
 				D4A778BF1976A26E005E4026 /* ofxEasingCubic.cpp in Sources */,
 				D4A778C01976A26E005E4026 /* ofxEasingElastic.cpp in Sources */,
@@ -1007,6 +1191,7 @@
 				D4A778C71976A26E005E4026 /* ofxTween.cpp in Sources */,
 				D4605490196DC7480040C381 /* ofxOscMessage.cpp in Sources */,
 				D4A778BB1976A26E005E4026 /* ofxEasing.cpp in Sources */,
+				D44504FA1AF00B0100D041D6 /* ftVelocityMask.cpp in Sources */,
 				D460548E196DC7480040C381 /* OscTypes.cpp in Sources */,
 				6CEACF3B19F957AD00EB7DE6 /* GPoint.cpp in Sources */,
 				D4091B07196AB67B00F109F1 /* ofxSyphonServer.mm in Sources */,

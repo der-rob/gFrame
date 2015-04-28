@@ -11,9 +11,9 @@
 			<remote_port>9001</remote_port>
 		</network>
 		<osc>
-			<iPad_IP>192.168.10.104</iPad_IP>
-			<iPad_Port>8001</iPad_Port>
-			<local_OSC_port>8679</local_OSC_port>
+			<iPad_IP>192.168.1.72</iPad_IP>
+			<iPad_Port>8002</iPad_Port>
+			<local_OSC_port>7777</local_OSC_port>
 
 		</osc>
 		<finger_positions>
@@ -29,7 +29,7 @@
 			<mouse>1</mouse>
 			<pqlabs>0</pqlabs>
 			<tuio>1</tuio>
-		<TUIO_port>2345</TUIO_port>
+		<TUIO_port>3334</TUIO_port>
 		</input_selection>
 	<dmx_settings>
 			<DMX_on>0</DMX_on>
@@ -64,7 +64,7 @@
 				<twist>5</twist>
 			</profile_parameters>
 			<wild_parameters>
-				<amplitude>0.945441</amplitude>
+				<amplitude>5.52687</amplitude>
 				<wavelength>4</wavelength>
 				<fadeout_time>10</fadeout_time>
 				<fade_duration>5</fade_duration>

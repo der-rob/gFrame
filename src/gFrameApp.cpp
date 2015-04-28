@@ -8,6 +8,7 @@ void gFrameApp::setup(){
     ofSetVerticalSync(true);
     ofBackground(ofColor::black);
     ofSetWindowShape(1024, 768);
+    
 
 
     //dimensions for final output
@@ -69,7 +70,8 @@ void gFrameApp::setup(){
     syphonFBO.allocate(1024, 768, GL_RGBA, 2);
     canvasFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 2);
     mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
-    mPanelPositionAndSize = ofRectangle(37,259,214,167);
+//    mPanelPositionAndSize = ofRectangle(37,259,214,167);
+    mPanelPositionAndSize = ofRectangle(45,259,214,167);
     dimSESI = ofRectangle(98,259,93,167);
     dimLED1 = ofRectangle(220,452,768,288);
     dimLED2 = ofRectangle(508, 77, 480, 288);
@@ -350,6 +352,9 @@ void gFrameApp::keyPressed(int key){
         ofSetFullscreen(fullscreen);
         style_gui.setPosition(ofGetWidth() - 2*style_gui.getWidth() - 20, 10);
         gui.setPosition(ofGetWidth() - gui.getWidth() - 10, 10);
+    }
+    if (key == 'm') {
+        input_mouse = !input_mouse;
     }
 
 }
