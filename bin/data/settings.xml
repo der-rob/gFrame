@@ -11,9 +11,9 @@
 			<remote_port>9001</remote_port>
 		</network>
 		<osc>
-			<iPad_IP>192.168.1.72</iPad_IP>
-			<iPad_Port>8002</iPad_Port>
-			<local_OSC_port>7777</local_OSC_port>
+			<iPad_IP>192.168.178.42</iPad_IP>
+			<iPad_Port>3333</iPad_Port>
+			<local_OSC_port>3334</local_OSC_port>
 
 		</osc>
 		<finger_positions>
@@ -29,7 +29,7 @@
 			<mouse>1</mouse>
 			<pqlabs>0</pqlabs>
 			<tuio>1</tuio>
-		<TUIO_port>3334</TUIO_port>
+		<TUIO_port>4000</TUIO_port>
 		</input_selection>
 	<dmx_settings>
 			<DMX_on>0</DMX_on>
@@ -80,4 +80,34 @@
 			</caligraphy_parameters>
 		</group>
 	</style_settings>
+<flow_settings>
+		<fluid_solver>
+			<reset>0</reset>
+			<speed>2.04082</speed>
+			<cell_size>0.183673</cell_size>
+			<iterations>40</iterations>
+			<viscosity>0.959184</viscosity>
+			<vorticity>0.959184</vorticity>
+			<dissipation>0.000918367</dissipation>
+			<advanced_dissipation>
+				<velocity_offset>0</velocity_offset>
+				<density_offset>0</density_offset>
+				<temperature_offset>0</temperature_offset>
+			</advanced_dissipation>
+			<smoke_buoyancy>
+				<sigma>0.05</sigma>
+				<weight>0.05</weight>
+				<ambient_temperature>0</ambient_temperature>
+				<gravity>0, 0</gravity>
+			</smoke_buoyancy>
+			<maximum>
+				<clampForce>0</clampForce>
+				<density>1</density>
+				<velocity>1</velocity>
+				<temperature>1</temperature>
+			</maximum>
+			<density_from_pressure>0</density_from_pressure>
+			<density_from_vorticity>0</density_from_vorticity>
+		</fluid_solver>
+	</flow_settings>
 </general_settings>

@@ -1,4 +1,8 @@
+#pragma once
 #include "gFrameApp.h"
+
+#define USE_PROGRAMMABLE_GL     // Maybe there is a reason you would want to
+
 
 //--------------------------------------------------------------
 void gFrameApp::setup(){
@@ -7,23 +11,25 @@ void gFrameApp::setup(){
     ofSetFrameRate(30);
     ofSetVerticalSync(true);
     ofBackground(ofColor::black);
-    ofSetWindowShape(1024, 768);
+    ofSetWindowShape(1280, 720);
     
-
-
     //dimensions for final output
-    outputRect = ofRectangle(0,0,1024, 768);
+    outputRect = ofRectangle(0,0,1280, 720);
 
     //GUI setup
     guiSetup();
     styleGuiSetup();
+    flowGuiSetup();
     ofAddListener(gui.loadPressedE, this, &gFrameApp::onSettingsReload);
     ofAddListener(gui.savePressedE, this, &gFrameApp::onSettingsSave);
     ofAddListener(style_gui.loadPressedE, this, &gFrameApp::onStyleSettingsreload);
     ofAddListener(style_gui.savePressedE, this, &gFrameApp::onStyleSettingsSave);
+    ofAddListener(flow_gui.loadPressedE, this, &gFrameApp::onFlowSettingsReload);
+    ofAddListener(flow_gui.savePressedE, this, &gFrameApp::onFlowSettingsSave);
     
     gui.loadFromFile("settings.xml");
     style_gui.loadFromFile("stylesettings.xml");
+    flow_gui.loadFromFile("flow_settings.xml");
     
     //need to call this here, otherwise would get a BAD ACCESS FAULT
     gui.draw();
@@ -61,29 +67,84 @@ void gFrameApp::setup(){
     light.enable();
     light.setPointLight();
     light.setPosition(0,0,0);
-    
+
+#ifdef USE_NETWORK
     // NETWORK
     network.setup(host_port, remote_ip, remote_port);
     stroke_list.setupSync(&network);
+#endif
 
     //brazil support
-    syphonFBO.allocate(1024, 768, GL_RGBA, 2);
+//  syphonFBO.allocate(1024, 768, GL_RGBA, 2);
+    syphonFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 2);
     canvasFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 2);
     mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
-//    mPanelPositionAndSize = ofRectangle(37,259,214,167);
-    mPanelPositionAndSize = ofRectangle(45,259,214,167);
-    dimSESI = ofRectangle(98,259,93,167);
-    dimLED1 = ofRectangle(220,452,768,288);
-    dimLED2 = ofRectangle(508, 77, 480, 288);
-    grabOrigin = ofVec2f(0.0,0.0);
-    mPanels.allocate(mPanelPositionAndSize.width, mPanelPositionAndSize.height, OF_IMAGE_COLOR);
-    mPanels.setColor(0);
+    syphonFBO.begin(); ofClear(0); syphonFBO.end();
+    canvasFBO.begin(); ofClear(0); canvasFBO.end();
 
     // initialize finger positions
     for(ofVec2f finger : finger_positions){
         finger = ofVec2f(0,0);
     }
     
+    
+    //flowtools
+    drawWidth = outputRect.width;
+    drawHeight = outputRect.height;
+    // process all but the density on 16th resolution
+    flowWidth = drawWidth/4;
+    flowHeight = drawHeight/4;
+    
+    // Flow & Mask
+    opticalFlow.setup(flowWidth, flowHeight);
+    velocityMask.setup(drawWidth, drawHeight);
+    //fluid
+    fluid.setup(flowWidth, flowHeight, drawWidth, drawHeight, false);
+    //particles
+    particleFlow.setup(flowWidth, flowHeight, drawWidth, drawHeight);
+    
+    // Visualisation
+    displayScalar.allocate(flowWidth, flowHeight);
+    velocityField.allocate(flowWidth / 4, flowHeight / 4);
+    temperatureField.allocate(flowWidth / 4, flowHeight / 4);
+    
+    //Draw Forces
+    numDrawForces = 6;
+    flexDrawForces = new ftDrawForce[numDrawForces];
+    flexDrawForces[0].setup(drawWidth, drawHeight, FT_DENSITY, true);
+    flexDrawForces[0].setName("draw full res");
+    flexDrawForces[1].setup(flowWidth, flowHeight, FT_VELOCITY, true);
+    flexDrawForces[1].setName("draw flow res 1");
+    flexDrawForces[2].setup(flowWidth, flowHeight, FT_TEMPERATURE, true);
+    flexDrawForces[2].setName("draw flow res 2");
+    flexDrawForces[3].setup(drawWidth, drawHeight, FT_DENSITY, false);
+    flexDrawForces[3].setName("draw full res");
+    flexDrawForces[4].setup(flowWidth, flowHeight, FT_VELOCITY, false);
+    flexDrawForces[4].setName("draw flow res 1");
+    flexDrawForces[5].setup(flowWidth, flowHeight, FT_TEMPERATURE, false);
+    flexDrawForces[5].setName("draw flow res 2");
+    
+    lastTime = ofGetElapsedTimef();
+    lastMouse.set(0,0);
+    for (int i = 0; i < 12; i++)
+        last_touch_points[i].set(0,0);
+    
+    //stencil
+    stencilText = "Applied Future!";
+    stencilFont.loadFont("AkzidenzGrotesk-Cond.otf", 150);
+    stencilFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 2);
+    stencilFBO.begin();
+    ofClear(0);
+    ofRectangle stringBounds = stencilFont.getStringBoundingBox(stencilText, 0, 0);
+    int text_x = (ofGetWidth() - stringBounds.width) / 2;
+    int text_y = (ofGetHeight() + stringBounds.height) /2;
+    stencilFont.drawString(stencilText, text_x, text_y);
+    stencilFBO.end();
+    
+    fluid.addObstacle(stencilFBO.getTextureReference());
+    fluid.addTempObstacle(stencilFBO.getTextureReference());
+
+
 }
 void gFrameApp::exit(){
     setLEDColor(ofColor::black);
@@ -117,47 +178,28 @@ void gFrameApp::update(){
                 caligraphyStyle.render(stroke, (int)outputRect.width, (int)outputRect.height);
                 break;
             default:
-                profileStyle.render(stroke);
+                profileStyle.render(stroke, (int)outputRect.width, (int)outputRect.height);
                 break;
         }
     }
+  
     if(draw_finger_positions){
         drawFingerPositions((int)outputRect.width, (int)outputRect.height);
     }
+    
     canvasFBO.end();
     
     canvasFBO.readToPixels(mCanvas.getPixelsRef());
     mCanvas.reloadTexture();
     
-    syphonFBO.begin();
-    ofBackground(0);
-    ofSetColor(255);
-#if DEBUG
-    //LED 1
-    ofCircle(220, 452, 10);
-    ofCircle(220, 452+288, 10);
-    ofCircle(220+768, 452, 10);
-    ofCircle(220+768, 452+288, 10);
-    //LED 2
-    ofCircle(508, 77, 10);
-    ofCircle(508+480, 77, 10);
-    ofCircle(508, 77+288, 10);
-    ofCircle(508+480, 77+288, 10);
-#endif
-    //dealing with different output modes
-    switch (outputmode) {
-        case SESI:
-        {
-            toPanelsGFrame(mCanvas, mPanels);
-            mPanels.draw(mPanelPositionAndSize.x,mPanelPositionAndSize.y);
-            break;
-        }
-        default:
-            mCanvas.draw(outputRect.x, outputRect.y);
-            break;
-    }
-    syphonFBO.end();
-    syphonMainOut.publishTexture(&syphonFBO.getTextureReference());
+//    syphonFBO.begin();
+//    
+//    ofClear(0);
+//
+//    mCanvas.draw(outputRect.x, outputRect.y);
+//    
+//    syphonFBO.end();
+//    syphonMainOut.publishTexture(&syphonFBO.getTextureReference());
     
     //update the brush settings
     //scrizzle style
@@ -182,7 +224,9 @@ void gFrameApp::update(){
     // lifetime
     stroke_list.setLifetime(point_lifetime * 1000);
     
-
+    //flowtools
+    deltaTime = ofGetElapsedTimef() - lastTime;
+    lastTime = ofGetElapsedTimef();
 }
 
 //--------------------------------------------------------------
@@ -191,25 +235,96 @@ void gFrameApp::draw(){
     ofBackground(0);
     ofSetColor(255);
     
-    //show size of drawing area
-    ofSetColor(255,0, 0);
-    ofCircle(grabOrigin, 10);
-    ofCircle(grabOrigin.x+outputRect.width, grabOrigin.y,10);
-    ofCircle(grabOrigin.x, grabOrigin.y + outputRect.height,10);
-    ofCircle(grabOrigin.x+outputRect.width, grabOrigin.y+outputRect.height,10);
-    ofSetColor(255);
     
+    syphonFBO.begin();
+    ofClear(0);
+    
+    //flowtools
+    opticalFlow.setSource(mCanvas.getTextureReference());
+    opticalFlow.update(deltaTime);
+
+    velocityMask.setDensity(mCanvas.getTextureReference());
+    velocityMask.setVelocity(opticalFlow.getOpticalFlow());
+    velocityMask.update();
+    
+    fluid.addVelocity(opticalFlow.getOpticalFlowDecay());
+    fluid.addDensity(velocityMask.getColorMask());
+    fluid.addTemperature(velocityMask.getLuminanceMask());
+    
+    for (int i=0; i<numDrawForces; i++) {
+        flexDrawForces[i].update();
+        if (flexDrawForces[i].didChange()) {
+            // if a force is constant multiply by deltaTime
+            float strength = flexDrawForces[i].getStrength();
+            if (!flexDrawForces[i].getIsTemporary())
+                strength *=deltaTime;
+            switch (flexDrawForces[i].getType()) {
+                case FT_DENSITY:
+                    fluid.addDensity(flexDrawForces[i].getTextureReference(), strength);
+                    break;
+                case FT_VELOCITY:
+                    fluid.addVelocity(flexDrawForces[i].getTextureReference(), strength);
+                    particleFlow.addFlowVelocity(flexDrawForces[i].getTextureReference(), strength);
+                    break;
+                case FT_TEMPERATURE:
+                    fluid.addTemperature(flexDrawForces[i].getTextureReference(), strength);
+                    break;
+                case FT_PRESSURE:
+                    fluid.addPressure(flexDrawForces[i].getTextureReference(), strength);
+                    break;
+                case FT_OBSTACLE:
+                    fluid.addTempObstacle(flexDrawForces[i].getTextureReference());
+                default:
+                    break;
+            }
+        }
+    }
+    
+    fluid.update();
+    
+    if (particleFlow.isActive()) {
+        particleFlow.setSpeed(fluid.getSpeed());
+        particleFlow.setCellSize(fluid.getCellSize());
+        particleFlow.addFlowVelocity(opticalFlow.getOpticalFlow());
+        particleFlow.addFluidVelocity(fluid.getVelocity());
+        particleFlow.setObstacle(fluid.getObstacle());
+    }
+    particleFlow.update();
+    
+    
+    int windowWidth = ofGetWindowWidth();
+    int windowHeight = ofGetWindowHeight();
+    ofClear(0,0);
+    
+    // Fluid Composite
+    ofPushStyle();
+    ofEnableBlendMode(OF_BLENDMODE_DISABLED);
+    mCanvas.draw(0,0, windowWidth, windowHeight);
+    
+    ofEnableBlendMode(OF_BLENDMODE_ADD);
+    ofSetColor(localBrushColor);
+    fluid.draw(0, 0, windowWidth, windowHeight);
+    
+    ofEnableBlendMode(OF_BLENDMODE_ADD);
+    //if (particleFlow.isActive())
+        //particleFlow.draw(0, 0, windowWidth, windowHeight);
+    
+    ofPopStyle();
+    syphonFBO.end();
+
+    syphonMainOut.publishTexture(&syphonFBO.getTextureReference());
+
     //switching of the main screen might improve the performance
     if (draw_on_main_screen)
     {
-//        mCanvas.draw(0,0);
-        syphonFBO.draw(0, 0, ofGetWidth(), ofGetHeight());
+        syphonFBO.draw(0,0,outputRect.width, outputRect.height);
     }
     
     //gui output here
     if(draw_gui){
         gui.draw();
         style_gui.draw();
+        flow_gui.draw();
         ofSetColor(255);
         ofDrawBitmapString("clients: " + ofToString(network.isConnected()), ofGetWidth()-120, ofGetHeight()-85);
         ofDrawBitmapString("connected: " + ofToString(network.getNumClients()), ofGetWidth()-120, ofGetHeight()-70);
@@ -218,6 +333,11 @@ void gFrameApp::draw(){
         ofDrawBitmapString("s: " + ofToString(network.getSendQueueLength()), ofGetWidth()-120, ofGetHeight()-25 );
         ofDrawBitmapString("fps: " + ofToString(ofGetFrameRate(), 2), ofGetWidth()-120, ofGetHeight()-10 );
     }
+    
+    if(draw_flow_gui)
+        draw_flow_gui = !draw_flow_gui;
+    
+    //stencilFBO.draw(0, 0, outputRect.width, outputRect.height);
 }
 
 void gFrameApp::drawFingerPositions(int _width, int _height){
@@ -287,75 +407,56 @@ void gFrameApp::keyPressed(int key){
         draw_gui = !draw_gui;
     else if (key == 'd')
         dmx_on = !dmx_on;
-    else if(key == 'f')
+    else if(key == 'y')
         draw_on_main_screen = !draw_on_main_screen;
+    else if(key == 'f')
+        draw_flow_gui = !draw_flow_gui;
+    else if (key == 'x') {
+        fullscreen = !fullscreen;
+        ofSetFullscreen(fullscreen);
+        style_gui.setPosition(ofGetWidth() - 2*style_gui.getWidth() - 20, 10);
+        gui.setPosition(ofGetWidth() - gui.getWidth() - 10, 10);
+        outputRect.width = ofGetWidth();
+        outputRect.height = ofGetHeight();
+        canvasFBO.allocate(outputRect.width, outputRect.height);
+        mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
+        syphonFBO.allocate(outputRect.width, outputRect.height);
+
+        
+    }
     
+    else if (key == 'm') {
+        input_mouse = !input_mouse;
+    }
     
     //switch between different output modes
     else if (key == '1') {
-        //ofSetWindowShape(768, 288);
-        outputRect.width = dimLED1.width;
-        outputRect.height = dimLED1.height;
-        outputRect.x =dimLED1.x;
-        outputRect.y = dimLED1.y;
-        outputmode = LED1;
-        orientation = LANDSCAPE;
-        canvasFBO.allocate(outputRect.width, outputRect.height);
-        mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
-    }
-    else if (key == '2') {
-        //ofSetWindowShape(480, 288);
-        outputRect.width = dimLED2.width;
-        outputRect.height = dimLED2.height;
-        outputRect.x =dimLED2.x;
-        outputRect.y = dimLED2.y;
-        outputmode = LED2;
-        orientation = LANDSCAPE;
-        canvasFBO.allocate(outputRect.width, outputRect.height);
-        mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
-    }
-    else if (key == '3') {
-        //ofSetWindowShape(mCanvasPositionAndSize.width, mCanvasPositionAndSize.height);
-        outputRect.width = dimSESI.width;
-        outputRect.height = dimSESI.height;
-        outputRect.x =dimSESI.x;
-        outputRect.y = dimSESI.y;
-        outputmode = SESI;
-        orientation = PORTRAIT;
-        canvasFBO.allocate(outputRect.width, outputRect.height);
-        mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
-    }
-    else if (key == '4') {
         //ofSetWindowShape(1024, 768);
         outputRect.width = 1024;
         outputRect.height =768;
         outputRect.x = 0;
         outputRect.y = 0;
+        ofSetWindowShape(outputRect.width, outputRect.height);
         outputmode = PROJECTOR;
         orientation = LANDSCAPE;
         canvasFBO.allocate(outputRect.width, outputRect.height);
         mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
     }
-    else if (key == '5') {
-        //ofSetWindowShape(dimSESI.width, dimSESI.height);
+    else if (key == '2') {
         outputRect.width = 512;
         outputRect.height = 768;
         outputRect.x = 0;
         outputRect.y = 0;
+        ofSetWindowShape(outputRect.width, outputRect.height);
         outputmode = PROJECTOR_PORTRAIT;
         orientation = PORTRAIT;
         canvasFBO.allocate(outputRect.width, outputRect.height);
         mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
     }
-    if (key == 'x') {
-        fullscreen = !fullscreen;
-        ofSetFullscreen(fullscreen);
-        style_gui.setPosition(ofGetWidth() - 2*style_gui.getWidth() - 20, 10);
-        gui.setPosition(ofGetWidth() - gui.getWidth() - 10, 10);
+    else if (key == 't') {
+        changeStencilText(ofSystemTextBoxDialog("enter new obstacle text"));
     }
-    if (key == 'm') {
-        input_mouse = !input_mouse;
-    }
+    
 
 }
 
@@ -363,14 +464,19 @@ void gFrameApp::keyPressed(int key){
 void gFrameApp::mouseMoved(int x, int y){
     
     if(input_mouse){
+        ofVec2f mouse;
+        
+        mouse.set(x / (float)ofGetWindowWidth(), y / (float)ofGetWindowHeight());
+        
+        
         GPoint the_point;
         //rescale mouse position
         //float x_norm = ofMap(x, 0, ofGetWidth(), 0.0, outputRect.width);
-        float x_norm = ofMap(x, 0, ofGetWidth(), 0.0, 1.0);
+        float x_norm = ofMap(x, 0, outputRect.width, 0.0, 1.0);
         //float y_norm = ofMap(y, 0, ofGetHeight(), 0.0, outputRect.height);
-        float y_norm = ofMap(y, 0, ofGetHeight(), 0.0, 1.0);
+        float y_norm = ofMap(y, 0, outputRect.height, 0.0, 1.0);
         
-        the_point.setLocation(ofVec2f(x_norm,y_norm));
+        the_point.setLocation(ofVec2f(mouse.x,mouse.y));
         the_point.setId(0);
         the_point.setStrokeId(0);
         the_point.setColor(localBrushColor);
@@ -381,7 +487,41 @@ void gFrameApp::mouseMoved(int x, int y){
         
         stop_pulsing();
         last_points_time = ofGetElapsedTimeMillis();
+        
+        //flowtools
+        ofVec2f velocity = mouse - lastMouse;
+        for (int i=0; i<3; i++) {
+            if (flexDrawForces[i].getType() == FT_VELOCITY)
+                flexDrawForces[i].setForce(velocity);
+            flexDrawForces[i].applyForce(mouse);
+        }
+        lastMouse.set(mouse.x, mouse.y);
     }
+}
+
+void gFrameApp::mouseDragged(int x, int y, int button) {
+    ofVec2f mouse;
+    
+    mouse.set(x / (float)ofGetWindowWidth(), y / (float)ofGetWindowHeight());
+    ofVec2f velocity = mouse - lastMouse;
+    if (button == 0) {
+        
+        for (int i=0; i<3; i++) {
+            if (flexDrawForces[i].getType() == FT_VELOCITY)
+                flexDrawForces[i].setForce(velocity);
+            flexDrawForces[i].applyForce(mouse);
+        }
+    }
+    else {
+        
+        for (int i=3; i<numDrawForces; i++) {
+            if (flexDrawForces[i].getType() == FT_VELOCITY)
+                flexDrawForces[i].setForce(velocity);
+            flexDrawForces[i].applyForce(mouse);
+        }
+    }
+    lastMouse.set(mouse.x, mouse.y);
+    
 }
 
 
@@ -391,14 +531,10 @@ void gFrameApp::tuioAdded(ofxTuioCursor &cursor) {
         GPoint the_point;
         float x,y;
         if (orientation == PORTRAIT) {
-//            x = outputRect.width-cursor.getY()*outputRect.width;
-//            y = outputRect.height-cursor.getX()*outputRect.height;
             //normalized value
             x = 1-cursor.getY();
             y = 1-cursor.getX();
         } else {
-//            x = cursor.getX()*outputRect.width;
-//            y = cursor.getY()*outputRect.height;
             x = cursor.getX();
             y = cursor.getY();
         }
@@ -415,7 +551,19 @@ void gFrameApp::tuioAdded(ofxTuioCursor &cursor) {
         
         stop_pulsing();
         last_points_time = ofGetElapsedTimeMillis();
+        
+        //flowtools
+        ofVec2f this_point = ofVec2f(x,y);
+        ofVec2f velocity = this_point - last_touch_points[cursor.getFingerId()];
+        for (int i=0; i<3; i++) {
+            if (flexDrawForces[i].getType() == FT_VELOCITY)
+                flexDrawForces[i].setForce(velocity);
+            flexDrawForces[i].applyForce(this_point);
+        }
+        last_touch_points[cursor.getFingerId()].set(x,y);
+
     }
+    
 }
 
 //--------------------------------------------------------------
@@ -448,6 +596,17 @@ void gFrameApp::tuioUpdated(ofxTuioCursor &cursor) {
         
         stop_pulsing();
         last_points_time = ofGetElapsedTimeMillis();
+        
+        //flowtools
+        ofVec2f this_point = ofVec2f(x,y);
+        ofVec2f velocity = this_point - last_touch_points[cursor.getFingerId()];
+        for (int i=0; i<3; i++) {
+            if (flexDrawForces[i].getType() == FT_VELOCITY)
+                flexDrawForces[i].setForce(velocity);
+            flexDrawForces[i].applyForce(this_point);
+        }
+        last_touch_points[cursor.getFingerId()].set(x,y);
+
     }
 }
 
@@ -464,60 +623,66 @@ void gFrameApp::oscUpdate() {
     {
         ofxOscMessage m;
         receiver.getNextMessage(&m);
-        //brush style
-        if (m.getAddress() == "/1/t_wild") current_style = STYLE_SCRIZZLE;
-        else if (m.getAddress() == "/1/t_threedee") current_style = STYLE_PROFILE;
-        else if (m.getAddress() == "/1/t_brush") current_style = STYLE_CALIGRAPHY;
+        cout << m.getAddress() << " " << m.getArgAsString(0) << endl;
+         //brush style
+        if (m.getAddress() == "/sty_wild") current_style = STYLE_SCRIZZLE;
+        else if (m.getAddress() == "/sty_threedee") current_style = STYLE_PROFILE;
+        else if (m.getAddress() == "/sty_brush") current_style = STYLE_CALIGRAPHY;
         //style color
-        else if (m.getAddress() == "/1/t_red") localBrushColor = ofColor::red;
-        else if (m.getAddress() == "/1/t_green") localBrushColor = ofColor::green;
-        else if (m.getAddress() == "/1/t_blue") localBrushColor = ofColor::blue;
-        else if (m.getAddress() == "/1/t_yellow") localBrushColor = ofColor::yellow;
-        else if (m.getAddress() == "/1/t_orange") localBrushColor = ofColor::orange;
-        else if (m.getAddress() == "/1/t_pink") localBrushColor = ofColor::pink;
-        else if (m.getAddress() == "/1/b_clearcanvas") stroke_list.clear();
+        else if (m.getAddress() == "/col_red") localBrushColor = ofColor::red;
+        else if (m.getAddress() == "/col_green") localBrushColor = ofColor::green;
+        else if (m.getAddress() == "/col_blue") localBrushColor = ofColor::blue;
+        else if (m.getAddress() == "/col_yellow") localBrushColor = ofColor::yellow;
+        else if (m.getAddress() == "/col_orange") localBrushColor = ofColor::orange;
+        else if (m.getAddress() == "/col_pink") localBrushColor = ofColor::pink;
+        else if (m.getAddress() == "/clearcanvas") stroke_list.clear();
 
         //style settings tab
         //wild aka scrizzle
-        else if (m.getAddress() =="/2/s_w_amplitude") W_amplitude = m.getArgAsFloat(0);
-        else if (m.getAddress() == "/2/s_w_wavelength") W_wavelength = m.getArgAsFloat(0);
-        else if (m.getAddress() == "/2/s_w_mainline") W_mainLine_thickness = m.getArgAsFloat(0);
-        else if (m.getAddress() == "/2/s_w_bylines") W_byLine_thicknes = m.getArgAsFloat(0);
-        else if (m.getAddress() == "/2/s_w_nervosity") W_nervosity = m.getArgAsFloat(0);
-        else if (m.getAddress() == "/2/s_w_fadeouttime") W_fadeout_time = m.getArgAsFloat(0);
-        else if (m.getAddress() == "/2/s_w_fadeduration") W_fadeduration = m.getArgAsFloat(0);
+        else if (m.getAddress() =="/wild_amplitude") W_amplitude = ofToFloat(m.getArgAsString(0));
+        else if (m.getAddress() == "/wild_wavelength") W_wavelength = ofToFloat(m.getArgAsString(0));
+        else if (m.getAddress() == "/wild_mainline") W_mainLine_thickness = ofToFloat(m.getArgAsString(0));
+        else if (m.getAddress() == "/wild_bylines") W_byLine_thicknes = ofToFloat(m.getArgAsString(0));
+        else if (m.getAddress() == "/wild_nervosity") W_nervosity = ofToFloat(m.getArgAsString(0));
+        else if (m.getAddress() == "/wild_fadeouttime") W_fadeout_time = ofToFloat(m.getArgAsString(0));
+        else if (m.getAddress() == "/wild_fadeduration") W_fadeduration = ofToFloat(m.getArgAsString(0));
         //threedee aka profile
-        else if (m.getAddress() == "/2/s_td_depth") style_profile_depth = m.getArgAsFloat(0);
-        else if (m.getAddress() == "/2/s_td_width") style_profile_width = m.getArgAsFloat(0);
-        else if (m.getAddress() == "/2/s_td_zspeed") style_profile_zspeed = m.getArgAsFloat(0);
-        else if (m.getAddress() == "/2/s_td_twist") style_profile_twist = m.getArgAsFloat(0);
+        else if (m.getAddress() == "/td_depth") style_profile_depth = ofToFloat(m.getArgAsString(0));
+        else if (m.getAddress() == "/td_width") style_profile_width = ofToFloat(m.getArgAsString(0));
+        else if (m.getAddress() == "/td_zspeed") style_profile_zspeed = ofToFloat(m.getArgAsString(0));
+        else if (m.getAddress() == "/td_twist") style_profile_twist = ofToFloat(m.getArgAsString(0));
 
         //caligraphy alias brush
-        else if (m.getAddress() == "/brush/minwidth") C_width_min = m.getArgAsFloat(0);
-        else if (m.getAddress() == "/brush/maxwidth") C_width_max = m.getArgAsFloat(0);
-        else if (m.getAddress() == "/brush/fadeout") C_fadeout_time = m.getArgAsFloat(0);
-        else if (m.getAddress() == "/brush/fadeduration") C_fadeduration = m.getArgAsFloat(0);
+        else if (m.getAddress() == "/br_min_stroke_width") C_width_min = ofToFloat(m.getArgAsString(0));
+        else if (m.getAddress() == "/br_max_stroke_width") C_width_max = ofToFloat(m.getArgAsString(0));
+        else if (m.getAddress() == "/br_fadeouttime") C_fadeout_time = ofToFloat(m.getArgAsString(0));
+        else if (m.getAddress() == "/br_fadeduration") C_fadeduration = ofToFloat(m.getArgAsString(0));
 
         //admin tab
-        else if (m.getAddress() == "/3/t_dmxon") dmx_on = m.getArgAsInt32(0);
-        else if (m.getAddress() == "/3/s_upper") upper_pulsing_limit = m.getArgAsFloat(0);
-        else if (m.getAddress() == "/3/s_lower") lower_pulsing_limit = m.getArgAsFloat(0);
-        else if (m.getAddress() == "/3/s_brightness") LED_brightness = m.getArgAsFloat(0);
-        else if (m.getAddress() == "/3/s_frequency") LED_frequency = m.getArgAsFloat(0);
-        else if (m.getAddress() == "/3/s_lifetime") point_lifetime = m.getArgAsFloat(0);
-        else if (m.getAddress() == "/3/s_newpointdistance") newPointDistance = m.getArgAsFloat(0);}
-    
+        else if (m.getAddress() == "/admin_dmx") dmx_on = m.getArgAsInt32(0);
+        else if (m.getAddress() == "/admin_dmx_up_lim") upper_pulsing_limit = ofToFloat(m.getArgAsString(0));
+        else if (m.getAddress() == "/admin_dmx_low_lim") lower_pulsing_limit = ofToFloat(m.getArgAsString(0));
+        else if (m.getAddress() == "/admin_dmx_brightness") LED_brightness = ofToFloat(m.getArgAsString(0));
+        else if (m.getAddress() == "/admin_dmx_pulsing_time") LED_frequency = ofToFloat(m.getArgAsString(0));
+        else if (m.getAddress() == "/admin_points_lifetime") point_lifetime = ofToFloat(m.getArgAsString(0));
+        else if (m.getAddress() == "/admin_points_newpointdistance") newPointDistance = ofToFloat(m.getArgAsString(0));
+        
+        //stencil stuff
+        else if (m.getAddress() == "/stencilText")
+            changeStencilText(m.getArgAsString(0));
+    }
+
     if (ofGetElapsedTimef() - last_ipad_update_time > 0.04) {
         oscupdate_interface();
         last_ipad_update_time = ofGetElapsedTimef();
     }
+
 }
 
 void gFrameApp::oscupdate_interface() {
     ofxOscMessage update;
     
     //styles
-    
     update.clear();
     update.setAddress("/1/t_wild");
     if (current_style == STYLE_SCRIZZLE) update.addFloatArg(1);
@@ -535,7 +700,8 @@ void gFrameApp::oscupdate_interface() {
     if (current_style == STYLE_CALIGRAPHY) update.addFloatArg(1);
     else update.addFloatArg(0);
     sender.sendMessage(update);
-
+    
+/* Color selection will be replaced by color picker
     //color
     //red
     update.clear();
@@ -573,113 +739,114 @@ void gFrameApp::oscupdate_interface() {
     if ((ofColor)localBrushColor == ofColor::pink) update.addFloatArg(1);
     else update.addFloatArg(0);
     sender.sendMessage(update);
-    
+*/
+  
     //brush settings
     //wild aka scrizzle
     //amplitude
     update.clear();
-    update.setAddress("/2/s_w_amplitude");
+    update.setAddress("wild_amplitude");
     update.addFloatArg(W_amplitude);
     sender.sendMessage(update);
     //wavelength
     update.clear();
-    update.setAddress("/2/s_w_wavelength");
+    update.setAddress("wild_wavelength");
     update.addFloatArg(W_wavelength);
     sender.sendMessage(update);
     //mainline
     update.clear();
-    update.setAddress("/2/s_w_mainline");
+    update.setAddress("wild_mainline");
     update.addFloatArg(W_mainLine_thickness);
     sender.sendMessage(update);
     //by lines
     update.clear();
-    update.setAddress("/2/s_w_bylines");
+    update.setAddress("wild_bylines");
     update.addFloatArg(W_byLine_thicknes);
     sender.sendMessage(update);
     //nervosity
     update.clear();
-    update.setAddress("/2/s_w_nervosity");
+    update.setAddress("wild_nervosity");
     update.addFloatArg(W_nervosity);
     sender.sendMessage(update);
     //fadeouttime
     update.clear();
-    update.setAddress("/2/s_w_fadeouttime");
+    update.setAddress("wild_fadeouttime");
     update.addFloatArg(W_fadeout_time);
     sender.sendMessage(update);
     //fadeduration
     update.clear();
-    update.setAddress("/2/s_w_fadeduration");
+    update.setAddress("wild_fadeduration");
     update.addFloatArg(W_fadeduration);
     sender.sendMessage(update);
     
     //profile
     //depth
     update.clear();
-    update.setAddress("/2/s_td_depth");
+    update.setAddress("td_depth");
     update.addFloatArg(style_profile_depth);
     sender.sendMessage(update);
     //width
     update.clear();
-    update.setAddress("/2/s_td_width");
+    update.setAddress("td_width");
     update.addFloatArg(style_profile_width);
     sender.sendMessage(update);
     //z-speed
     update.clear();
-    update.setAddress("/2/s_td_zspeed");
+    update.setAddress("td_zspeed");
     update.addFloatArg(style_profile_zspeed);
     sender.sendMessage(update);
     //twist
     update.clear();
-    update.setAddress("/2/s_td_twist");
+    update.setAddress("td_twist");
     update.addFloatArg(style_profile_twist);
     sender.sendMessage(update);
     
     //caligraphy
     update.clear();
-    update.setAddress("/brush/minwidth");
+    update.setAddress("br_min_stroke_width");
     update.addFloatArg(C_width_min);
     sender.sendMessage(update);
     
     update.clear();
-    update.setAddress("/brush/maxwidth");
+    update.setAddress("br_max_stroke_width");
     update.addFloatArg(C_width_max);
     sender.sendMessage(update);
     
     update.clear();
-    update.setAddress("/brush/fadeout");
+    update.setAddress("br_fadeouttime");
     update.addFloatArg(C_fadeout_time);
     sender.sendMessage(update);
     
     update.clear();
-    update.setAddress("/brush/fadeduration");
+    update.setAddress("br_adeduration");
     update.addFloatArg(C_fadeduration);
     sender.sendMessage(update);
 
     
     //admin settings
     update.clear();
-    update.setAddress("/3/t_dmxon");
+    update.setAddress("admin_dmx");
     if (dmx_on) update.addFloatArg(1);
     else update.addFloatArg(0);
     sender.sendMessage(update);
     //upper
     update.clear();
-    update.setAddress("/3/s_upper");
+    update.setAddress("admin_dmx_up_lim");
     update.addFloatArg(upper_pulsing_limit);
     sender.sendMessage(update);
     //lower
     update.clear();
-    update.setAddress("/3/s_lower");
+    update.setAddress("admin_dmx_low_lim");
     update.addFloatArg(lower_pulsing_limit);
     sender.sendMessage(update);
     //brightness
     update.clear();
-    update.setAddress("/3/s_brightness");
+    update.setAddress("admin_dmx_brightness");
     update.addFloatArg(LED_brightness);
     sender.sendMessage(update);
     //frequency
     update.clear();
-    update.setAddress("/3/s_frequency");
+    update.setAddress("admin_dmx_pulsing_time");
     update.addFloatArg(LED_frequency);
     sender.sendMessage(update);
     
@@ -699,13 +866,13 @@ void gFrameApp::oscupdate_interface() {
     
     //lifetime
     update.clear();
-    update.setAddress("/3/s_lifetime");
+    update.setAddress("admin_points_lifetime");
     update.addFloatArg(point_lifetime);
     sender.sendMessage(update);
 
     //new point distance
     update.clear();
-    update.setAddress("/3/s_newpointdistance");
+    update.setAddress("admin_points_newpointdistance");
     update.addFloatArg(newPointDistance);
     sender.sendMessage(update);
 
@@ -755,50 +922,6 @@ void gFrameApp::setLEDColor(ofColor color){
     dmx.setLevel(4, (int)fb);     //blue
     dmx.update();
 }
-//--------------------------------------------------------------
-void gFrameApp::toPanels(ofImage &canvas, ofImage &panels){
-    if(!(canvas.getWidth() == 214 && canvas.getHeight() == 167))
-        return;
-    for(int y=0; y<panels.getHeight(); y++){
-        int rowWidthHalf = (int)((93.0-51.0)/panels.getHeight()*y/2.0+25.0);
-        int rowCenterPixel = y*panels.getWidth()+panels.getWidth()/2;
-        // center
-        for(int x=0; x<=rowWidthHalf; x++){
-            panels.setColor(panels.getWidth()/2+x, y, canvas.getColor(panels.getWidth()/2+x, y));
-            panels.setColor(panels.getWidth()/2-x, y, canvas.getColor(panels.getWidth()/2-x, y));
-        }
-        // left/right
-        int gapSize = (int)((0.0-74.0)/panels.getHeight()*y+74.0);
-        int leftoverPixels = (int)((61.0-9.0)/panels.getHeight()*y+9.0);
-        for(int x=0; x<=leftoverPixels; x++){
-            panels.setColor(panels.getWidth()/2+rowWidthHalf+1+x+gapSize, y, localBrushColor);
-            panels.setColor(panels.getWidth()/2-rowWidthHalf-1-x-gapSize, y, localBrushColor);
-        }
-    }
-    panels.reloadTexture();
-}
-
-void gFrameApp::toPanelsGFrame(ofImage &canvas, ofImage &panels){
-    if(!(canvas.getWidth() == 93 && canvas.getHeight() == 167))
-        return;
-    for(int y=0; y<panels.getHeight(); y++){
-        int rowWidthHalf = (int)((93.0-51.0)/panels.getHeight()*y/2.0+25.0);
-        int rowCenterPixel = y*panels.getWidth()+panels.getWidth()/2;
-        // center
-        for(int x=0; x<=rowWidthHalf; x++){
-            panels.setColor(panels.getWidth()/2+x, y, canvas.getColor(canvas.getWidth()/2+x, y));
-            panels.setColor(panels.getWidth()/2-x, y, canvas.getColor(canvas.getWidth()/2-x, y));
-        }
-        // left/right
-        int gapSize = (int)((0.0-74.0)/panels.getHeight()*y+74.0);
-        int leftoverPixels = (int)((61.0-9.0)/panels.getHeight()*y+9.0);
-        for(int x=0; x<=leftoverPixels; x++){
-            panels.setColor(panels.getWidth()/2+rowWidthHalf+1+x+gapSize, y, localBrushColor);
-            panels.setColor(panels.getWidth()/2-rowWidthHalf-1-x-gapSize, y, localBrushColor);
-        }
-    }
-    panels.reloadTexture();
-}
 
 void gFrameApp::guiSetup() {
     //GUI Setup
@@ -813,6 +936,7 @@ void gFrameApp::guiSetup() {
     
     parameters_output.add(outputwidth);
     parameters_output.add(outputheight);
+    parameters_output.add(stencilText);
     
     //DMX & LEDs
     dmx_settings.setName("dmx settings");
@@ -939,4 +1063,42 @@ void gFrameApp::onStyleSettingsreload() {
 void gFrameApp::onStyleSettingsSave() {
     style_gui.saveToFile("stylesettings.xml");
     ofLog() << "style settings saved";    
+}
+
+void gFrameApp::flowGuiSetup() {
+    flow_gui.setup();
+    flow_gui.setName("flow settings");
+    flow_gui.setPosition(10, 10);
+    flow_gui.add(fluid.parameters);
+}
+
+void gFrameApp::onFlowSettingsSave() {
+    ofFileDialogResult save_result = ofSystemSaveDialog("NewFlowSettings.xml", "save new flow settings");
+    string new_filename = save_result.getPath();
+    cout << new_filename << endl;
+    if (new_filename != "")
+        flow_gui.saveToFile(new_filename);
+}
+
+void gFrameApp::onFlowSettingsReload() {
+    ofFileDialogResult load_result = ofSystemLoadDialog();
+    string load_filename = load_result.getPath();
+    if (load_filename != "")
+        flow_gui.loadFromFile(load_filename);
+}
+
+void gFrameApp::changeStencilText(string _newStencilText) {
+    stencilText = _newStencilText;
+    stencilFont.loadFont("AkzidenzGrotesk-Cond.otf", 150);
+    stencilFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 2);
+    stencilFBO.begin();
+    ofClear(0);
+    ofRectangle stringBounds = stencilFont.getStringBoundingBox(_newStencilText, 0, 0);
+    int text_x = (ofGetWidth() - stringBounds.width) / 2;
+    int text_y = (ofGetHeight() + stringBounds.height) /2;
+    stencilFont.drawString(_newStencilText, text_x, text_y);
+    stencilFBO.end();
+    fluid.reset_obstacle();
+    fluid.addObstacle(stencilFBO.getTextureReference());
+    fluid.addTempObstacle(stencilFBO.getTextureReference());
 }

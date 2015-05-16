@@ -17,11 +17,16 @@
 #include "CaligraphyStyle.h"
 #include "Network.h"
 #include "ofxGui.h"
+#include "ofxFlowTools.h"
 
 
 #define STYLE_PROFILE 0
 #define STYLE_SCRIZZLE 1
 #define STYLE_CALIGRAPHY 2
+
+//#define USE_NETWORK
+
+using namespace flowTools;
 
 enum OutputMode {SESI, LED1, LED2, PROJECTOR, PROJECTOR_PORTRAIT};
 enum Orientation {PORTRAIT, LANDSCAPE};
@@ -35,7 +40,10 @@ public:
     void drawFingerPositions(int _width, int _height);
     void exit();
     void mouseMoved(int x, int y);
+    void mouseDragged(int x, int y, int button);
     void keyPressed(int key);
+    ofVec2f				lastMouse;
+
     
     // DMX
     void updateLEDpulsing();
@@ -93,13 +101,8 @@ private:
     
     ofxSyphonServer syphonMainOut;
 
-    ofImage mPanels, mCanvas;
-    ofRectangle mPanelPositionAndSize;
-    ofRectangle dimSESI;
-    ofRectangle dimLED1, dimLED2;
-    ofVec2f grabOrigin;
-    void toPanels(ofImage &canvas, ofImage &panels);
-    void toPanelsGFrame(ofImage &canvas, ofImage &panels);
+    ofImage mCanvas;
+    //ofVec2f grabOrigin;
     
     //OSC
     ofParameter<string> ipad_ip;
@@ -142,9 +145,12 @@ private:
     // GUI
     void guiSetup();
     void styleGuiSetup();
+    void flowGuiSetup();
     ofxPanel gui;
     ofxPanel style_gui;
+    ofxPanel flow_gui;
     bool draw_gui = true;
+    bool draw_flow_gui = true;
     
     ofParameterGroup parameters;
     ofParameterGroup style_settings;
@@ -164,6 +170,8 @@ private:
     void onSettingsReload();
     void onStyleSettingsSave();
     void onStyleSettingsreload();
+    void onFlowSettingsSave();
+    void onFlowSettingsReload();
     
     // current finger positions
     ofVec2f finger_positions[20];
@@ -175,6 +183,35 @@ private:
 
     ofParameter<bool> input_mouse, input_pqlabs, input_tuio;
     
+    // Time
+    float				lastTime;
+    float				deltaTime;
+    
+    // FlowTools
+    int					flowWidth;
+    int					flowHeight;
+    int					drawWidth;
+    int					drawHeight;
+    
+    ftOpticalFlow		opticalFlow;
+    ftVelocityMask		velocityMask;
+    ftFluidSimulation	fluid;
+    ftParticleFlow		particleFlow;
+    
+    ftDisplayScalar		displayScalar;
+    ftVelocityField		velocityField;
+    ftTemperatureField	temperatureField;
+    
+    int					numDrawForces;
+    ftDrawForce*		flexDrawForces;
+    
+    ofVec2f last_touch_points[12];
+    
+    //stencil
+    ofParameter<string> stencilText;
+    ofTrueTypeFont stencilFont;
+    ofFbo stencilFBO;
+    void changeStencilText(string _newStencilText);
     
 };
 
