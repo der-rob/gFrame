@@ -87,47 +87,8 @@ void gFrameApp::setup(){
         finger = ofVec2f(0,0);
     }
     
-    
-    //flowtools
-    drawWidth = outputRect.width;
-    drawHeight = outputRect.height;
-    // process all but the density on 16th resolution
-    flowWidth = drawWidth/4;
-    flowHeight = drawHeight/4;
-    
-    // Flow & Mask
-    opticalFlow.setup(flowWidth, flowHeight);
-    velocityMask.setup(drawWidth, drawHeight);
-    //fluid
-    fluid.setup(flowWidth, flowHeight, drawWidth, drawHeight, false);
-    //particles
-    particleFlow.setup(flowWidth, flowHeight, drawWidth, drawHeight);
-    
-    // Visualisation
-    displayScalar.allocate(flowWidth, flowHeight);
-    velocityField.allocate(flowWidth / 4, flowHeight / 4);
-    temperatureField.allocate(flowWidth / 4, flowHeight / 4);
-    
-    //Draw Forces
-    numDrawForces = 6;
-    flexDrawForces = new ftDrawForce[numDrawForces];
-    flexDrawForces[0].setup(drawWidth, drawHeight, FT_DENSITY, true);
-    flexDrawForces[0].setName("draw full res");
-    flexDrawForces[1].setup(flowWidth, flowHeight, FT_VELOCITY, true);
-    flexDrawForces[1].setName("draw flow res 1");
-    flexDrawForces[2].setup(flowWidth, flowHeight, FT_TEMPERATURE, true);
-    flexDrawForces[2].setName("draw flow res 2");
-    flexDrawForces[3].setup(drawWidth, drawHeight, FT_DENSITY, false);
-    flexDrawForces[3].setName("draw full res");
-    flexDrawForces[4].setup(flowWidth, flowHeight, FT_VELOCITY, false);
-    flexDrawForces[4].setName("draw flow res 1");
-    flexDrawForces[5].setup(flowWidth, flowHeight, FT_TEMPERATURE, false);
-    flexDrawForces[5].setName("draw flow res 2");
-    
-    lastTime = ofGetElapsedTimef();
-    lastMouse.set(0,0);
-    for (int i = 0; i < 12; i++)
-        last_touch_points[i].set(0,0);
+    //flowstroke
+    flowField.setup(outputRect.width, outputRect.height);
     
     //stencil
     stencilText = "Applied Future!";
@@ -141,8 +102,7 @@ void gFrameApp::setup(){
     stencilFont.drawString(stencilText, text_x, text_y);
     stencilFBO.end();
     
-    fluid.addObstacle(stencilFBO.getTextureReference());
-    fluid.addTempObstacle(stencilFBO.getTextureReference());
+    flowField.updateObstacle(stencilFBO.getTextureReference());
 
 
 }
@@ -166,6 +126,9 @@ void gFrameApp::update(){
     
     canvasFBO.begin();
     ofBackground(0);
+    
+    flowField.render();
+    
     for(vector<GPoint> stroke : *stroke_list.getAllStrokes()){
         switch(stroke[0].getStyle()){
             case STYLE_PROFILE:
@@ -182,6 +145,8 @@ void gFrameApp::update(){
                 break;
         }
     }
+    
+    
   
     if(draw_finger_positions){
         drawFingerPositions((int)outputRect.width, (int)outputRect.height);
@@ -225,8 +190,7 @@ void gFrameApp::update(){
     stroke_list.setLifetime(point_lifetime * 1000);
     
     //flowtools
-    deltaTime = ofGetElapsedTimef() - lastTime;
-    lastTime = ofGetElapsedTimef();
+    flowField.update(mCanvas.getTextureReference());
 }
 
 //--------------------------------------------------------------
@@ -238,78 +202,7 @@ void gFrameApp::draw(){
     
     syphonFBO.begin();
     ofClear(0);
-    
-    //flowtools
-    opticalFlow.setSource(mCanvas.getTextureReference());
-    opticalFlow.update(deltaTime);
-
-    velocityMask.setDensity(mCanvas.getTextureReference());
-    velocityMask.setVelocity(opticalFlow.getOpticalFlow());
-    velocityMask.update();
-    
-    fluid.addVelocity(opticalFlow.getOpticalFlowDecay());
-    fluid.addDensity(velocityMask.getColorMask());
-    fluid.addTemperature(velocityMask.getLuminanceMask());
-    
-    for (int i=0; i<numDrawForces; i++) {
-        flexDrawForces[i].update();
-        if (flexDrawForces[i].didChange()) {
-            // if a force is constant multiply by deltaTime
-            float strength = flexDrawForces[i].getStrength();
-            if (!flexDrawForces[i].getIsTemporary())
-                strength *=deltaTime;
-            switch (flexDrawForces[i].getType()) {
-                case FT_DENSITY:
-                    fluid.addDensity(flexDrawForces[i].getTextureReference(), strength);
-                    break;
-                case FT_VELOCITY:
-                    fluid.addVelocity(flexDrawForces[i].getTextureReference(), strength);
-                    particleFlow.addFlowVelocity(flexDrawForces[i].getTextureReference(), strength);
-                    break;
-                case FT_TEMPERATURE:
-                    fluid.addTemperature(flexDrawForces[i].getTextureReference(), strength);
-                    break;
-                case FT_PRESSURE:
-                    fluid.addPressure(flexDrawForces[i].getTextureReference(), strength);
-                    break;
-                case FT_OBSTACLE:
-                    fluid.addTempObstacle(flexDrawForces[i].getTextureReference());
-                default:
-                    break;
-            }
-        }
-    }
-    
-    fluid.update();
-    
-    if (particleFlow.isActive()) {
-        particleFlow.setSpeed(fluid.getSpeed());
-        particleFlow.setCellSize(fluid.getCellSize());
-        particleFlow.addFlowVelocity(opticalFlow.getOpticalFlow());
-        particleFlow.addFluidVelocity(fluid.getVelocity());
-        particleFlow.setObstacle(fluid.getObstacle());
-    }
-    particleFlow.update();
-    
-    
-    int windowWidth = ofGetWindowWidth();
-    int windowHeight = ofGetWindowHeight();
-    ofClear(0,0);
-    
-    // Fluid Composite
-    ofPushStyle();
-    ofEnableBlendMode(OF_BLENDMODE_DISABLED);
-    mCanvas.draw(0,0, windowWidth, windowHeight);
-    
-    ofEnableBlendMode(OF_BLENDMODE_ADD);
-    ofSetColor(localBrushColor);
-    fluid.draw(0, 0, windowWidth, windowHeight);
-    
-    ofEnableBlendMode(OF_BLENDMODE_ADD);
-    //if (particleFlow.isActive())
-        //particleFlow.draw(0, 0, windowWidth, windowHeight);
-    
-    ofPopStyle();
+    mCanvas.draw(0,0, ofGetWidth(), ofGetHeight());    
     syphonFBO.end();
 
     syphonMainOut.publishTexture(&syphonFBO.getTextureReference());
@@ -456,8 +349,6 @@ void gFrameApp::keyPressed(int key){
     else if (key == 't') {
         changeStencilText(ofSystemTextBoxDialog("enter new obstacle text"));
     }
-    
-
 }
 
 //--------------------------------------------------------------
@@ -467,7 +358,6 @@ void gFrameApp::mouseMoved(int x, int y){
         ofVec2f mouse;
         
         mouse.set(x / (float)ofGetWindowWidth(), y / (float)ofGetWindowHeight());
-        
         
         GPoint the_point;
         //rescale mouse position
@@ -488,40 +378,15 @@ void gFrameApp::mouseMoved(int x, int y){
         stop_pulsing();
         last_points_time = ofGetElapsedTimeMillis();
         
-        //flowtools
-        ofVec2f velocity = mouse - lastMouse;
-        for (int i=0; i<3; i++) {
-            if (flexDrawForces[i].getType() == FT_VELOCITY)
-                flexDrawForces[i].setForce(velocity);
-            flexDrawForces[i].applyForce(mouse);
-        }
-        lastMouse.set(mouse.x, mouse.y);
+        //flowstroke
+        flowField.inputUpdate(mouse.x, mouse.y);
+        
     }
 }
 
+//--------------------------------------------------------------
 void gFrameApp::mouseDragged(int x, int y, int button) {
-    ofVec2f mouse;
-    
-    mouse.set(x / (float)ofGetWindowWidth(), y / (float)ofGetWindowHeight());
-    ofVec2f velocity = mouse - lastMouse;
-    if (button == 0) {
-        
-        for (int i=0; i<3; i++) {
-            if (flexDrawForces[i].getType() == FT_VELOCITY)
-                flexDrawForces[i].setForce(velocity);
-            flexDrawForces[i].applyForce(mouse);
-        }
-    }
-    else {
-        
-        for (int i=3; i<numDrawForces; i++) {
-            if (flexDrawForces[i].getType() == FT_VELOCITY)
-                flexDrawForces[i].setForce(velocity);
-            flexDrawForces[i].applyForce(mouse);
-        }
-    }
-    lastMouse.set(mouse.x, mouse.y);
-    
+
 }
 
 
@@ -552,18 +417,9 @@ void gFrameApp::tuioAdded(ofxTuioCursor &cursor) {
         stop_pulsing();
         last_points_time = ofGetElapsedTimeMillis();
         
-        //flowtools
-        ofVec2f this_point = ofVec2f(x,y);
-        ofVec2f velocity = this_point - last_touch_points[cursor.getFingerId()];
-        for (int i=0; i<3; i++) {
-            if (flexDrawForces[i].getType() == FT_VELOCITY)
-                flexDrawForces[i].setForce(velocity);
-            flexDrawForces[i].applyForce(this_point);
-        }
-        last_touch_points[cursor.getFingerId()].set(x,y);
-
+        //flow stroke
+        flowField.inputUpdate(x,y, cursor.getFingerId());
     }
-    
 }
 
 //--------------------------------------------------------------
@@ -597,16 +453,8 @@ void gFrameApp::tuioUpdated(ofxTuioCursor &cursor) {
         stop_pulsing();
         last_points_time = ofGetElapsedTimeMillis();
         
-        //flowtools
-        ofVec2f this_point = ofVec2f(x,y);
-        ofVec2f velocity = this_point - last_touch_points[cursor.getFingerId()];
-        for (int i=0; i<3; i++) {
-            if (flexDrawForces[i].getType() == FT_VELOCITY)
-                flexDrawForces[i].setForce(velocity);
-            flexDrawForces[i].applyForce(this_point);
-        }
-        last_touch_points[cursor.getFingerId()].set(x,y);
-
+        //flowstroke
+        flowField.inputUpdate(x, y, cursor.getFingerId());
     }
 }
 
@@ -1069,7 +917,7 @@ void gFrameApp::flowGuiSetup() {
     flow_gui.setup();
     flow_gui.setName("flow settings");
     flow_gui.setPosition(10, 10);
-    flow_gui.add(fluid.parameters);
+    flow_gui.add(*flowField.getFluidParameters());
 }
 
 void gFrameApp::onFlowSettingsSave() {
@@ -1098,7 +946,5 @@ void gFrameApp::changeStencilText(string _newStencilText) {
     int text_y = (ofGetHeight() + stringBounds.height) /2;
     stencilFont.drawString(_newStencilText, text_x, text_y);
     stencilFBO.end();
-    fluid.reset_obstacle();
-    fluid.addObstacle(stencilFBO.getTextureReference());
-    fluid.addTempObstacle(stencilFBO.getTextureReference());
+    flowField.updateObstacle(stencilFBO.getTextureReference());
 }

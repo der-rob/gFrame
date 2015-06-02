@@ -15,6 +15,7 @@
 #include "StrokeList.h"
 #include "ScrizzleStyle.h"
 #include "CaligraphyStyle.h"
+#include "FlowField.h"
 #include "Network.h"
 #include "ofxGui.h"
 #include "ofxFlowTools.h"
@@ -87,6 +88,7 @@ private:
     ofParameter<float> C_fadeout_time;
     ofParameter<float> C_fadeduration;
     
+    FlowField flowField;
     ofLight light;
 
     //output
@@ -102,7 +104,6 @@ private:
     ofxSyphonServer syphonMainOut;
 
     ofImage mCanvas;
-    //ofVec2f grabOrigin;
     
     //OSC
     ofParameter<string> ipad_ip;
@@ -182,7 +183,7 @@ private:
     ofParameter<float> point_lifetime = 10;
 
     ofParameter<bool> input_mouse, input_pqlabs, input_tuio;
-    
+    /*
     // Time
     float				lastTime;
     float				deltaTime;
@@ -206,7 +207,7 @@ private:
     ftDrawForce*		flexDrawForces;
     
     ofVec2f last_touch_points[12];
-    
+    */
     //stencil
     ofParameter<string> stencilText;
     ofTrueTypeFont stencilFont;
