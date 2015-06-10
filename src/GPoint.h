@@ -12,6 +12,13 @@
 #include <iostream>
 #include "ofMain.h"
 #include "Poco/RegularExpression.h"
+
+
+#define STYLE_FINGER 0
+#define STYLE_SCRIZZLE 1
+#define STYLE_CALIGRAPHY 2
+#define STYLE_WAVER 3
+
 using Poco::RegularExpression;
 
 class GPoint {
@@ -29,6 +36,7 @@ public:
     void setType(int type){this->type = type;}
     void setStrokeId(int stroke_id){this->stroke_id = stroke_id;}
     void setStyle(int style){ this->style_id = style; }
+    void setPointGroup (int _group) {this->point_group = _group;}
     
     // getters
     ofVec2f getLocation(){return loc;}
@@ -38,6 +46,7 @@ public:
     int getType(){return type;}
     long getStrokeId(){return stroke_id;}
     int getStyle(){return style_id;}
+    int getPointGroup() {return this->point_group;}
     
 private:
     ofVec2f loc;
@@ -47,6 +56,7 @@ private:
     int type;
     long stroke_id;
     int style_id;
+    int point_group;
     
     static int instance_count;    
 };

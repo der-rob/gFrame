@@ -110,3 +110,4 @@ Anschlußbelegung am Rahmen
 	rot		 grün
 	grün     rot
 	schwarz	 blau
+	

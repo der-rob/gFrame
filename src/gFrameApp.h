@@ -34,7 +34,7 @@ enum Orientation {PORTRAIT, LANDSCAPE};
 
 class gFrameApp : public ofBaseApp{
 
-public:
+public: 
     void setup();
     void update();
     void draw();
@@ -43,6 +43,7 @@ public:
     void mouseMoved(int x, int y);
     void mouseDragged(int x, int y, int button);
     void keyPressed(int key);
+    void windowResized(int w, int h);
     ofVec2f				lastMouse;
 
     
@@ -150,6 +151,7 @@ private:
     ofxPanel gui;
     ofxPanel style_gui;
     ofxPanel flow_gui;
+    ofxPanel flow_gui_2;
     bool draw_gui = true;
     bool draw_flow_gui = true;
     
@@ -173,6 +175,9 @@ private:
     void onStyleSettingsreload();
     void onFlowSettingsSave();
     void onFlowSettingsReload();
+    void onFlow2SettingsSave();
+    void onFlow2SettingsReload();
+    
     
     // current finger positions
     ofVec2f finger_positions[20];
@@ -183,36 +188,39 @@ private:
     ofParameter<float> point_lifetime = 10;
 
     ofParameter<bool> input_mouse, input_pqlabs, input_tuio;
-    /*
-    // Time
-    float				lastTime;
-    float				deltaTime;
     
-    // FlowTools
-    int					flowWidth;
-    int					flowHeight;
-    int					drawWidth;
-    int					drawHeight;
-    
-    ftOpticalFlow		opticalFlow;
-    ftVelocityMask		velocityMask;
-    ftFluidSimulation	fluid;
-    ftParticleFlow		particleFlow;
-    
-    ftDisplayScalar		displayScalar;
-    ftVelocityField		velocityField;
-    ftTemperatureField	temperatureField;
-    
-    int					numDrawForces;
-    ftDrawForce*		flexDrawForces;
-    
-    ofVec2f last_touch_points[12];
-    */
     //stencil
-    ofParameter<string> stencilText;
+    ofParameter<string> mStencilText;
     ofTrueTypeFont stencilFont;
     ofFbo stencilFBO;
     void changeStencilText(string _newStencilText);
+    
+    
+    
+    //helpers
+    string toUpperCase ( string str )
+    {
+        string strUpper = "";
+        
+        for( int i=0; i<str.length(); i++ )
+        {
+            strUpper += toupper( str[ i ] );
+        }
+        
+        return strUpper;
+    }
+    
+    string toLowerCase ( string str )
+    {
+        string strLower = "";
+        
+        for( int i=0; i<str.length(); i++ )
+        {  
+            strLower += tolower( str[ i ] );  
+        }  
+        
+        return strLower;  
+    }
     
 };
 

@@ -25,6 +25,8 @@ public:
     void update(ofTexture &tex);
     void updateObstacle(ofTexture &obstacle);
     ofParameterGroup *getFluidParameters() { return &fluid.parameters;}
+    ofParameterGroup *getFluidParameters_2() { return &fluid2.parameters;}
+    void setColor(ofColor _color) { this->color = _color;}
     
 private:
     float				lastTime;
@@ -34,10 +36,12 @@ private:
     int					drawWidth;
     int					drawHeight;
     ofColor             color;
+    ofColor             color2;
 
     ftOpticalFlow		opticalFlow;
     ftVelocityMask		velocityMask;
     ftFluidSimulation	fluid;
+    ftFluidSimulation   fluid2;
     ftParticleFlow		particleFlow;
     
     ftDisplayScalar		displayScalar;

@@ -20,14 +20,15 @@ void FlowField::setup(int _width, int _height) {
     drawWidth = _width;
     drawHeight = _height;
     // process all but the density on 16th resolution
-    flowWidth = drawWidth/4;
-    flowHeight = drawHeight/4;
+    flowWidth = drawWidth/8;
+    flowHeight = drawHeight/8;
     
     // Flow & Mask
     opticalFlow.setup(flowWidth, flowHeight);
     velocityMask.setup(drawWidth, drawHeight);
     //fluid
     fluid.setup(flowWidth, flowHeight, drawWidth, drawHeight, false);
+    fluid2.setup(flowWidth, flowHeight, drawWidth, drawHeight, false);
     //particles
     particleFlow.setup(flowWidth, flowHeight, drawWidth, drawHeight);
     
@@ -56,8 +57,8 @@ void FlowField::setup(int _width, int _height) {
     for (int i = 0; i < 12; i++)
         last_touch_points[i].set(0,0);
     
-    color = ofColor(ofColor::white);
-    
+    color = ofColor(ofColor::orange);
+    color2 = ofColor(ofColor::white);
 }
 
 void FlowField::update(ofTexture &tex) {
@@ -75,6 +76,11 @@ void FlowField::update(ofTexture &tex) {
     fluid.addDensity(velocityMask.getColorMask());
     fluid.addTemperature(velocityMask.getLuminanceMask());
     
+    fluid2.addVelocity(opticalFlow.getOpticalFlowDecay());
+    fluid2.addDensity(velocityMask.getColorMask());
+    fluid2.addTemperature(velocityMask.getLuminanceMask());
+    
+    
     for (int i=0; i<numDrawForces; i++) {
         flexDrawForces[i].update();
         if (flexDrawForces[i].didChange()) {
@@ -85,19 +91,24 @@ void FlowField::update(ofTexture &tex) {
             switch (flexDrawForces[i].getType()) {
                 case FT_DENSITY:
                     fluid.addDensity(flexDrawForces[i].getTextureReference(), strength);
+                    fluid2.addDensity(flexDrawForces[i].getTextureReference(), strength);
                     break;
                 case FT_VELOCITY:
                     fluid.addVelocity(flexDrawForces[i].getTextureReference(), strength);
+                    fluid2.addVelocity(flexDrawForces[i].getTextureReference(), strength);
                     particleFlow.addFlowVelocity(flexDrawForces[i].getTextureReference(), strength);
                     break;
                 case FT_TEMPERATURE:
                     fluid.addTemperature(flexDrawForces[i].getTextureReference(), strength);
+                    fluid2.addTemperature(flexDrawForces[i].getTextureReference(), strength);
                     break;
                 case FT_PRESSURE:
                     fluid.addPressure(flexDrawForces[i].getTextureReference(), strength);
+                    fluid2.addPressure(flexDrawForces[i].getTextureReference(), strength);
                     break;
                 case FT_OBSTACLE:
                     fluid.addTempObstacle(flexDrawForces[i].getTextureReference());
+                    fluid2.addTempObstacle(flexDrawForces[i].getTextureReference());
                 default:
                     break;
             }
@@ -105,6 +116,7 @@ void FlowField::update(ofTexture &tex) {
     }
     
     fluid.update();
+    fluid2.update();
 
     
 }
@@ -152,7 +164,10 @@ void FlowField::render() {
     
     // Fluid Composite
     ofPushStyle();
-    ofEnableBlendMode(OF_BLENDMODE_ADD);
+    ofEnableBlendMode(OF_BLENDMODE_ALPHA); //brush fluid
+    ofSetColor(color2);
+    fluid2.draw(0, 0, windowWidth, windowHeight);
+    ofEnableBlendMode(OF_BLENDMODE_ALPHA); //wave fluid
     ofSetColor(color);
     fluid.draw(0, 0, windowWidth, windowHeight);
     
@@ -165,9 +180,14 @@ void FlowField::render() {
 }
 
 void FlowField::updateObstacle(ofTexture &obstacle) {
-        fluid.reset_obstacle();
-        fluid.addObstacle(obstacle);
-        fluid.addTempObstacle(obstacle);
+    fluid.reset_obstacle();
+    fluid.addObstacle(obstacle);
+    fluid.addTempObstacle(obstacle);
+    
+    fluid2.reset_obstacle();
+    fluid2.addObstacle(obstacle);
+    fluid2.addTempObstacle(obstacle);
+
 }
 
 

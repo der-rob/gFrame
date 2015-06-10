@@ -11,7 +11,9 @@ void gFrameApp::setup(){
     ofSetFrameRate(30);
     ofSetVerticalSync(true);
     ofBackground(ofColor::black);
+    glEnable(GL_MULTISAMPLE);
     ofSetWindowShape(1280, 720);
+    
     
     //dimensions for final output
     outputRect = ofRectangle(0,0,1280, 720);
@@ -26,10 +28,13 @@ void gFrameApp::setup(){
     ofAddListener(style_gui.savePressedE, this, &gFrameApp::onStyleSettingsSave);
     ofAddListener(flow_gui.loadPressedE, this, &gFrameApp::onFlowSettingsReload);
     ofAddListener(flow_gui.savePressedE, this, &gFrameApp::onFlowSettingsSave);
+    ofAddListener(flow_gui_2.loadPressedE, this, &gFrameApp::onFlow2SettingsReload);
+    ofAddListener(flow_gui_2.savePressedE, this, &gFrameApp::onFlow2SettingsSave);
     
     gui.loadFromFile("settings.xml");
     style_gui.loadFromFile("stylesettings.xml");
-    flow_gui.loadFromFile("flow_settings.xml");
+    flow_gui.loadFromFile("stroke.xml");
+    flow_gui_2.loadFromFile("textwaiver.xml");
     
     //need to call this here, otherwise would get a BAD ACCESS FAULT
     gui.draw();
@@ -74,10 +79,8 @@ void gFrameApp::setup(){
     stroke_list.setupSync(&network);
 #endif
 
-    //brazil support
-//  syphonFBO.allocate(1024, 768, GL_RGBA, 2);
-    syphonFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 2);
-    canvasFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 2);
+    syphonFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 16);
+    canvasFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 16);
     mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
     syphonFBO.begin(); ofClear(0); syphonFBO.end();
     canvasFBO.begin(); ofClear(0); canvasFBO.end();
@@ -87,19 +90,20 @@ void gFrameApp::setup(){
         finger = ofVec2f(0,0);
     }
     
-    //flowstroke
-    flowField.setup(outputRect.width, outputRect.height);
+    //flowfield
+    flowField.setup(outputRect.width/2, outputRect.height/2);
+    flowField.setColor(localBrushColor);
     
     //stencil
-    stencilText = "Applied Future!";
+    mStencilText = toUpperCase("Applied Future!");
     stencilFont.loadFont("AkzidenzGrotesk-Cond.otf", 150);
-    stencilFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 2);
+    stencilFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 4);
     stencilFBO.begin();
     ofClear(0);
-    ofRectangle stringBounds = stencilFont.getStringBoundingBox(stencilText, 0, 0);
+    ofRectangle stringBounds = stencilFont.getStringBoundingBox(mStencilText, 0, 0);
     int text_x = (ofGetWidth() - stringBounds.width) / 2;
     int text_y = (ofGetHeight() + stringBounds.height) /2;
-    stencilFont.drawString(stencilText, text_x, text_y);
+    stencilFont.drawString(mStencilText, text_x, text_y);
     stencilFBO.end();
     
     flowField.updateObstacle(stencilFBO.getTextureReference());
@@ -125,10 +129,11 @@ void gFrameApp::update(){
         updateLEDpulsing();
     
     canvasFBO.begin();
+    
     ofBackground(0);
     
     flowField.render();
-    
+    /*
     for(vector<GPoint> stroke : *stroke_list.getAllStrokes()){
         switch(stroke[0].getStyle()){
             case STYLE_PROFILE:
@@ -145,9 +150,7 @@ void gFrameApp::update(){
                 break;
         }
     }
-    
-    
-  
+    */
     if(draw_finger_positions){
         drawFingerPositions((int)outputRect.width, (int)outputRect.height);
     }
@@ -191,6 +194,7 @@ void gFrameApp::update(){
     
     //flowtools
     flowField.update(mCanvas.getTextureReference());
+    flowField.setColor(localBrushColor);
 }
 
 //--------------------------------------------------------------
@@ -200,24 +204,26 @@ void gFrameApp::draw(){
     ofSetColor(255);
     
     
-    syphonFBO.begin();
-    ofClear(0);
-    mCanvas.draw(0,0, ofGetWidth(), ofGetHeight());    
-    syphonFBO.end();
+//    syphonFBO.begin();
+//    ofClear(0);
+//    mCanvas.draw(0,0, ofGetWidth(), ofGetHeight());    
+//    syphonFBO.end();
 
-    syphonMainOut.publishTexture(&syphonFBO.getTextureReference());
+    syphonMainOut.publishTexture(&canvasFBO.getTextureReference());
 
     //switching of the main screen might improve the performance
     if (draw_on_main_screen)
     {
-        syphonFBO.draw(0,0,outputRect.width, outputRect.height);
+        canvasFBO.draw(0,0,outputRect.width, outputRect.height);
     }
+    
     
     //gui output here
     if(draw_gui){
         gui.draw();
         style_gui.draw();
         flow_gui.draw();
+        flow_gui_2.draw();
         ofSetColor(255);
         ofDrawBitmapString("clients: " + ofToString(network.isConnected()), ofGetWidth()-120, ofGetHeight()-85);
         ofDrawBitmapString("connected: " + ofToString(network.getNumClients()), ofGetWidth()-120, ofGetHeight()-70);
@@ -311,15 +317,14 @@ void gFrameApp::keyPressed(int key){
         gui.setPosition(ofGetWidth() - gui.getWidth() - 10, 10);
         outputRect.width = ofGetWidth();
         outputRect.height = ofGetHeight();
-        canvasFBO.allocate(outputRect.width, outputRect.height);
+        canvasFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 16);
         mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
-        syphonFBO.allocate(outputRect.width, outputRect.height);
-
-        
+        syphonFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 16);
+        cout << outputRect.width << " x " << outputRect.height << endl;
     }
     
     else if (key == 'm') {
-        input_mouse = !input_mouse;
+        draw_on_main_screen = !draw_on_main_screen;
     }
     
     //switch between different output modes
@@ -389,6 +394,11 @@ void gFrameApp::mouseDragged(int x, int y, int button) {
 
 }
 
+//--------------------------------------------------------------
+void gFrameApp::windowResized(int w, int h) {
+    outputRect.width = w;
+    outputRect.height = h;
+}
 
 //--------------------------------------------------------------
 void gFrameApp::tuioAdded(ofxTuioCursor &cursor) {
@@ -784,7 +794,10 @@ void gFrameApp::guiSetup() {
     
     parameters_output.add(outputwidth);
     parameters_output.add(outputheight);
-    parameters_output.add(stencilText);
+    
+    //stencilText
+    mStencilText.setName("Stenciltex");
+    parameters_output.add(mStencilText);
     
     //DMX & LEDs
     dmx_settings.setName("dmx settings");
@@ -918,6 +931,12 @@ void gFrameApp::flowGuiSetup() {
     flow_gui.setName("flow settings");
     flow_gui.setPosition(10, 10);
     flow_gui.add(*flowField.getFluidParameters());
+
+    flow_gui_2.setup();
+    flow_gui_2.setName("flow 2 settings");
+    flow_gui_2.setPosition(220, 10);
+    flow_gui_2.add(*flowField.getFluidParameters_2());
+
 }
 
 void gFrameApp::onFlowSettingsSave() {
@@ -935,16 +954,32 @@ void gFrameApp::onFlowSettingsReload() {
         flow_gui.loadFromFile(load_filename);
 }
 
+void gFrameApp::onFlow2SettingsSave() {
+    ofFileDialogResult save_result = ofSystemSaveDialog("NewFlowSettings.xml", "save new flow settings");
+    string new_filename = save_result.getPath();
+    cout << new_filename << endl;
+    if (new_filename != "")
+        flow_gui_2.saveToFile(new_filename);
+}
+
+void gFrameApp::onFlow2SettingsReload() {
+    ofFileDialogResult load_result = ofSystemLoadDialog();
+    string load_filename = load_result.getPath();
+    if (load_filename != "")
+        flow_gui_2.loadFromFile(load_filename);
+}
+
+
 void gFrameApp::changeStencilText(string _newStencilText) {
-    stencilText = _newStencilText;
+    mStencilText = toUpperCase(_newStencilText);
     stencilFont.loadFont("AkzidenzGrotesk-Cond.otf", 150);
     stencilFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 2);
     stencilFBO.begin();
     ofClear(0);
-    ofRectangle stringBounds = stencilFont.getStringBoundingBox(_newStencilText, 0, 0);
+    ofRectangle stringBounds = stencilFont.getStringBoundingBox(mStencilText, 0, 0);
     int text_x = (ofGetWidth() - stringBounds.width) / 2;
     int text_y = (ofGetHeight() + stringBounds.height) /2;
-    stencilFont.drawString(_newStencilText, text_x, text_y);
+    stencilFont.drawString(mStencilText, text_x, text_y);
     stencilFBO.end();
     flowField.updateObstacle(stencilFBO.getTextureReference());
 }

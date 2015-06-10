@@ -64,8 +64,8 @@ void CaligraphyStyle::render(vector<GPoint> &points, int width, int height){
         }
         
         
-        
         m.draw();
+        
     }
 }
 

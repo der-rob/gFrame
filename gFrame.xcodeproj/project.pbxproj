@@ -72,6 +72,8 @@
 		D4A778C51976A26E005E4026 /* ofxEasingQuint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4A778AF1976A26E005E4026 /* ofxEasingQuint.cpp */; };
 		D4A778C61976A26E005E4026 /* ofxEasingSine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4A778B11976A26E005E4026 /* ofxEasingSine.cpp */; };
 		D4A778C71976A26E005E4026 /* ofxTween.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4A778B31976A26E005E4026 /* ofxTween.cpp */; };
+		D4F936321B286F7800AC24FA /* PointGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4F9362E1B286F7800AC24FA /* PointGroup.cpp */; };
+		D4F936331B286F7800AC24FA /* PointGroupList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4F936301B286F7800AC24FA /* PointGroupList.cpp */; };
 		D4FE4CCD1B1611C200005A24 /* FlowField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4FE4CCB1B1611C200005A24 /* FlowField.cpp */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9710E8CC7DD009D7055 /* AGL.framework */; };
@@ -329,6 +331,11 @@
 		D4A778B31976A26E005E4026 /* ofxTween.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTween.cpp; sourceTree = "<group>"; };
 		D4A778B41976A26E005E4026 /* ofxTween.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTween.h; sourceTree = "<group>"; };
 		D4E4AD2D196F3D5300ECA630 /* gFrame_layout_2.touchosc */ = {isa = PBXFileReference; lastKnownFileType = file; path = gFrame_layout_2.touchosc; sourceTree = "<group>"; };
+		D4F9362C1B28556700AC24FA /* gFrameDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gFrameDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4F9362E1B286F7800AC24FA /* PointGroup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PointGroup.cpp; sourceTree = "<group>"; };
+		D4F9362F1B286F7800AC24FA /* PointGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointGroup.h; sourceTree = "<group>"; };
+		D4F936301B286F7800AC24FA /* PointGroupList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PointGroupList.cpp; sourceTree = "<group>"; };
+		D4F936311B286F7800AC24FA /* PointGroupList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointGroupList.h; sourceTree = "<group>"; };
 		D4FE4CCB1B1611C200005A24 /* FlowField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FlowField.cpp; sourceTree = "<group>"; };
 		D4FE4CCC1B1611C200005A24 /* FlowField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlowField.h; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
@@ -340,7 +347,6 @@
 		E45BE9770E8CC7DD009D7055 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = /System/Library/Frameworks/CoreServices.framework; sourceTree = "<absolute>"; };
 		E45BE9790E8CC7DD009D7055 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
 		E45BE97A0E8CC7DD009D7055 /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
-		E4B69B5B0A3A1756003C02F2 /* gFrame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = gFrame.app; path = /Users/rob/Documents/of_v0.8.4_osx_release/apps/myApps/gFrame/bin/gFrame.app; sourceTree = "<absolute>"; };
 		E4B69E1D0A3A1BDC003C02F2 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
 		E4B69E1E0A3A1BDC003C02F2 /* gFrameApp.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = gFrameApp.cpp; path = src/gFrameApp.cpp; sourceTree = SOURCE_ROOT; };
 		E4B69E1F0A3A1BDC003C02F2 /* gFrameApp.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = gFrameApp.h; path = src/gFrameApp.h; sourceTree = SOURCE_ROOT; };
@@ -1020,12 +1026,17 @@
 				BB4B014C10F69532006C3DED /* addons */,
 				E45BE5980E8CC70C009D7055 /* frameworks */,
 				D4E4AD2C196F3D5300ECA630 /* touchosc */,
+				D4F9362C1B28556700AC24FA /* gFrameDebug.app */,
 			);
 			sourceTree = "<group>";
 		};
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				D4F9362E1B286F7800AC24FA /* PointGroup.cpp */,
+				D4F9362F1B286F7800AC24FA /* PointGroup.h */,
+				D4F936301B286F7800AC24FA /* PointGroupList.cpp */,
+				D4F936311B286F7800AC24FA /* PointGroupList.h */,
 				6CA424251A13BECD00A4F975 /* CaligraphyStyle.cpp */,
 				6CA424261A13BECD00A4F975 /* CaligraphyStyle.h */,
 				6C51F02D1A093CE500066662 /* Network.cpp */,
@@ -1077,7 +1088,7 @@
 			);
 			name = gFrame;
 			productName = myOFApp;
-			productReference = E4B69B5B0A3A1756003C02F2 /* gFrame.app */;
+			productReference = D4F9362C1B28556700AC24FA /* gFrameDebug.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1177,6 +1188,7 @@
 				D4A778C51976A26E005E4026 /* ofxEasingQuint.cpp in Sources */,
 				D486256F1A001C9A0076E13F /* MSACoreGL.cpp in Sources */,
 				D40A14111A112C5D0067C957 /* ofxBaseGui.cpp in Sources */,
+				D4F936321B286F7800AC24FA /* PointGroup.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* gFrameApp.cpp in Sources */,
 				D40A14181A112C5D0067C957 /* ofxToggle.cpp in Sources */,
 				6C51F02F1A093CE500066662 /* Network.cpp in Sources */,
@@ -1203,6 +1215,7 @@
 				6C7223521A093BB1004D5BF6 /* ofxTCPManager.cpp in Sources */,
 				D486254D1A001C770076E13F /* ScrizzleStyle.cpp in Sources */,
 				D4605486196DC7480040C381 /* IpEndpointName.cpp in Sources */,
+				D4F936331B286F7800AC24FA /* PointGroupList.cpp in Sources */,
 				D4605491196DC7480040C381 /* ofxOscParameterSync.cpp in Sources */,
 				D4605489196DC7480040C381 /* NetworkingUtilsWin.cpp in Sources */,
 				D4A778C61976A26E005E4026 /* ofxEasingSine.cpp in Sources */,
