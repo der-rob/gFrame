@@ -30,12 +30,12 @@ void FlowField::setup(int _width, int _height) {
     fluid.setup(flowWidth, flowHeight, drawWidth, drawHeight, false);
     fluid2.setup(flowWidth, flowHeight, drawWidth, drawHeight, false);
     //particles
-    particleFlow.setup(flowWidth, flowHeight, drawWidth, drawHeight);
+    //particleFlow.setup(flowWidth, flowHeight, drawWidth, drawHeight);
     
     // Visualisation
-    displayScalar.allocate(flowWidth, flowHeight);
-    velocityField.allocate(flowWidth / 4, flowHeight / 4);
-    temperatureField.allocate(flowWidth / 4, flowHeight / 4);
+    //displayScalar.allocate(flowWidth, flowHeight);
+    velocityField.allocate(flowWidth / 8, flowHeight / 8);
+    //temperatureField.allocate(flowWidth / 4, flowHeight / 4);
     
     //Draw Forces
     numDrawForces = 6;
@@ -96,19 +96,19 @@ void FlowField::update(ofTexture &tex) {
                 case FT_VELOCITY:
                     fluid.addVelocity(flexDrawForces[i].getTextureReference(), strength);
                     fluid2.addVelocity(flexDrawForces[i].getTextureReference(), strength);
-                    particleFlow.addFlowVelocity(flexDrawForces[i].getTextureReference(), strength);
+                    //particleFlow.addFlowVelocity(flexDrawForces[i].getTextureReference(), strength);
                     break;
-                case FT_TEMPERATURE:
+                /*case FT_TEMPERATURE:
                     fluid.addTemperature(flexDrawForces[i].getTextureReference(), strength);
                     fluid2.addTemperature(flexDrawForces[i].getTextureReference(), strength);
                     break;
                 case FT_PRESSURE:
                     fluid.addPressure(flexDrawForces[i].getTextureReference(), strength);
                     fluid2.addPressure(flexDrawForces[i].getTextureReference(), strength);
-                    break;
+                    break;*/
                 case FT_OBSTACLE:
                     fluid.addTempObstacle(flexDrawForces[i].getTextureReference());
-                    fluid2.addTempObstacle(flexDrawForces[i].getTextureReference());
+                    //fluid2.addTempObstacle(flexDrawForces[i].getTextureReference());
                 default:
                     break;
             }
@@ -117,8 +117,6 @@ void FlowField::update(ofTexture &tex) {
     
     fluid.update();
     fluid2.update();
-
-    
 }
 
 void FlowField::inputUpdate(float x, float y, int id) {
@@ -130,7 +128,7 @@ void FlowField::inputUpdate(float x, float y, int id) {
             flexDrawForces[i].setForce(velocity);
         flexDrawForces[i].applyForce(this_point);
     }
-    last_touch_points[id].set(x,y);
+    last_touch_points[id%20].set(x,y);
 }
 
 void FlowField::inputUpdate(float x, float y) {
@@ -157,14 +155,14 @@ void FlowField::render() {
 //
 //    particleFlow.update();
 //    
-//    
+    
     int windowWidth = ofGetWindowWidth();
     int windowHeight = ofGetWindowHeight();
     ofClear(0,0);
     
     // Fluid Composite
     ofPushStyle();
-    ofEnableBlendMode(OF_BLENDMODE_ALPHA); //brush fluid
+    ofEnableBlendMode(OF_BLENDMODE_ALPHA); //background fluid
     ofSetColor(color2);
     fluid2.draw(0, 0, windowWidth, windowHeight);
     ofEnableBlendMode(OF_BLENDMODE_ALPHA); //wave fluid
@@ -184,10 +182,9 @@ void FlowField::updateObstacle(ofTexture &obstacle) {
     fluid.addObstacle(obstacle);
     fluid.addTempObstacle(obstacle);
     
-    fluid2.reset_obstacle();
-    fluid2.addObstacle(obstacle);
-    fluid2.addTempObstacle(obstacle);
-
+//    fluid2.reset_obstacle();
+//    fluid2.addObstacle(obstacle);
+//    fluid2.addTempObstacle(obstacle);
 }
 
 

@@ -42,11 +42,11 @@ private:
     ftVelocityMask		velocityMask;
     ftFluidSimulation	fluid;
     ftFluidSimulation   fluid2;
-    ftParticleFlow		particleFlow;
+    //ftParticleFlow		particleFlow;
     
-    ftDisplayScalar		displayScalar;
+    //ftDisplayScalar		displayScalar;
     ftVelocityField		velocityField;
-    ftTemperatureField	temperatureField;
+    //ftTemperatureField	temperatureField;
     
     int					numDrawForces;
     ftDrawForce*		flexDrawForces;

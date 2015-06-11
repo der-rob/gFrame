@@ -19,11 +19,7 @@
 #include "Network.h"
 #include "ofxGui.h"
 #include "ofxFlowTools.h"
-
-
-#define STYLE_PROFILE 0
-#define STYLE_SCRIZZLE 1
-#define STYLE_CALIGRAPHY 2
+#include "PointGroupList.h"
 
 //#define USE_NETWORK
 
@@ -61,7 +57,7 @@ private:
     
     // DRAWING
     StrokeList stroke_list;
-    int current_style = STYLE_CALIGRAPHY;
+    int current_style = STYLE_FINGER;
     ofParameter<ofColor> localBrushColor;
     ofParameter<int> newPointDistance;
     
@@ -131,12 +127,18 @@ private:
         
     //TUIO support
     ofxTuioClient   tuioClient;
-    ofParameter<int> tuioPort = 3333;
-//    ofxPQLabs pqlabsframe;
+    ofParameter<int> tuioPort = 3334;
     void tuioAdded(ofxTuioCursor & tuioCursor);
 	void tuioRemoved(ofxTuioCursor & tuioCursor);
 	void tuioUpdated(ofxTuioCursor & tuioCursor);
 //    void onTouchPoint(TouchPointEvent &event);
+    
+    //the point grouping stuff
+    PointGroupList groupList;
+    vector<GPoint> all_active_points;
+    bool placeMode;
+    void onPlaceEnabled(bool &_placeEnabled);
+    void updateStrokelistAndFlow(int _strokeID);
     
     // NETWORK
     Network network;
@@ -190,38 +192,34 @@ private:
     ofParameter<bool> input_mouse, input_pqlabs, input_tuio;
     
     //stencil
-    ofParameter<string> mStencilText;
+    string mStencilText;
+    string mNewStencilText;
     ofTrueTypeFont stencilFont;
+    ofVec2f stencilLoc;
     ofFbo stencilFBO;
     void changeStencilText(string _newStencilText);
-    
-    
+    void drawStencil();
     
     //helpers
     string toUpperCase ( string str )
     {
         string strUpper = "";
-        
         for( int i=0; i<str.length(); i++ )
         {
             strUpper += toupper( str[ i ] );
         }
-        
         return strUpper;
     }
     
     string toLowerCase ( string str )
     {
         string strLower = "";
-        
         for( int i=0; i<str.length(); i++ )
         {  
             strLower += tolower( str[ i ] );  
-        }  
-        
+        }
         return strLower;  
     }
-    
 };
 
 

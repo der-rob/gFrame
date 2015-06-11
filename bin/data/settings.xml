@@ -1,9 +1,9 @@
 <general_settings>
 	<group>
 		<output_settings>
-			<width>1024</width>
-			<height>768</height>
 			<DMX_on>0</DMX_on>
+            <width>1024</width>
+			<height>512</height>
 		</output_settings>
 		<network>
 			<host_port>9000</host_port>
@@ -14,7 +14,6 @@
 			<iPad_IP>192.168.178.42</iPad_IP>
 			<iPad_Port>4444</iPad_Port>
 			<local_OSC_port>4445</local_OSC_port>
-
 		</osc>
 		<finger_positions>
 			<draw_finger_positions>1</draw_finger_positions>
@@ -42,22 +41,7 @@
 <general_settings/>
 <style_settings>
 		<group>
-			<profile_style>
-				<depth>17</depth>
-				<width>5</width>
-				<z-speed>3</z-speed>
-				<twist>2</twist>
-			</profile_style>
-			<Wild_Brush_Parameters>
-				<amplitude>8</amplitude>
-				<wavelength>4</wavelength>
-				<fadeout_time>10</fadeout_time>
-				<fade_duration>5</fade_duration>
-				<nervousity>1</nervousity>
-				<main_line_thickness>4</main_line_thickness>
-				<by_line_thickness>0.5</by_line_thickness>
-			</Wild_Brush_Parameters>
-		<profile_parameters>
+			<profile_parameters>
 				<depth>10</depth>
 				<width>10</width>
 				<z-speed>1</z-speed>
@@ -75,39 +59,9 @@
 			<caligraphy_parameters>
 				<width_min>1</width_min>
 				<width_max>20</width_max>
-				<fadeout_time>10</fadeout_time>
+				<fadeout_time>25.2749</fadeout_time>
 				<fade_duration>5</fade_duration>
 			</caligraphy_parameters>
 		</group>
 	</style_settings>
-<flow_settings>
-		<fluid_solver>
-			<reset>0</reset>
-			<speed>2.04082</speed>
-			<cell_size>0.183673</cell_size>
-			<iterations>40</iterations>
-			<viscosity>0.959184</viscosity>
-			<vorticity>0.959184</vorticity>
-			<dissipation>0.000918367</dissipation>
-			<advanced_dissipation>
-				<velocity_offset>0</velocity_offset>
-				<density_offset>0</density_offset>
-				<temperature_offset>0</temperature_offset>
-			</advanced_dissipation>
-			<smoke_buoyancy>
-				<sigma>0.05</sigma>
-				<weight>0.05</weight>
-				<ambient_temperature>0</ambient_temperature>
-				<gravity>0, 0</gravity>
-			</smoke_buoyancy>
-			<maximum>
-				<clampForce>0</clampForce>
-				<density>1</density>
-				<velocity>1</velocity>
-				<temperature>1</temperature>
-			</maximum>
-			<density_from_pressure>0</density_from_pressure>
-			<density_from_vorticity>0</density_from_vorticity>
-		</fluid_solver>
-	</flow_settings>
 </general_settings>
