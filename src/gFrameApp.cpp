@@ -30,11 +30,18 @@ void gFrameApp::setup()
     outputRect = ofRectangle(0,0,outputwidth, outputheight);
     
     //flowfield & gui
-    flowField.setup(outputRect.width, outputRect.height);
+    simple_flow.setup(outputRect.width, outputRect.height);
     flowGuiSetup();
     flow_gui.loadFromFile("flow_default.xml");
     ofAddListener(flow_gui.loadPressedE, this, &gFrameApp::onFlowSettingsReload);
     ofAddListener(flow_gui.savePressedE, this, &gFrameApp::onFlowSettingsSave);
+    
+    
+    simple_flow_2.setup(outputRect.width, outputRect.height);
+    flow2GuiSetup();
+    flow2_gui.loadFromFile("stroke.xml");
+    ofAddListener(flow2_gui.loadPressedE, this, &gFrameApp::onFlow2SettingsReload);
+    ofAddListener(flow2_gui.savePressedE, this, &gFrameApp::onFlow2SettingsSave);
     
     //need to call this here, otherwise would get a BAD ACCESS FAULT
     gui.draw();
@@ -95,13 +102,25 @@ void gFrameApp::update()
     
     tuioClient.getMessage();
     
+    simple_flow.update();
+    simple_flow_2.update();
+    simple_flow_2.color = localBrushColor;
+    
     // DMX UPDATE
     if (dmx_on)
         updateLEDpulsing();
     
     canvasFBO.begin();
     ofBackground(0);
-    flowField.render();
+    
+//    flowField.setColor(ofColor::white);
+//    ofBlendMode(OF_BLENDMODE_ALPHA);
+//    flowField.render();
+//    ofBlendMode(OF_BLENDMODE_ADD);
+//    flowField2.render();
+//
+    simple_flow.draw();
+    simple_flow_2.draw();
     
     for(vector<GPoint> stroke : *stroke_list.getAllStrokes()){
         switch (stroke[0].getStyle())
@@ -140,10 +159,6 @@ void gFrameApp::update()
 
     // lifetime
     stroke_list.setLifetime(point_lifetime * 1000);
-    
-    //flowtools
-    flowField.update(canvasFBO.getTextureReference());
-    flowField.setColor(localBrushColor);
 }
 
 //--------------------------------------------------------------
@@ -153,24 +168,20 @@ void gFrameApp::draw(){
     ofSetColor(255);
 
     syphonMainOut.publishTexture(&canvasFBO.getTextureReference());
-
+    
     //switching of the main screen might improve the performance
     if (draw_on_main_screen)
     {
         canvasFBO.draw(0,0,outputRect.width, outputRect.height);
     }
-    
+
     //gui output here
     if(draw_gui){
         gui.draw();
         style_gui.draw();
         flow_gui.draw();
+        flow2_gui.draw();
         ofSetColor(255);
-        ofDrawBitmapString("clients: " + ofToString(network.isConnected()), ofGetWidth()-120, ofGetHeight()-85);
-        ofDrawBitmapString("connected: " + ofToString(network.getNumClients()), ofGetWidth()-120, ofGetHeight()-70);
-        ofDrawBitmapString("style: " + ofToString(current_style), ofGetWidth()-120, ofGetHeight()-55);
-        ofDrawBitmapString("r: " + ofToString(network.getReceiveQueueLength()), ofGetWidth()-120, ofGetHeight()-40);
-        ofDrawBitmapString("s: " + ofToString(network.getSendQueueLength()), ofGetWidth()-120, ofGetHeight()-25 );
         ofDrawBitmapString("fps: " + ofToString(ofGetFrameRate(), 2), ofGetWidth()-120, ofGetHeight()-10 );
     }
 }
@@ -288,8 +299,9 @@ void gFrameApp::mouseMoved(int x, int y){
         stop_pulsing();
         last_points_time = ofGetElapsedTimeMillis();
         
-        //flowstroke
-        flowField.inputUpdate(mouse.x, mouse.y);
+        //flowfield
+        simple_flow.inputUpdate(x, y);
+        simple_flow_2.inputUpdate(x, y);
     }
 }
 
@@ -323,7 +335,8 @@ void gFrameApp::tuioAdded(ofxTuioCursor &cursor)
         stroke_list.addToNewStroke(the_point);
         
         finger_positions[cursor.getFingerId()] = ofVec2f(x, y);
-        flowField.inputUpdate(x, y, cursor.getFingerId());
+        simple_flow.inputUpdate(x, y, cursor.getFingerId());
+        simple_flow_2.inputUpdate(x, y, cursor.getFingerId());
         
         stop_pulsing();
         last_points_time = ofGetElapsedTimeMillis();
@@ -349,7 +362,9 @@ void gFrameApp::tuioUpdated(ofxTuioCursor &cursor)
         stroke_list.add(the_point);
         
         finger_positions[cursor.getFingerId()] = ofVec2f(x, y);
-        flowField.inputUpdate(x, y, cursor.getFingerId());
+        
+        simple_flow.inputUpdate(x, y, cursor.getFingerId());
+        simple_flow_2.inputUpdate(x, y, cursor.getFingerId());
         
         stop_pulsing();
         last_points_time = ofGetElapsedTimeMillis();
@@ -494,8 +509,6 @@ void gFrameApp::guiSetup() {
     //add the subgroups to the gui
     gui.add(parameters_finger);
     gui.add(parameters_brush);
-    gui.add(*flowField.getBrightness());
-    gui.add(*flowField.getAlpha());
     gui.add(parameters_output);
     gui.add(dmx_settings);
     gui.add(parameters_network);
@@ -586,8 +599,7 @@ void gFrameApp::flowGuiSetup() {
     flow_gui.setup();
     flow_gui.setName("flow settings");
     flow_gui.setPosition(10, 10);
-    flow_gui.add(*flowField.getFluidParameters());
-    flow_gui.add(*flowField.getVelocityParameters());
+    flow_gui.add(simple_flow.fluid.parameters);
     flow_gui.minimizeAll();
 }
 
@@ -606,4 +618,30 @@ void gFrameApp::onFlowSettingsReload() {
     string load_filename = load_result.getPath();
     if (load_filename != "")
         flow_gui.loadFromFile(load_filename);
+}
+
+//--------------------------------------------------------------
+void gFrameApp::flow2GuiSetup() {
+    flow2_gui.setup();
+    flow2_gui.setName("flow settings");
+    flow2_gui.setPosition(220, 10);
+    flow2_gui.add(simple_flow_2.fluid.parameters);
+    flow2_gui.minimizeAll();
+}
+
+//--------------------------------------------------------------
+void gFrameApp::onFlow2SettingsSave() {
+    ofFileDialogResult save_result = ofSystemSaveDialog("NewFlowSettings.xml", "save new flow settings");
+    string new_filename = save_result.getPath();
+    cout << new_filename << endl;
+    if (new_filename != "")
+        flow2_gui.saveToFile(new_filename);
+}
+
+//--------------------------------------------------------------
+void gFrameApp::onFlow2SettingsReload() {
+    ofFileDialogResult load_result = ofSystemLoadDialog();
+    string load_filename = load_result.getPath();
+    if (load_filename != "")
+        flow2_gui.loadFromFile(load_filename);
 }

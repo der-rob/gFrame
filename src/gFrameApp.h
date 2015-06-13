@@ -19,6 +19,8 @@
 #include "Network.h"
 #include "ofxGui.h"
 #include "ofxFlowTools.h"
+#include "SimpleFlowField.h"
+
 //#include "PointGroupList.h"
 
 //#define USE_NETWORK
@@ -76,7 +78,9 @@ private:
     ofParameter<float> C_fadeduration;
     ofParameter<int> C_new_pointdistance;
     
-    FlowField flowField;
+    //flow
+    SimpleFlowField simple_flow;
+    SimpleFlowField simple_flow_2;
 
     //output
     bool draw_on_main_screen = true;
@@ -86,7 +90,6 @@ private:
     ofParameter<int> outputwidth = 1024;
     ofParameter<int> outputheight = 768;
     ofRectangle outputRect;
-    OutputMode outputmode = PROJECTOR;
     
     ofxSyphonServer syphonMainOut;
     
@@ -132,9 +135,11 @@ private:
     void guiSetup();
     void styleGuiSetup();
     void flowGuiSetup();
+    void flow2GuiSetup();
     ofxPanel gui;
     ofxPanel style_gui;
     ofxPanel flow_gui;
+    ofxPanel flow2_gui;
     bool draw_gui = true;
     
     ofParameterGroup parameters_osc;
@@ -155,6 +160,8 @@ private:
     void onStyleSettingsreload();
     void onFlowSettingsSave();
     void onFlowSettingsReload();
+    void onFlow2SettingsSave();
+    void onFlow2SettingsReload();
     
     // current finger positions
     ofVec2f finger_positions[20];

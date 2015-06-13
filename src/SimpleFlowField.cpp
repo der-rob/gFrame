@@ -1,35 +1,25 @@
 //
-//  FlowField.cpp
-//  gFrame
+//  SimpleFlowField.cpp
+//  flowtest
 //
-//  Created by Robert Albert on 27.05.15.
+//  Created by Robert Albert on 13.06.15.
 //
 //
 
-#include "FlowField.h"
+#include "SimpleFlowField.h"
 
-void FlowField::setup(int _width, int _height) {
-    //flowtools
+void SimpleFlowField::setup(int _width, int _height)
+{
     drawWidth = _width;
     drawHeight = _height;
-    
     // process all but the density on 16th resolution
     flowWidth = drawWidth/8;
     flowHeight = drawHeight/8;
     
-    // Flow & Mask
-    opticalFlow.setup(flowWidth, flowHeight);
-    velocityMask.setup(drawWidth, drawHeight);
-    
-    //fluid
+    // Fluid
     fluid.setup(flowWidth, flowHeight, drawWidth, drawHeight, false);
-    
-    // Visualisation
-    displayScalar.allocate(flowWidth, flowHeight);
-    velocityField.allocate(flowWidth / 4, flowHeight / 4);
-    temperatureField.allocate(flowWidth / 4, flowHeight / 4);
-    
-    //Draw Forces
+
+    // Draw Forces
     numDrawForces = 6;
     flexDrawForces = new ftDrawForce[numDrawForces];
     flexDrawForces[0].setup(drawWidth, drawHeight, FT_DENSITY, true);
@@ -46,30 +36,23 @@ void FlowField::setup(int _width, int _height) {
     flexDrawForces[5].setName("draw flow res 2");
     
     lastTime = ofGetElapsedTimef();
-    for (int i = 0; i < 12; i++)
-        last_touch_points[i].set(0,0);
+    lastMouse.set(0,0);
     
-    color = ofColor(ofColor::orange);
-    color.a = 128;
+    for (ofVec2f vec : last_touch_points)
+    {
+        vec.set(0,0);
+    }
     
-    brightness.set("fluid brightness", 255, 0, 255);
-    alpha.set("fluid alpha", 255, 0, 255);
+    color = ofColor::white;
 }
 
-void FlowField::update(ofTexture &tex) {
+void SimpleFlowField::update()
+{
     deltaTime = ofGetElapsedTimef() - lastTime;
     lastTime = ofGetElapsedTimef();
-    
-    opticalFlow.setSource(tex);
-    opticalFlow.update(deltaTime);
-    
-    velocityMask.setDensity(tex);
-    velocityMask.setVelocity(opticalFlow.getOpticalFlow());
-    velocityMask.update();
-    
-    fluid.addVelocity(opticalFlow.getOpticalFlowDecay());
-    fluid.addDensity(velocityMask.getColorMask());
-    fluid.addTemperature(velocityMask.getLuminanceMask());
+}
+
+void SimpleFlowField::draw() {
     
     for (int i=0; i<numDrawForces; i++) {
         flexDrawForces[i].update();
@@ -78,7 +61,8 @@ void FlowField::update(ofTexture &tex) {
             float strength = flexDrawForces[i].getStrength();
             if (!flexDrawForces[i].getIsTemporary())
                 strength *=deltaTime;
-            switch (flexDrawForces[i].getType()) {
+            switch (flexDrawForces[i].getType())
+            {
                 case FT_DENSITY:
                     fluid.addDensity(flexDrawForces[i].getTextureReference(), strength);
                     break;
@@ -100,54 +84,54 @@ void FlowField::update(ofTexture &tex) {
     }
     
     fluid.update();
+
+    int windowWidth = ofGetWindowWidth();
+    int windowHeight = ofGetWindowHeight();
+    
+    ofSetColor(color);
+    fluid.draw(0, 0, windowWidth, windowHeight);
 }
 
-void FlowField::inputUpdate(float x, float y, int id) {
-    ofVec2f this_point = ofVec2f(x,y);
-    ofVec2f velocity = this_point - last_touch_points[id];
+void SimpleFlowField::inputUpdate(int x, int y)
+{
+    ofVec2f mouse;
+    
+    mouse.set(x / (float)ofGetWindowWidth(), y / (float)ofGetWindowHeight());
+    ofVec2f velocity = mouse - lastMouse;
+    
     for (int i=0; i<3; i++) {
         if (flexDrawForces[i].getType() == FT_VELOCITY)
             flexDrawForces[i].setForce(velocity);
-        flexDrawForces[i].applyForce(this_point);
-    }
-    
-    
-    last_touch_points[id%20].set(x,y);
-}
-
-void FlowField::inputUpdate(float x, float y) {
-    
-    ofVec2f this_point = ofVec2f(x,y);
-    ofVec2f velocity = this_point - last_mouse;
-    for (int i=0; i<3; i++)
-    {
-        if (flexDrawForces[i].getType() == FT_VELOCITY)
-            flexDrawForces[i].setForce(velocity);
-        flexDrawForces[i].applyForce(this_point);
+        flexDrawForces[i].applyForce(mouse);
     }
     /*
     for (int i=3; i<numDrawForces; i++) {
         if (flexDrawForces[i].getType() == FT_VELOCITY)
             flexDrawForces[i].setForce(velocity);
-        flexDrawForces[i].applyForce(this_point);
-    }*/
-    last_mouse.set(x,y);
+        flexDrawForces[i].applyForce(mouse);
+    }
+    */
+    lastMouse.set(mouse.x, mouse.y);
 }
 
-void FlowField::render() {
-    int windowWidth = ofGetWindowWidth();
-    int windowHeight = ofGetWindowHeight();
+void SimpleFlowField::inputUpdate(float x, float y, int ID)
+{
+    ofVec2f this_point;
     
-    ofSetColor(color.r, color.g, color.b, alpha);
-    fluid.draw(0, 0, windowWidth, windowHeight);
+    this_point.set(x, y);
+    ofVec2f velocity = this_point - last_touch_points[ID];
+
+    for (int i=0; i<3; i++) {
+        if (flexDrawForces[i].getType() == FT_VELOCITY)
+            flexDrawForces[i].setForce(velocity);
+        flexDrawForces[i].applyForce(this_point);
+    }
+    /*
+     for (int i=3; i<numDrawForces; i++) {
+     if (flexDrawForces[i].getType() == FT_VELOCITY)
+     flexDrawForces[i].setForce(velocity);
+     flexDrawForces[i].applyForce(mouse);
+     }
+     */
+    last_touch_points[ID].set(this_point.x, this_point.y);
 }
-
-void FlowField::updateObstacle(ofTexture &obstacle) {
-    fluid.reset_obstacle();
-    fluid.addObstacle(obstacle);
-    fluid.addTempObstacle(obstacle);
-}
-
-
-
-
