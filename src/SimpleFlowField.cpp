@@ -135,3 +135,8 @@ void SimpleFlowField::inputUpdate(float x, float y, int ID)
      */
     last_touch_points[ID].set(this_point.x, this_point.y);
 }
+
+void SimpleFlowField::addObstacle(ofTexture &obstacle) {
+    fluid.reset_obstacle();
+    fluid.addObstacle(obstacle);
+}

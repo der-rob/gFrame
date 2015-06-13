@@ -21,6 +21,7 @@ public:
     void draw();
     void inputUpdate(int x, int y);
     void inputUpdate(float x, float y, int ID);
+    void addObstacle(ofTexture &obstacle);
     
     // Time
     float				lastTime;

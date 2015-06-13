@@ -30,14 +30,14 @@ void gFrameApp::setup()
     outputRect = ofRectangle(0,0,outputwidth, outputheight);
     
     //flowfield & gui
-    simple_flow.setup(outputRect.width, outputRect.height);
+    simple_flow.setup(outputRect.width/2, outputRect.height/2);
     flowGuiSetup();
     flow_gui.loadFromFile("flow_default.xml");
     ofAddListener(flow_gui.loadPressedE, this, &gFrameApp::onFlowSettingsReload);
     ofAddListener(flow_gui.savePressedE, this, &gFrameApp::onFlowSettingsSave);
     
     
-    simple_flow_2.setup(outputRect.width, outputRect.height);
+    simple_flow_2.setup(outputRect.width/2, outputRect.height/2);
     flow2GuiSetup();
     flow2_gui.loadFromFile("stroke.xml");
     ofAddListener(flow2_gui.loadPressedE, this, &gFrameApp::onFlow2SettingsReload);
