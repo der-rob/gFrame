@@ -19,14 +19,13 @@
 #include "Network.h"
 #include "ofxGui.h"
 #include "ofxFlowTools.h"
-#include "PointGroupList.h"
+//#include "PointGroupList.h"
 
 //#define USE_NETWORK
 
 using namespace flowTools;
 
 enum OutputMode {SESI, LED1, LED2, PROJECTOR, PROJECTOR_PORTRAIT};
-enum Orientation {PORTRAIT, LANDSCAPE};
 
 class gFrameApp : public ofBaseApp{
 
@@ -40,9 +39,7 @@ public:
     void mouseDragged(int x, int y, int button);
     void keyPressed(int key);
     void windowResized(int w, int h);
-    ofVec2f				lastMouse;
 
-    
     // DMX
     void updateLEDpulsing();
     void setLEDColor(ofColor ledColor);
@@ -51,7 +48,7 @@ public:
 
     //OSC
     void oscUpdate();
-    void oscupdate_interface();
+    //void oscupdate_interface();
 
 private:
     
@@ -59,14 +56,6 @@ private:
     StrokeList stroke_list;
     int current_style = STYLE_FINGER;
     ofParameter<ofColor> localBrushColor;
-    ofParameter<int> newPointDistance;
-    
-    ProfileStyle profileStyle;
-    ofParameter<int> style_profile_depth = 10;
-    ofParameter<int> style_profile_width = 10;
-    ofParameter<int> style_profile_zspeed = 1;
-    ofParameter<int> style_profile_twist = 5;
-
     
     ScrizzleStyle scrizzleStyle;
     ofParameterGroup wild_parameters;
@@ -77,6 +66,7 @@ private:
     ofParameter<float> W_byLine_thicknes;
     ofParameter<float> W_fadeout_time;
     ofParameter<float> W_fadeduration;
+    ofParameter<int> W_new_pointdistance;
     
     CaligraphyStyle caligraphyStyle;
     ofParameterGroup caligraphy_parameters;
@@ -84,32 +74,31 @@ private:
     ofParameter<int> C_width_max;
     ofParameter<float> C_fadeout_time;
     ofParameter<float> C_fadeduration;
+    ofParameter<int> C_new_pointdistance;
     
     FlowField flowField;
-    ofLight light;
 
     //output
     bool draw_on_main_screen = true;
     bool fullscreen;
-    ofFbo syphonFBO, canvasFBO;
+    ofFbo canvasFBO;
+    //ofFbo syphonFBO;
     ofParameter<int> outputwidth = 1024;
     ofParameter<int> outputheight = 768;
     ofRectangle outputRect;
     OutputMode outputmode = PROJECTOR;
-    Orientation orientation = LANDSCAPE;
     
     ofxSyphonServer syphonMainOut;
-
-    ofImage mCanvas;
     
     //OSC
-    ofParameter<string> ipad_ip;
-    ofParameter<int> ipad_port;
-    ofParameter<int> local_osc_port;
-    ofParameter<bool> use_ipad = true;
     ofxOscReceiver receiver;
-    ofxOscSender sender;
-    float last_ipad_update_time = 0;
+    ofParameter<int> local_osc_port;
+    
+    //ofParameter<string> ipad_ip;
+    //ofParameter<int> ipad_port;
+    //ofParameter<bool> use_ipad = true;
+    //ofxOscSender sender;
+    //float last_ipad_update_time = 0;
     
     //DMX
     ofParameterGroup dmx_settings;
@@ -131,14 +120,7 @@ private:
     void tuioAdded(ofxTuioCursor & tuioCursor);
 	void tuioRemoved(ofxTuioCursor & tuioCursor);
 	void tuioUpdated(ofxTuioCursor & tuioCursor);
-//    void onTouchPoint(TouchPointEvent &event);
     
-    //the point grouping stuff
-    PointGroupList groupList;
-    vector<GPoint> all_active_points;
-    bool placeMode;
-    void onPlaceEnabled(bool &_placeEnabled);
-    void updateStrokelistAndFlow(int _strokeID);
     
     // NETWORK
     Network network;
@@ -153,12 +135,8 @@ private:
     ofxPanel gui;
     ofxPanel style_gui;
     ofxPanel flow_gui;
-    ofxPanel flow_gui_2;
     bool draw_gui = true;
-    bool draw_flow_gui = true;
     
-    ofParameterGroup parameters;
-    ofParameterGroup style_settings;
     ofParameterGroup parameters_osc;
     ofParameterGroup parameters_network;
     ofParameterGroup parameters_output;
@@ -177,9 +155,6 @@ private:
     void onStyleSettingsreload();
     void onFlowSettingsSave();
     void onFlowSettingsReload();
-    void onFlow2SettingsSave();
-    void onFlow2SettingsReload();
-    
     
     // current finger positions
     ofVec2f finger_positions[20];
@@ -189,37 +164,7 @@ private:
     
     ofParameter<float> point_lifetime = 10;
 
-    ofParameter<bool> input_mouse, input_pqlabs, input_tuio;
-    
-    //stencil
-    string mStencilText;
-    string mNewStencilText;
-    ofTrueTypeFont stencilFont;
-    ofVec2f stencilLoc;
-    ofFbo stencilFBO;
-    void changeStencilText(string _newStencilText);
-    void drawStencil();
-    
-    //helpers
-    string toUpperCase ( string str )
-    {
-        string strUpper = "";
-        for( int i=0; i<str.length(); i++ )
-        {
-            strUpper += toupper( str[ i ] );
-        }
-        return strUpper;
-    }
-    
-    string toLowerCase ( string str )
-    {
-        string strLower = "";
-        for( int i=0; i<str.length(); i++ )
-        {  
-            strLower += tolower( str[ i ] );  
-        }
-        return strLower;  
-    }
+    ofParameter<bool> input_mouse, input_tuio;
 };
 
 

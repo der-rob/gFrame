@@ -5,37 +5,36 @@
 
 
 //--------------------------------------------------------------
-void gFrameApp::setup(){
-    
+void gFrameApp::setup()
+{
     //just set up the openFrameworks stuff
     ofSetFrameRate(30);
     ofSetVerticalSync(true);
     ofBackground(ofColor::black);
-    glEnable(GL_MULTISAMPLE);
 
     //GUI setup
     guiSetup();
     styleGuiSetup();
-    flowGuiSetup();
+    
     ofAddListener(gui.loadPressedE, this, &gFrameApp::onSettingsReload);
     ofAddListener(gui.savePressedE, this, &gFrameApp::onSettingsSave);
     ofAddListener(style_gui.loadPressedE, this, &gFrameApp::onStyleSettingsreload);
     ofAddListener(style_gui.savePressedE, this, &gFrameApp::onStyleSettingsSave);
-    ofAddListener(flow_gui.loadPressedE, this, &gFrameApp::onFlowSettingsReload);
-    ofAddListener(flow_gui.savePressedE, this, &gFrameApp::onFlowSettingsSave);
-    ofAddListener(flow_gui_2.loadPressedE, this, &gFrameApp::onFlow2SettingsReload);
-    ofAddListener(flow_gui_2.savePressedE, this, &gFrameApp::onFlow2SettingsSave);
-
+    
     gui.loadFromFile("settings.xml");
     style_gui.loadFromFile("stylesettings.xml");
-    flow_gui.loadFromFile("stroke.xml");
-    flow_gui_2.loadFromFile("textwaiver.xml");
-
     
     //dimensions for final output
     //after settings are loaded from file
     ofSetWindowShape(outputwidth, outputheight);
     outputRect = ofRectangle(0,0,outputwidth, outputheight);
+    
+    //flowfield & gui
+    flowField.setup(outputRect.width, outputRect.height);
+    flowGuiSetup();
+    flow_gui.loadFromFile("flow_default.xml");
+    ofAddListener(flow_gui.loadPressedE, this, &gFrameApp::onFlowSettingsReload);
+    ofAddListener(flow_gui.savePressedE, this, &gFrameApp::onFlowSettingsSave);
     
     //need to call this here, otherwise would get a BAD ACCESS FAULT
     gui.draw();
@@ -50,10 +49,6 @@ void gFrameApp::setup(){
 	ofAddListener(tuioClient.cursorUpdated,this,&gFrameApp::tuioUpdated);
     ofAddListener(tuioClient.cursorRemoved,this,&gFrameApp::tuioRemoved);
     
-    //pointgroup
-    ofAddListener(groupList.E_enablePlaceMode, this, &gFrameApp::onPlaceEnabled);
-    placeMode = false;
-    
     //DMX for controlling RGB LED Strips
     dmx.connect(0);
     setLEDColor(ofColor::fromHsb(0,255,10));
@@ -65,18 +60,7 @@ void gFrameApp::setup(){
     
     //OSC
     receiver.setup(local_osc_port);
-    try {
-    sender.setup(ipad_ip,ipad_port);
-    }
-    catch (exception e) {
-        ofLogError() << "unable to connect to ipad";
-        use_ipad = false;
-    }
     
-    // SETUP LIGHT
-    light.enable();
-    light.setPointLight();
-    light.setPosition(0,0,0);
 
 #ifdef USE_NETWORK
     // NETWORK
@@ -84,24 +68,18 @@ void gFrameApp::setup(){
     stroke_list.setupSync(&network);
 #endif
 
-    syphonFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 16);
+    //syphonFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 16);
     canvasFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 16);
-    mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
-    syphonFBO.begin(); ofClear(0); syphonFBO.end();
+    //syphonFBO.begin(); ofClear(0); syphonFBO.end();
     canvasFBO.begin(); ofClear(0); canvasFBO.end();
 
     // initialize finger positions
     for(ofVec2f finger : finger_positions){
         finger = ofVec2f(0,0);
     }
-    
-    //flowfield
-    flowField.setup(outputRect.width/2, outputRect.height/2);
-    flowField.setColor(localBrushColor);
-    
-    //stencil
-    changeStencilText("GFrame");
 }
+
+//--------------------------------------------------------------
 void gFrameApp::exit(){
     setLEDColor(ofColor::black);
     dmx.disconnect();
@@ -109,11 +87,12 @@ void gFrameApp::exit(){
 }
 
 //--------------------------------------------------------------
-void gFrameApp::update(){
-    
+void gFrameApp::update()
+{
     stroke_list.update();
-    if (use_ipad)
-        oscUpdate();
+    
+    oscUpdate();
+    
     tuioClient.getMessage();
     
     // DMX UPDATE
@@ -121,45 +100,29 @@ void gFrameApp::update(){
         updateLEDpulsing();
     
     canvasFBO.begin();
-    
     ofBackground(0);
-    
     flowField.render();
     
     for(vector<GPoint> stroke : *stroke_list.getAllStrokes()){
-        switch (stroke[2].getStyle())
+        switch (stroke[0].getStyle())
         {
-            case STYLE_FINGER:
-                //no stroke to render
-                break;
             case STYLE_SCRIZZLE:
                 scrizzleStyle.render(stroke, (int)outputRect.width, (int)outputRect.height);
                 break;
             case STYLE_CALIGRAPHY:
                 caligraphyStyle.render(stroke, (int)outputRect.width, (int)outputRect.height);
                 break;
-            case STYLE_WAVER:
-                //no stroke to render
-                break;
             default:
-                profileStyle.render(stroke, (int)outputRect.width, (int)outputRect.height);
+                caligraphyStyle.render(stroke, (int)outputRect.width, (int)outputRect.height);
                 break;
         }
     }
-    
-    if (placeMode)
-        drawStencil();
     
     if(draw_finger_positions){
         drawFingerPositions((int)outputRect.width, (int)outputRect.height);
     }
     
     canvasFBO.end();
-    
-    canvasFBO.readToPixels(mCanvas.getPixelsRef());
-    mCanvas.reloadTexture();
-    
-
     
     //update the brush settings
     //scrizzle style
@@ -168,24 +131,18 @@ void gFrameApp::update(){
     scrizzleStyle.setLength(W_wavelength);
     scrizzleStyle.setNervousity(W_nervosity);
     scrizzleStyle.setFadeOutTime(W_fadeout_time*1000.0, W_fadeduration*1000.0);
-    scrizzleStyle.setNewPointDistance(newPointDistance);
-    
-    //profile style
-    profileStyle.setLineWidth(style_profile_width);
-    profileStyle.setLineDepth(style_profile_depth);
-    profileStyle.setZSpeed(style_profile_zspeed);
-    profileStyle.setTwist(style_profile_twist);
-    profileStyle.setNewPointDistance(newPointDistance);
+    scrizzleStyle.setNewPointDistance(W_new_pointdistance);
     
     //caligraphy style
     caligraphyStyle.setWidth(C_width_min, C_width_max);
     caligraphyStyle.setFadeOutTime(C_fadeout_time*1000.0, C_fadeduration*1000.0);
+    caligraphyStyle.setNewPointDistance(C_new_pointdistance);
 
     // lifetime
     stroke_list.setLifetime(point_lifetime * 1000);
     
     //flowtools
-    flowField.update(mCanvas.getTextureReference());
+    flowField.update(canvasFBO.getTextureReference());
     flowField.setColor(localBrushColor);
 }
 
@@ -194,12 +151,6 @@ void gFrameApp::draw(){
     
     ofBackground(0);
     ofSetColor(255);
-    
-    
-//    syphonFBO.begin();
-//    ofClear(0);
-//    mCanvas.draw(0,0, ofGetWidth(), ofGetHeight());    
-//    syphonFBO.end();
 
     syphonMainOut.publishTexture(&canvasFBO.getTextureReference());
 
@@ -214,7 +165,6 @@ void gFrameApp::draw(){
         gui.draw();
         style_gui.draw();
         flow_gui.draw();
-        flow_gui_2.draw();
         ofSetColor(255);
         ofDrawBitmapString("clients: " + ofToString(network.isConnected()), ofGetWidth()-120, ofGetHeight()-85);
         ofDrawBitmapString("connected: " + ofToString(network.getNumClients()), ofGetWidth()-120, ofGetHeight()-70);
@@ -223,12 +173,11 @@ void gFrameApp::draw(){
         ofDrawBitmapString("s: " + ofToString(network.getSendQueueLength()), ofGetWidth()-120, ofGetHeight()-25 );
         ofDrawBitmapString("fps: " + ofToString(ofGetFrameRate(), 2), ofGetWidth()-120, ofGetHeight()-10 );
     }
-    
-    //stencilFBO.draw(0, 0, outputRect.width, outputRect.height);
 }
 
-void gFrameApp::drawFingerPositions(int _width, int _height){
-    
+//--------------------------------------------------------------
+void gFrameApp::drawFingerPositions(int _width, int _height)
+{
     ofPushStyle();
     ofDisableDepthTest(); // disable depth test so the alpha blending works properly
     ofDisableLighting();
@@ -271,7 +220,8 @@ void gFrameApp::drawFingerPositions(int _width, int _height){
 }
 
 //--------------------------------------------------------------
-void gFrameApp::keyPressed(int key){
+void gFrameApp::keyPressed(int key)
+{
     if (key == 'r') {
         localBrushColor = ofColor::red;
     }
@@ -296,8 +246,6 @@ void gFrameApp::keyPressed(int key){
         dmx_on = !dmx_on;
     else if(key == 'y')
         draw_on_main_screen = !draw_on_main_screen;
-    else if(key == 'f')
-        draw_flow_gui = !draw_flow_gui;
     else if (key == 'x') {
         fullscreen = !fullscreen;
         ofSetFullscreen(fullscreen);
@@ -306,42 +254,12 @@ void gFrameApp::keyPressed(int key){
         outputRect.width = ofGetWidth();
         outputRect.height = ofGetHeight();
         canvasFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 16);
-        mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
-        syphonFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 16);
+        //syphonFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 16);
         cout << outputRect.width << " x " << outputRect.height << endl;
     }
     
     else if (key == 'm') {
         draw_on_main_screen = !draw_on_main_screen;
-    }
-    
-    //switch between different output modes
-    else if (key == '1') {
-        //ofSetWindowShape(1024, 768);
-        outputRect.width = 1024;
-        outputRect.height =768;
-        outputRect.x = 0;
-        outputRect.y = 0;
-        ofSetWindowShape(outputRect.width, outputRect.height);
-        outputmode = PROJECTOR;
-        orientation = LANDSCAPE;
-        canvasFBO.allocate(outputRect.width, outputRect.height);
-        mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
-    }
-    else if (key == '2') {
-        outputRect.width = 512;
-        outputRect.height = 768;
-        outputRect.x = 0;
-        outputRect.y = 0;
-        ofSetWindowShape(outputRect.width, outputRect.height);
-        outputmode = PROJECTOR_PORTRAIT;
-        orientation = PORTRAIT;
-        canvasFBO.allocate(outputRect.width, outputRect.height);
-        mCanvas.allocate(outputRect.width, outputRect.height, OF_IMAGE_COLOR);
-    }
-    else if (key == 't') {
-        placeMode = true;
-        mNewStencilText = toUpperCase(ofSystemTextBoxDialog("enter new obstacle text"));
     }
 }
 
@@ -353,7 +271,7 @@ void gFrameApp::mouseMoved(int x, int y){
         
         mouse.set(x / (float)ofGetWindowWidth(), y / (float)ofGetWindowHeight());
         
-        /*GPoint the_point;
+        GPoint the_point;
         //rescale mouse position
         //float x_norm = ofMap(x, 0, ofGetWidth(), 0.0, outputRect.width);
         float x_norm = ofMap(x, 0, outputRect.width, 0.0, 1.0);
@@ -366,41 +284,35 @@ void gFrameApp::mouseMoved(int x, int y){
         the_point.setColor(localBrushColor);
         the_point.setStyle(current_style);
         stroke_list.add(the_point);
-        */
         
         stop_pulsing();
         last_points_time = ofGetElapsedTimeMillis();
         
         //flowstroke
         flowField.inputUpdate(mouse.x, mouse.y);
-        
     }
 }
 
 //--------------------------------------------------------------
-void gFrameApp::mouseDragged(int x, int y, int button) {
-
+void gFrameApp::mouseDragged(int x, int y, int button)
+{
 }
 
 //--------------------------------------------------------------
-void gFrameApp::windowResized(int w, int h) {
+void gFrameApp::windowResized(int w, int h)
+{
     outputRect.width = w;
     outputRect.height = h;
 }
 
 //--------------------------------------------------------------
-void gFrameApp::tuioAdded(ofxTuioCursor &cursor) {
+void gFrameApp::tuioAdded(ofxTuioCursor &cursor)
+{
     if(input_tuio){
         GPoint the_point;
         float x,y;
-        if (orientation == PORTRAIT) {
-            //normalized value
-            x = 1-cursor.getY();
-            y = 1-cursor.getX();
-        } else {
-            x = cursor.getX();
-            y = cursor.getY();
-        }
+        x = cursor.getX();
+        y = cursor.getY();
 
         the_point.setLocation(ofVec2f(x, y));
         the_point.setId(cursor.getFingerId());
@@ -408,99 +320,54 @@ void gFrameApp::tuioAdded(ofxTuioCursor &cursor) {
         the_point.setColor(localBrushColor);
         the_point.setType(TUIO);
         the_point.setStyle(current_style);
-        //stroke_list.addToNewStroke(the_point);
-        groupList.add(the_point);
+        stroke_list.addToNewStroke(the_point);
         
-        updateStrokelistAndFlow(cursor.getSessionId());
         finger_positions[cursor.getFingerId()] = ofVec2f(x, y);
+        flowField.inputUpdate(x, y, cursor.getFingerId());
         
         stop_pulsing();
         last_points_time = ofGetElapsedTimeMillis();
-        
     }
 }
 
 //--------------------------------------------------------------
-void gFrameApp::tuioUpdated(ofxTuioCursor &cursor) {
-    if(input_tuio){
+void gFrameApp::tuioUpdated(ofxTuioCursor &cursor)
+{
+    if(input_tuio)
+    {
         GPoint the_point;
         float x,y;
-        if (orientation == PORTRAIT) {
-            //normalized value
-            x = 1-cursor.getY();
-            y = 1-cursor.getX();
-        } else {
-            x = cursor.getX();
-            y = cursor.getY();
-        }
+        x = cursor.getX();
+        y = cursor.getY();
         
         the_point.setLocation(ofVec2f(x, y));
         the_point.setId(cursor.getFingerId());
         the_point.setStrokeId(cursor.getSessionId());
         the_point.setColor(localBrushColor);
         the_point.setType(TUIO);
-        //the_point.setStyle(current_style);
-        //stroke_list.add(the_point);
-        groupList.add(the_point);
+        the_point.setStyle(current_style);
+        stroke_list.add(the_point);
         
-        updateStrokelistAndFlow(cursor.getSessionId());
         finger_positions[cursor.getFingerId()] = ofVec2f(x, y);
+        flowField.inputUpdate(x, y, cursor.getFingerId());
         
         stop_pulsing();
         last_points_time = ofGetElapsedTimeMillis();
     }
 }
 
-void gFrameApp::tuioRemoved(ofxTuioCursor & cursor){
-    if(input_tuio){
-        float x,y;
-        GPoint the_point;
-        //only stroke ID is needed to identify the point
-        the_point.setStrokeId(cursor.getSessionId());
-        
-        groupList.removePoint(the_point);
-        
+//--------------------------------------------------------------
+void gFrameApp::tuioRemoved(ofxTuioCursor & cursor)
+{
+    if(input_tuio)
+    {
         finger_positions[cursor.getFingerId()] = ofVec2f(0, 0);
     }
 }
 
 //--------------------------------------------------------------
-void gFrameApp::updateStrokelistAndFlow(int _strokeID) {
-    
-    PointGroup *the_group;
-    the_group = groupList.getGroup(_strokeID);
-    ofVec2f loc = ofVec2f(the_group->getCenter());
-    
-    GPoint newStrokePoint;
-    newStrokePoint.setLocation(loc);
-    newStrokePoint.setStrokeId(the_group->getGroupID());
-    newStrokePoint.setStyle(the_group->getStyle());
-    newStrokePoint.setColor(localBrushColor);
-    
-    switch (the_group->getStyle()) {
-        case STYLE_FINGER:
-            //flowField.inputUpdate(loc.x,loc.y);
-            break;
-        case STYLE_SCRIZZLE:
-            stroke_list.add(newStrokePoint);
-            //flowField.inputUpdate(loc.x,loc.y);
-            break;
-        case STYLE_CALIGRAPHY:
-            stroke_list.add(newStrokePoint);
-            //flowField.inputUpdate(loc.x,loc.y);
-            break;
-        case STYLE_WAVER:
-            if (placeMode) {
-                stencilLoc = ofVec2f(loc.x*outputRect.width,loc.y*outputRect.height);
-            }
-            // else
-            //    flowField.inputUpdate(loc.x,loc.y);
-            break;
-    }
-    flowField.inputUpdate(loc.x,loc.y);
-}
-//--------------------------------------------------------------
-void gFrameApp::oscUpdate() {
+void gFrameApp::oscUpdate()
+{
     while (receiver.hasWaitingMessages())
     {
         ofxOscMessage m;
@@ -515,66 +382,12 @@ void gFrameApp::oscUpdate() {
         else if (m.getAddress() == "/col_orange") localBrushColor = ofColor::orange;
         else if (m.getAddress() == "/col_pink") localBrushColor = ofColor::pink;
         else if (m.getAddress() == "/clearcanvas") stroke_list.clear();
-        //stencil stuff
-        else if (m.getAddress() == "/stencilText") {
-            placeMode = true;
-            mNewStencilText = m.getArgAsString(0);
-        }
-        
+        //brush style
+        else if (m.getAddress() == "/style_wild") current_style = STYLE_SCRIZZLE;
+        else if (m.getAddress() == "/style_cali") current_style = STYLE_CALIGRAPHY;
     }
-
-    if (ofGetElapsedTimef() - last_ipad_update_time > 0.04) {
-        oscupdate_interface();
-        last_ipad_update_time = ofGetElapsedTimef();
-    }
-
 }
 
-void gFrameApp::oscupdate_interface() {
-    ofxOscMessage update;
-    
-    
-/* Color selection will be replaced by color picker
-    //color
-    //red
-    update.clear();
-    update.setAddress("/1/t_red");
-    if ((ofColor)localBrushColor == ofColor::red) update.addFloatArg(1);
-    else update.addFloatArg(0);
-    sender.sendMessage(update);
-    //green
-    update.clear();
-    update.setAddress("/1/t_green");
-    if ((ofColor)localBrushColor == ofColor::green) update.addFloatArg(1);
-    else update.addFloatArg(0);
-    sender.sendMessage(update);
-    //blue
-    update.clear();
-    update.setAddress("/1/t_blue");
-    if ((ofColor)localBrushColor == ofColor::blue) update.addFloatArg(1);
-    else update.addFloatArg(0);
-    sender.sendMessage(update);
-    //yellow
-    update.clear();
-    update.setAddress("/1/t_yellow");
-    if ((ofColor)localBrushColor == ofColor::yellow) update.addFloatArg(1);
-    else update.addFloatArg(0);
-    sender.sendMessage(update);
-    //purple
-    update.clear();
-    update.setAddress("/1/t_orange");
-    if ((ofColor)localBrushColor == ofColor::orange) update.addFloatArg(1);
-    else update.addFloatArg(0);
-    sender.sendMessage(update);
-    //pink
-    update.clear();
-    update.setAddress("/1/t_pink");
-    if ((ofColor)localBrushColor == ofColor::pink) update.addFloatArg(1);
-    else update.addFloatArg(0);
-    sender.sendMessage(update);
-*/
-
-}
 //--------------------------------------------------------------
 void gFrameApp::updateLEDpulsing(){
     //create triangle wave for pulsing led lights
@@ -638,11 +451,6 @@ void gFrameApp::guiSetup() {
     outputheight.setName("height");
     parameters_output.add(outputheight);
     
-    
-    //stencilText
-    //mStencilText.setName("Stenciltex");
-    //parameters_output.add(mStencilText);
-    
     //DMX & LEDs
     dmx_settings.setName("dmx settings");
     dmx_settings.add(dmx_on.set("DMX on", false));
@@ -653,10 +461,6 @@ void gFrameApp::guiSetup() {
     
     ///OSC
     parameters_osc.setName("osc");
-    ipad_ip.setName("iPad IP");
-    parameters_osc.add(ipad_ip);
-    ipad_port.setName("iPad Port");
-    parameters_osc.add(ipad_port);
     local_osc_port.setName("local OSC port");
     parameters_osc.add(local_osc_port);
     
@@ -672,8 +476,6 @@ void gFrameApp::guiSetup() {
 
     ///general brush settings
     parameters_brush.setName("brush settings");
-    newPointDistance.set("new point distance", 10,1,100);
-    parameters_brush.add(newPointDistance);
     parameters_brush.add(point_lifetime.set("point lifetime", 10, 1, 100));
     localBrushColor.setName("color");
     parameters_brush.add(localBrushColor.set("local color", ofColor(255, 255, 255), ofColor(0,0,0), ofColor(255,255,255)));
@@ -687,20 +489,33 @@ void gFrameApp::guiSetup() {
     parameters_input.setName("input selection");
     parameters_input.add(tuioPort.set("TUIO port", 3333));
     parameters_input.add(input_mouse.set("mouse", false));
-    parameters_input.add(input_pqlabs.set("pqlabs", false));
     parameters_input.add(input_tuio.set("tuio", true));
     
-    //add the subgroups to main parameter group
-    parameters.add(parameters_output);
-    parameters.add(dmx_settings);
-    parameters.add(parameters_network);
-    parameters.add(parameters_osc);
-    parameters.add(parameters_finger);
-    parameters.add(parameters_brush);
-    parameters.add(parameters_input);
-
-    //add all parameters to the gui
-    gui.add(parameters);
+    //add the subgroups to the gui
+    gui.add(parameters_finger);
+    gui.add(parameters_brush);
+    gui.add(*flowField.getBrightness());
+    gui.add(*flowField.getAlpha());
+    gui.add(parameters_output);
+    gui.add(dmx_settings);
+    gui.add(parameters_network);
+    gui.add(parameters_osc);
+    gui.add(parameters_input);
+    
+    //minimize some of the gui elements
+    vector<string> controlNames = gui.getControlNames();
+    for (int i=0; i < controlNames.size(); i++) {
+        string the_name = controlNames[i];
+        if (the_name == "output settings" ||
+            the_name == "dmx settings" ||
+            the_name == "network" ||
+            the_name == "osc" ||
+            the_name == "input selection")
+        {
+            ofxGuiGroup *the_group = &gui.getGroup(the_name);
+            the_group->minimize();
+        }
+    }
 }
 
 //--------------------------------------------------------------
@@ -710,14 +525,8 @@ void gFrameApp::styleGuiSetup() {
     style_gui.setName("style settings");
     style_gui.setPosition(ofGetWidth() - 2*style_gui.getWidth() - 20, 10);
     
-    parameters_profile_style.setName("profile parameters");
-    parameters_profile_style.add(style_profile_depth.set("depth", 10, 2, 50));
-    parameters_profile_style.add(style_profile_width.set("width", 10, 2, 50));
-    parameters_profile_style.add(style_profile_zspeed.set("z-speed", 1, 1, 100));
-    parameters_profile_style.add(style_profile_twist.set("twist", 5, 2, 20));
-    style_settings.add(parameters_profile_style);
-    
     wild_parameters.setName("wild parameters");
+    wild_parameters.add(W_new_pointdistance.set("new point distance",20,10,100));
     wild_parameters.add(W_amplitude.set("amplitude",8.0,0.0,20));
     wild_parameters.add(W_wavelength.set("wavelength", 4.0, 1.0, 10.0));
     wild_parameters.add(W_fadeout_time.set("fadeout time",10.0,2.0,60.0));
@@ -725,16 +534,18 @@ void gFrameApp::styleGuiSetup() {
     wild_parameters.add(W_nervosity.set("nervousity",1.0,0.5,20.0));
     wild_parameters.add(W_mainLine_thickness.set("main line thickness", 4.0, 1.0, 10.0));
     wild_parameters.add(W_byLine_thicknes.set("by line thickness", 0.5, 0.1, 5.0));
-    style_settings.add(wild_parameters);
     
     caligraphy_parameters.setName("caligraphy parameters");
+    caligraphy_parameters.add(C_new_pointdistance.set("new point distance",60,10,100));
     caligraphy_parameters.add(C_width_min.set("width min", 1, 0, 20));
     caligraphy_parameters.add(C_width_max.set("width max", 20, 1, 60));
     caligraphy_parameters.add(C_fadeout_time.set("fadeout time",10.0,2.0,60.0));
     caligraphy_parameters.add(C_fadeduration.set("fade duration", 5.0, 0.0, 60));
-    style_settings.add(caligraphy_parameters);
     
-    style_gui.add(style_settings);
+    style_gui.add(caligraphy_parameters);
+    style_gui.add(wild_parameters);
+    
+    style_gui.minimizeAll();
 }
 
 //--------------------------------------------------------------
@@ -745,13 +556,6 @@ void gFrameApp::onSettingsReload() {
     network.setup(host_port, remote_ip, remote_port);
     //osc
     receiver.setup(local_osc_port);
-    try {
-        sender.setup(ipad_ip,ipad_port);
-        use_ipad = true;
-    } catch (exception e) {
-        ofLogError() << "unable to connect to iPad on " << ipad_ip <<":"<< ipad_port << endl;
-        use_ipad = false;
-    }
     //tuio
     tuioClient.start(tuioPort);
     //clean stroklist
@@ -774,7 +578,7 @@ void gFrameApp::onStyleSettingsreload() {
 //--------------------------------------------------------------
 void gFrameApp::onStyleSettingsSave() {
     style_gui.saveToFile("stylesettings.xml");
-    ofLog() << "style settings saved";    
+    ofLog() << "style settings saved";
 }
 
 //--------------------------------------------------------------
@@ -783,12 +587,8 @@ void gFrameApp::flowGuiSetup() {
     flow_gui.setName("flow settings");
     flow_gui.setPosition(10, 10);
     flow_gui.add(*flowField.getFluidParameters());
-
-    flow_gui_2.setup();
-    flow_gui_2.setName("flow 2 settings");
-    flow_gui_2.setPosition(220, 10);
-    flow_gui_2.add(*flowField.getFluidParameters_2());
-
+    flow_gui.add(*flowField.getVelocityParameters());
+    flow_gui.minimizeAll();
 }
 
 //--------------------------------------------------------------
@@ -806,55 +606,4 @@ void gFrameApp::onFlowSettingsReload() {
     string load_filename = load_result.getPath();
     if (load_filename != "")
         flow_gui.loadFromFile(load_filename);
-}
-
-//--------------------------------------------------------------
-void gFrameApp::onFlow2SettingsSave() {
-    ofFileDialogResult save_result = ofSystemSaveDialog("NewFlowSettings.xml", "save new flow settings");
-    string new_filename = save_result.getPath();
-    cout << new_filename << endl;
-    if (new_filename != "")
-        flow_gui_2.saveToFile(new_filename);
-}
-
-//--------------------------------------------------------------
-void gFrameApp::onFlow2SettingsReload() {
-    ofFileDialogResult load_result = ofSystemLoadDialog();
-    string load_filename = load_result.getPath();
-    if (load_filename != "")
-        flow_gui_2.loadFromFile(load_filename);
-}
-
-//--------------------------------------------------------------
-void gFrameApp::changeStencilText(string _newStencilText) {
-    mStencilText = toUpperCase(_newStencilText);
-    stencilFont.loadFont("AkzidenzGrotesk-Cond.otf", 150);
-    stencilFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 1);
-    stencilFBO.begin();
-    ofClear(0);
-    ofSetColor(255,0,0);
-    ofRectangle stringBounds = stencilFont.getStringBoundingBox(mStencilText, 0, 0);
-    int text_x = stencilLoc.x - stringBounds.width / 2;
-    int text_y = stencilLoc.y + stringBounds.height / 2;
-    stencilFont.drawString(mStencilText, text_x, text_y);
-    stencilFBO.end();
-    flowField.updateObstacle(stencilFBO.getTextureReference());
-}
-
-//--------------------------------------------------------------
-void gFrameApp::drawStencil() {
-    stencilFont.loadFont("AkzidenzGrotesk-Cond.otf", 150);
-    ofClear(0);
-    ofSetColor(100);
-    ofRectangle stringBounds = stencilFont.getStringBoundingBox(mStencilText, 0, 0);
-    int text_x = stencilLoc.x - stringBounds.width / 2;
-    int text_y = stencilLoc.y + stringBounds.height /2;
-    stencilFont.drawString(mNewStencilText, text_x, text_y);
-}
-
-//--------------------------------------------------------------
-void gFrameApp::onPlaceEnabled(bool &_placeEnabled) {
-    placeMode = _placeEnabled;
-    if (!placeMode && (mNewStencilText != mStencilText))
-        changeStencilText(mNewStencilText);
 }
