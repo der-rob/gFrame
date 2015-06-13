@@ -36,6 +36,9 @@ void CaligraphyStyle::render(vector<GPoint> &points, int width, int height){
             lastPoint.x *= width;
             lastPoint.y *= height;
             
+            if (currentPoint.distance(lastPoint) < getNewPointDistance())
+                continue;
+            
             float dx = lastPoint.x - currentPoint.x;
             float dy = lastPoint.y - currentPoint.y;
             
@@ -63,9 +66,7 @@ void CaligraphyStyle::render(vector<GPoint> &points, int width, int height){
             m.addColor(c);
         }
         
-        
         m.draw();
-        
     }
 }
 

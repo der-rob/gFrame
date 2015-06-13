@@ -13,12 +13,15 @@
 
 #include "ofMain.h"
 #include "GPoint.h"
-
 #include "MSACore.h"
 #include "MSAInterpolator.h"
 
+#ifndef Included_BaseStyle_H
+#define Included_BaseStyle_H
+#include "BaseStyle.h"
+#endif
 
-class CaligraphyStyle {
+class CaligraphyStyle : public BaseStyle {
     
 public:
     CaligraphyStyle();
