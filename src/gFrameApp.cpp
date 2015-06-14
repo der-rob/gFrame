@@ -32,14 +32,14 @@ void gFrameApp::setup()
     //flowfield & gui
     simple_flow.setup(outputRect.width/2, outputRect.height/2);
     flowGuiSetup();
-    flow_gui.loadFromFile("flow_default.xml");
+    flow_gui.loadFromFile("stroke.xml");
     ofAddListener(flow_gui.loadPressedE, this, &gFrameApp::onFlowSettingsReload);
     ofAddListener(flow_gui.savePressedE, this, &gFrameApp::onFlowSettingsSave);
     
     
     simple_flow_2.setup(outputRect.width/2, outputRect.height/2);
     flow2GuiSetup();
-    flow2_gui.loadFromFile("stroke.xml");
+    flow2_gui.loadFromFile("textwaiver.xml");
     ofAddListener(flow2_gui.loadPressedE, this, &gFrameApp::onFlow2SettingsReload);
     ofAddListener(flow2_gui.savePressedE, this, &gFrameApp::onFlow2SettingsSave);
     
@@ -104,7 +104,7 @@ void gFrameApp::update()
     
     simple_flow.update();
     simple_flow_2.update();
-    simple_flow_2.color = localBrushColor;
+    simple_flow.color = localBrushColor;
     
     // DMX UPDATE
     if (dmx_on)
@@ -113,14 +113,11 @@ void gFrameApp::update()
     canvasFBO.begin();
     ofBackground(0);
     
-//    flowField.setColor(ofColor::white);
-//    ofBlendMode(OF_BLENDMODE_ALPHA);
-//    flowField.render();
-//    ofBlendMode(OF_BLENDMODE_ADD);
-//    flowField2.render();
-//
-    simple_flow.draw();
+
+    ofBlendMode(OF_BLENDMODE_ALPHA);
     simple_flow_2.draw();
+    ofBlendMode(OF_BLENDMODE_ADD);
+    simple_flow.draw();
     
     for(vector<GPoint> stroke : *stroke_list.getAllStrokes()){
         switch (stroke[0].getStyle())
@@ -600,6 +597,8 @@ void gFrameApp::flowGuiSetup() {
     flow_gui.setName("flow settings");
     flow_gui.setPosition(10, 10);
     flow_gui.add(simple_flow.fluid.parameters);
+    flow_gui.add(simple_flow.brightness);
+    flow_gui.add(simple_flow.alpha);
     flow_gui.minimizeAll();
 }
 
@@ -626,6 +625,8 @@ void gFrameApp::flow2GuiSetup() {
     flow2_gui.setName("flow settings");
     flow2_gui.setPosition(220, 10);
     flow2_gui.add(simple_flow_2.fluid.parameters);
+    flow2_gui.add(simple_flow_2.brightness);
+    flow2_gui.add(simple_flow_2.alpha);
     flow2_gui.minimizeAll();
 }
 

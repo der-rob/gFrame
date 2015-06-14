@@ -276,6 +276,9 @@
 		D46A05011A12764D00AE3BB3 /* settings.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = settings.xml; sourceTree = "<group>"; };
 		D46CE3311A1656A100A84CBB /* 2014111_gframe_osc.touchosc */ = {isa = PBXFileReference; lastKnownFileType = file; path = 2014111_gframe_osc.touchosc; sourceTree = "<group>"; };
 		D46CE3321A1656A100A84CBB /* 20141114_gframe_osc.touchosc */ = {isa = PBXFileReference; lastKnownFileType = file; path = 20141114_gframe_osc.touchosc; sourceTree = "<group>"; };
+		D470DD551B2DB4460023B792 /* stroke_2.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = stroke_2.xml; sourceTree = "<group>"; };
+		D470DD561B2DB4460023B792 /* stroke.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = stroke.xml; sourceTree = "<group>"; };
+		D470DD571B2DB4460023B792 /* textwaiver.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = textwaiver.xml; sourceTree = "<group>"; };
 		D47F10E71A124B7000F558E8 /* gFrameIcon.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = gFrameIcon.iconset; sourceTree = "<group>"; };
 		D48625481A001C770076E13F /* BaseStyle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseStyle.cpp; sourceTree = "<group>"; };
 		D48625491A001C770076E13F /* BaseStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseStyle.h; sourceTree = "<group>"; };
@@ -845,6 +848,9 @@
 		D46A05001A12764D00AE3BB3 /* data */ = {
 			isa = PBXGroup;
 			children = (
+				D470DD551B2DB4460023B792 /* stroke_2.xml */,
+				D470DD561B2DB4460023B792 /* stroke.xml */,
+				D470DD571B2DB4460023B792 /* textwaiver.xml */,
 				D458D5391B2959E5003B3B45 /* flow_settings.xml */,
 				D458D53A1B2959E5003B3B45 /* stylesettings.xml */,
 				D46A05011A12764D00AE3BB3 /* settings.xml */,

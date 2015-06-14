@@ -18,7 +18,7 @@ void SimpleFlowField::setup(int _width, int _height)
     
     // Fluid
     fluid.setup(flowWidth, flowHeight, drawWidth, drawHeight, false);
-
+    
     // Draw Forces
     numDrawForces = 6;
     flexDrawForces = new ftDrawForce[numDrawForces];
@@ -42,6 +42,9 @@ void SimpleFlowField::setup(int _width, int _height)
     {
         vec.set(0,0);
     }
+    
+    alpha.set("alpha",255,0,255);
+    brightness.set("brightness",255,0,255);
     
     color = ofColor::white;
 }
@@ -84,10 +87,13 @@ void SimpleFlowField::draw() {
     }
     
     fluid.update();
-
+    
     int windowWidth = ofGetWindowWidth();
     int windowHeight = ofGetWindowHeight();
     
+    
+    color.setBrightness(brightness);
+    color.a = alpha;
     ofSetColor(color);
     fluid.draw(0, 0, windowWidth, windowHeight);
 }
@@ -105,12 +111,12 @@ void SimpleFlowField::inputUpdate(int x, int y)
         flexDrawForces[i].applyForce(mouse);
     }
     /*
-    for (int i=3; i<numDrawForces; i++) {
-        if (flexDrawForces[i].getType() == FT_VELOCITY)
-            flexDrawForces[i].setForce(velocity);
-        flexDrawForces[i].applyForce(mouse);
-    }
-    */
+     for (int i=3; i<numDrawForces; i++) {
+     if (flexDrawForces[i].getType() == FT_VELOCITY)
+     flexDrawForces[i].setForce(velocity);
+     flexDrawForces[i].applyForce(mouse);
+     }
+     */
     lastMouse.set(mouse.x, mouse.y);
 }
 
@@ -120,7 +126,7 @@ void SimpleFlowField::inputUpdate(float x, float y, int ID)
     
     this_point.set(x, y);
     ofVec2f velocity = this_point - last_touch_points[ID];
-
+    
     for (int i=0; i<3; i++) {
         if (flexDrawForces[i].getType() == FT_VELOCITY)
             flexDrawForces[i].setForce(velocity);

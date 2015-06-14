@@ -1,11 +1,3 @@
-//
-//  SimpleFlowField.h
-//  flowtest
-//
-//  Created by Robert Albert on 13.06.15.
-//
-//
-
 #ifndef __flowtest__SimpleFlowField__
 #define __flowtest__SimpleFlowField__
 
@@ -43,6 +35,8 @@ public:
     ftDrawForce*		flexDrawForces;
     
     ofColor             color;
+    ofParameter<int>    brightness;
+    ofParameter<int>    alpha;
 };
 
 #endif /* defined(__flowtest__SimpleFlowField__) */
