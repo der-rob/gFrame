@@ -276,6 +276,13 @@
 		D46CE3321A1656A100A84CBB /* 20141114_gframe_osc.touchosc */ = {isa = PBXFileReference; lastKnownFileType = file; path = 20141114_gframe_osc.touchosc; sourceTree = "<group>"; };
 		D470DD471B2D7DE80023B792 /* SimpleFlowField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimpleFlowField.cpp; sourceTree = "<group>"; };
 		D470DD481B2D7DE80023B792 /* SimpleFlowField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleFlowField.h; sourceTree = "<group>"; };
+		D470DD4D1B2DA4660023B792 /* flow_settings.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = flow_settings.xml; sourceTree = "<group>"; };
+		D470DD4E1B2DA4660023B792 /* NewFlowSettings.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = NewFlowSettings.xml; sourceTree = "<group>"; };
+		D470DD4F1B2DA4660023B792 /* settings_.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = settings_.xml; sourceTree = "<group>"; };
+		D470DD501B2DA4660023B792 /* stroke_2.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = stroke_2.xml; sourceTree = "<group>"; };
+		D470DD511B2DA4660023B792 /* stroke.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = stroke.xml; sourceTree = "<group>"; };
+		D470DD521B2DA4660023B792 /* stylesettings.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = stylesettings.xml; sourceTree = "<group>"; };
+		D470DD531B2DA4660023B792 /* textwaiver.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = textwaiver.xml; sourceTree = "<group>"; };
 		D47F10E71A124B7000F558E8 /* gFrameIcon.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = gFrameIcon.iconset; sourceTree = "<group>"; };
 		D48625481A001C770076E13F /* BaseStyle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseStyle.cpp; sourceTree = "<group>"; };
 		D48625491A001C770076E13F /* BaseStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseStyle.h; sourceTree = "<group>"; };
@@ -843,6 +850,13 @@
 		D46A05001A12764D00AE3BB3 /* data */ = {
 			isa = PBXGroup;
 			children = (
+				D470DD4D1B2DA4660023B792 /* flow_settings.xml */,
+				D470DD4E1B2DA4660023B792 /* NewFlowSettings.xml */,
+				D470DD4F1B2DA4660023B792 /* settings_.xml */,
+				D470DD501B2DA4660023B792 /* stroke_2.xml */,
+				D470DD511B2DA4660023B792 /* stroke.xml */,
+				D470DD521B2DA4660023B792 /* stylesettings.xml */,
+				D470DD531B2DA4660023B792 /* textwaiver.xml */,
 				D46A05011A12764D00AE3BB3 /* settings.xml */,
 			);
 			name = data;

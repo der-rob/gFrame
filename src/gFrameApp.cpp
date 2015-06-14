@@ -113,6 +113,9 @@ void gFrameApp::update(){
     simple_flow.update();
     simple_flow_2.update();
     
+    simple_flow_2.color = ofColor::white;
+    simple_flow.color = localBrushColor;
+    
     // DMX UPDATE
     if (dmx_on)
         updateLEDpulsing();
@@ -424,30 +427,25 @@ void gFrameApp::updateStrokelistAndFlow(int _strokeID) {
     switch (the_group->getStyle()) {
         case STYLE_FINGER:
             simple_flow_2.inputUpdate(loc.x, loc.y, the_group->getGroupID()%12);
-            //flowField.inputUpdate(loc.x,loc.y);
             break;
         case STYLE_SCRIZZLE:
             stroke_list.add(newStrokePoint);
             simple_flow.inputUpdate(loc.x,loc.y,the_group->getGroupID()%12);
             simple_flow_2.inputUpdate(loc.x, loc.y, the_group->getGroupID()%12);
-            //flowField.inputUpdate(loc.x,loc.y);
             break;
         case STYLE_CALIGRAPHY:
             stroke_list.add(newStrokePoint);
             simple_flow.inputUpdate(loc.x,loc.y,the_group->getGroupID()%12);
             simple_flow_2.inputUpdate(loc.x, loc.y, the_group->getGroupID()%12);
-            //flowField.inputUpdate(loc.x,loc.y);
             break;
         case STYLE_WAVER:
             if (placeMode) {
                 stencilLoc = ofVec2f(loc.x*outputRect.width,loc.y*outputRect.height);
             }
             else
-            //    flowField.inputUpdate(loc.x,loc.y);
                 simple_flow.inputUpdate(loc.x, loc.y, the_group->getGroupID()%12);
             break;
     }
-//    simple_flow.inputUpdate(loc.x, loc.y, the_group->getGroupID()%12);
 }
 //--------------------------------------------------------------
 void gFrameApp::oscUpdate() {
@@ -673,11 +671,15 @@ void gFrameApp::flowGuiSetup() {
     flow_gui.setName("flow settings");
     flow_gui.setPosition(10, 10);
     flow_gui.add(simple_flow.fluid.parameters);
+    flow_gui.add(simple_flow.brightness);
+    flow_gui.add(simple_flow.alpha);
 
     flow_gui_2.setup();
     flow_gui_2.setName("flow 2 settings");
     flow_gui_2.setPosition(220, 10);
     flow_gui_2.add(simple_flow_2.fluid.parameters);
+    flow_gui_2.add(simple_flow_2.brightness);
+    flow_gui_2.add(simple_flow_2.alpha);
 }
 
 //--------------------------------------------------------------
@@ -718,7 +720,7 @@ void gFrameApp::onFlow2SettingsReload() {
 void gFrameApp::changeStencilText(string _newStencilText) {
     mStencilText = toUpperCase(_newStencilText);
     stencilFont.loadFont("AkzidenzGrotesk-Cond.otf", 150);
-    stencilFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 1);
+    stencilFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 4);
     stencilFBO.begin();
     ofClear(0);
     ofSetColor(255,0,0);
