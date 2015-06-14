@@ -1,0 +1,20 @@
+<style_settings>
+	<caligraphy_parameters>
+		<new_point_distance>5</new_point_distance>
+		<width_min>3</width_min>
+		<width_max>20</width_max>
+		<fadeout_time>60</fadeout_time>
+		<fade_duration>1</fade_duration>
+	</caligraphy_parameters>
+	<wild_parameters>
+		<new_point_distance>10</new_point_distance>
+		<amplitude>8</amplitude>
+		<wavelength>4</wavelength>
+		<fadeout_time>30</fadeout_time>
+		<fade_duration>5</fade_duration>
+		<nervousity>1</nervousity>
+		<main_line_thickness>3</main_line_thickness>
+		<by_line_thickness>1</by_line_thickness>
+	</wild_parameters>
+<style_settings/>
+</style_settings>
