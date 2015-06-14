@@ -1,5 +1,4 @@
 <general_settings>
-	<group>
 		<output_settings>
 			<DMX_on>0</DMX_on>
             <width>1024</width>
@@ -37,31 +36,4 @@
 			<LED_brightness>0.5</LED_brightness>
 			<LED_freqency>1</LED_freqency>
 		</dmx_settings>
-	</group>
-<general_settings/>
-<style_settings>
-		<group>
-			<profile_parameters>
-				<depth>10</depth>
-				<width>10</width>
-				<z-speed>1</z-speed>
-				<twist>5</twist>
-			</profile_parameters>
-			<wild_parameters>
-				<amplitude>5.52687</amplitude>
-				<wavelength>4</wavelength>
-				<fadeout_time>10</fadeout_time>
-				<fade_duration>5</fade_duration>
-				<nervousity>1</nervousity>
-				<main_line_thickness>1.80029</main_line_thickness>
-				<by_line_thickness>0.5</by_line_thickness>
-			</wild_parameters>
-			<caligraphy_parameters>
-				<width_min>1</width_min>
-				<width_max>20</width_max>
-				<fadeout_time>25.2749</fadeout_time>
-				<fade_duration>5</fade_duration>
-			</caligraphy_parameters>
-		</group>
-	</style_settings>
 </general_settings>

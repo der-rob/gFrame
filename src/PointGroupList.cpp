@@ -41,14 +41,13 @@ void PointGroupList::add(GPoint _point) {
                 else if (mGroupList[i].getPoints()->size() == 2)
                 {
                     mGroupList[i].setStyle(STYLE_SCRIZZLE);
-                    enablePlaceMode = true;
-                    //ofNotifyEvent(E_enablePlaceMode, enablePlaceMode, this); //this event will be cause by osc message later
                 }
                 else if (mGroupList[i].getPoints()->size() == 3)
                     mGroupList[i].setStyle(STYLE_CALIGRAPHY);
                 else if (mGroupList[i].getPoints()->size() == 5)
+                {
                     mGroupList[i].setStyle(STYLE_WAVER);
-                
+                }
                 found = true; //needs to be more specific later
                 mGroupList[i].calculateCenter();
             }
@@ -79,9 +78,10 @@ void PointGroupList::removePoint(GPoint _point) {
         if(mGroupList[i].getPointCount() <= 0)
         {
             //needed for stencil placement
-            if (mGroupList[i].getStyle() == STYLE_WAVER) {
+            if ((mGroupList[i].getStyle()) == STYLE_WAVER) {
                 enablePlaceMode = false;
-                ofNotifyEvent(E_enablePlaceMode, enablePlaceMode,this);
+                ofNotifyEvent(waverLeftEvent);
+                //ofNotifyEvent(E_enablePlaceMode, enablePlaceMode,this);
             }
             
             mGroupList.erase(mGroupList.begin() + i);

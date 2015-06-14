@@ -18,8 +18,9 @@
 #include "FlowField.h"
 #include "Network.h"
 #include "ofxGui.h"
-#include "ofxFlowTools.h"
 #include "PointGroupList.h"
+#include "SimpleFlowField.h"
+
 
 //#define USE_NETWORK
 
@@ -40,7 +41,6 @@ public:
     void mouseDragged(int x, int y, int button);
     void keyPressed(int key);
     void windowResized(int w, int h);
-    ofVec2f				lastMouse;
 
     
     // DMX
@@ -51,7 +51,6 @@ public:
 
     //OSC
     void oscUpdate();
-    void oscupdate_interface();
 
 private:
     
@@ -60,13 +59,6 @@ private:
     int current_style = STYLE_FINGER;
     ofParameter<ofColor> localBrushColor;
     ofParameter<int> newPointDistance;
-    
-    ProfileStyle profileStyle;
-    ofParameter<int> style_profile_depth = 10;
-    ofParameter<int> style_profile_width = 10;
-    ofParameter<int> style_profile_zspeed = 1;
-    ofParameter<int> style_profile_twist = 5;
-
     
     ScrizzleStyle scrizzleStyle;
     ofParameterGroup wild_parameters;
@@ -77,6 +69,7 @@ private:
     ofParameter<float> W_byLine_thicknes;
     ofParameter<float> W_fadeout_time;
     ofParameter<float> W_fadeduration;
+    ofParameter<int> W_new_point_distance;
     
     CaligraphyStyle caligraphyStyle;
     ofParameterGroup caligraphy_parameters;
@@ -84,9 +77,10 @@ private:
     ofParameter<int> C_width_max;
     ofParameter<float> C_fadeout_time;
     ofParameter<float> C_fadeduration;
+    ofParameter<int> C_new_point_distance;
     
-    FlowField flowField;
-    ofLight light;
+    //flow
+    SimpleFlowField simple_flow, simple_flow_2;
 
     //output
     bool draw_on_main_screen = true;
@@ -99,17 +93,10 @@ private:
     Orientation orientation = LANDSCAPE;
     
     ofxSyphonServer syphonMainOut;
-
-    ofImage mCanvas;
     
     //OSC
-    ofParameter<string> ipad_ip;
-    ofParameter<int> ipad_port;
     ofParameter<int> local_osc_port;
-    ofParameter<bool> use_ipad = true;
     ofxOscReceiver receiver;
-    ofxOscSender sender;
-    float last_ipad_update_time = 0;
     
     //DMX
     ofParameterGroup dmx_settings;
@@ -131,13 +118,13 @@ private:
     void tuioAdded(ofxTuioCursor & tuioCursor);
 	void tuioRemoved(ofxTuioCursor & tuioCursor);
 	void tuioUpdated(ofxTuioCursor & tuioCursor);
-//    void onTouchPoint(TouchPointEvent &event);
     
     //the point grouping stuff
     PointGroupList groupList;
     vector<GPoint> all_active_points;
     bool placeMode;
     void onPlaceEnabled(bool &_placeEnabled);
+    void onWaverLeft();
     void updateStrokelistAndFlow(int _strokeID);
     
     // NETWORK

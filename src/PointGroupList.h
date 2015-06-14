@@ -21,7 +21,10 @@ public:
     void removePoint(GPoint _point);
     bool isEmpty() {return (mGroupList.size() == 0);}
     vector<PointGroup> *getPointGroupList() {return &mGroupList;}
-    ofEvent < bool > E_enablePlaceMode;
+    
+    ofEvent<bool> E_enablePlaceMode;
+    ofEvent<void> waverLeftEvent;
+    
     bool enablePlaceMode;
     PointGroup *getGroup(int _strokeID);
 };

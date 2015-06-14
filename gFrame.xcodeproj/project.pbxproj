@@ -51,6 +51,7 @@
 		D4605491196DC7480040C381 /* ofxOscParameterSync.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4605480196DC7480040C381 /* ofxOscParameterSync.cpp */; };
 		D4605492196DC7480040C381 /* ofxOscReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4605482196DC7480040C381 /* ofxOscReceiver.cpp */; };
 		D4605493196DC7480040C381 /* ofxOscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4605484196DC7480040C381 /* ofxOscSender.cpp */; };
+		D470DD491B2D7DE80023B792 /* SimpleFlowField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D470DD471B2D7DE80023B792 /* SimpleFlowField.cpp */; };
 		D486254C1A001C770076E13F /* BaseStyle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D48625481A001C770076E13F /* BaseStyle.cpp */; };
 		D486254D1A001C770076E13F /* ScrizzleStyle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D486254A1A001C770076E13F /* ScrizzleStyle.cpp */; };
 		D486256D1A001C9A0076E13F /* license.md in Sources */ = {isa = PBXBuildFile; fileRef = D48625501A001C990076E13F /* license.md */; };
@@ -273,6 +274,8 @@
 		D46A05011A12764D00AE3BB3 /* settings.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = settings.xml; sourceTree = "<group>"; };
 		D46CE3311A1656A100A84CBB /* 2014111_gframe_osc.touchosc */ = {isa = PBXFileReference; lastKnownFileType = file; path = 2014111_gframe_osc.touchosc; sourceTree = "<group>"; };
 		D46CE3321A1656A100A84CBB /* 20141114_gframe_osc.touchosc */ = {isa = PBXFileReference; lastKnownFileType = file; path = 20141114_gframe_osc.touchosc; sourceTree = "<group>"; };
+		D470DD471B2D7DE80023B792 /* SimpleFlowField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimpleFlowField.cpp; sourceTree = "<group>"; };
+		D470DD481B2D7DE80023B792 /* SimpleFlowField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleFlowField.h; sourceTree = "<group>"; };
 		D47F10E71A124B7000F558E8 /* gFrameIcon.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = gFrameIcon.iconset; sourceTree = "<group>"; };
 		D48625481A001C770076E13F /* BaseStyle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseStyle.cpp; sourceTree = "<group>"; };
 		D48625491A001C770076E13F /* BaseStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseStyle.h; sourceTree = "<group>"; };
@@ -846,6 +849,47 @@
 			path = bin/data;
 			sourceTree = "<group>";
 		};
+		D470DD4A1B2D7DF40023B792 /* brushes */ = {
+			isa = PBXGroup;
+			children = (
+				D48625481A001C770076E13F /* BaseStyle.cpp */,
+				D48625491A001C770076E13F /* BaseStyle.h */,
+				D486254A1A001C770076E13F /* ScrizzleStyle.cpp */,
+				D486254B1A001C770076E13F /* ScrizzleStyle.h */,
+				6CEACF3919F957AD00EB7DE6 /* ProfileStyle.cpp */,
+				6CEACF3A19F957AD00EB7DE6 /* ProfileStyle.h */,
+				6CA424251A13BECD00A4F975 /* CaligraphyStyle.cpp */,
+				6CA424261A13BECD00A4F975 /* CaligraphyStyle.h */,
+			);
+			name = brushes;
+			sourceTree = "<group>";
+		};
+		D470DD4B1B2D7E040023B792 /* flow */ = {
+			isa = PBXGroup;
+			children = (
+				D4FE4CCB1B1611C200005A24 /* FlowField.cpp */,
+				D4FE4CCC1B1611C200005A24 /* FlowField.h */,
+				D470DD471B2D7DE80023B792 /* SimpleFlowField.cpp */,
+				D470DD481B2D7DE80023B792 /* SimpleFlowField.h */,
+			);
+			name = flow;
+			sourceTree = "<group>";
+		};
+		D470DD4C1B2D7E0A0023B792 /* drawing */ = {
+			isa = PBXGroup;
+			children = (
+				6CEACF3719F957AD00EB7DE6 /* GPoint.cpp */,
+				6CEACF3819F957AD00EB7DE6 /* GPoint.h */,
+				6CA504D919FA82590091B61A /* StrokeList.cpp */,
+				6CA504DA19FA82590091B61A /* StrokeList.h */,
+				D4F9362E1B286F7800AC24FA /* PointGroup.cpp */,
+				D4F9362F1B286F7800AC24FA /* PointGroup.h */,
+				D4F936301B286F7800AC24FA /* PointGroupList.cpp */,
+				D4F936311B286F7800AC24FA /* PointGroupList.h */,
+			);
+			name = drawing;
+			sourceTree = "<group>";
+		};
 		D486254E1A001C990076E13F /* ofxMSACore */ = {
 			isa = PBXGroup;
 			children = (
@@ -1033,29 +1077,14 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				D4F9362E1B286F7800AC24FA /* PointGroup.cpp */,
-				D4F9362F1B286F7800AC24FA /* PointGroup.h */,
-				D4F936301B286F7800AC24FA /* PointGroupList.cpp */,
-				D4F936311B286F7800AC24FA /* PointGroupList.h */,
-				6CA424251A13BECD00A4F975 /* CaligraphyStyle.cpp */,
-				6CA424261A13BECD00A4F975 /* CaligraphyStyle.h */,
+				D470DD4C1B2D7E0A0023B792 /* drawing */,
+				D470DD4B1B2D7E040023B792 /* flow */,
+				D470DD4A1B2D7DF40023B792 /* brushes */,
 				6C51F02D1A093CE500066662 /* Network.cpp */,
 				6C51F02E1A093CE500066662 /* Network.h */,
-				D48625481A001C770076E13F /* BaseStyle.cpp */,
-				D48625491A001C770076E13F /* BaseStyle.h */,
-				D486254A1A001C770076E13F /* ScrizzleStyle.cpp */,
-				D486254B1A001C770076E13F /* ScrizzleStyle.h */,
-				6CEACF3719F957AD00EB7DE6 /* GPoint.cpp */,
-				6CEACF3819F957AD00EB7DE6 /* GPoint.h */,
-				6CA504D919FA82590091B61A /* StrokeList.cpp */,
-				6CA504DA19FA82590091B61A /* StrokeList.h */,
-				6CEACF3919F957AD00EB7DE6 /* ProfileStyle.cpp */,
-				6CEACF3A19F957AD00EB7DE6 /* ProfileStyle.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* gFrameApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* gFrameApp.h */,
-				D4FE4CCB1B1611C200005A24 /* FlowField.cpp */,
-				D4FE4CCC1B1611C200005A24 /* FlowField.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -1218,6 +1247,7 @@
 				D4F936331B286F7800AC24FA /* PointGroupList.cpp in Sources */,
 				D4605491196DC7480040C381 /* ofxOscParameterSync.cpp in Sources */,
 				D4605489196DC7480040C381 /* NetworkingUtilsWin.cpp in Sources */,
+				D470DD491B2D7DE80023B792 /* SimpleFlowField.cpp in Sources */,
 				D4A778C61976A26E005E4026 /* ofxEasingSine.cpp in Sources */,
 				D40A14141A112C5D0067C957 /* ofxLabel.cpp in Sources */,
 				D4091B08196AB67B00F109F1 /* ofxSyphonServerDirectory.mm in Sources */,
