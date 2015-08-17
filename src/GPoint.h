@@ -13,7 +13,6 @@
 #include "ofMain.h"
 #include "Poco/RegularExpression.h"
 
-
 #define STYLE_FINGER 0
 #define STYLE_SCRIZZLE 1
 #define STYLE_CALIGRAPHY 2

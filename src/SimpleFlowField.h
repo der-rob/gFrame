@@ -1,11 +1,3 @@
-//
-//  SimpleFlowField.h
-//  flowtest
-//
-//  Created by Robert Albert on 13.06.15.
-//
-//
-
 #ifndef __flowtest__SimpleFlowField__
 #define __flowtest__SimpleFlowField__
 
@@ -26,8 +18,6 @@ public:
     // Time
     float				lastTime;
     float               deltaTime;
-    
-    
     
     //input
     ofVec2f				lastMouse;

@@ -51,7 +51,6 @@
 		D4605491196DC7480040C381 /* ofxOscParameterSync.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4605480196DC7480040C381 /* ofxOscParameterSync.cpp */; };
 		D4605492196DC7480040C381 /* ofxOscReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4605482196DC7480040C381 /* ofxOscReceiver.cpp */; };
 		D4605493196DC7480040C381 /* ofxOscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4605484196DC7480040C381 /* ofxOscSender.cpp */; };
-		D470DD491B2D7DE80023B792 /* SimpleFlowField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D470DD471B2D7DE80023B792 /* SimpleFlowField.cpp */; };
 		D486254C1A001C770076E13F /* BaseStyle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D48625481A001C770076E13F /* BaseStyle.cpp */; };
 		D486254D1A001C770076E13F /* ScrizzleStyle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D486254A1A001C770076E13F /* ScrizzleStyle.cpp */; };
 		D486256D1A001C9A0076E13F /* license.md in Sources */ = {isa = PBXBuildFile; fileRef = D48625501A001C990076E13F /* license.md */; };
@@ -73,6 +72,7 @@
 		D4A778C51976A26E005E4026 /* ofxEasingQuint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4A778AF1976A26E005E4026 /* ofxEasingQuint.cpp */; };
 		D4A778C61976A26E005E4026 /* ofxEasingSine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4A778B11976A26E005E4026 /* ofxEasingSine.cpp */; };
 		D4A778C71976A26E005E4026 /* ofxTween.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4A778B31976A26E005E4026 /* ofxTween.cpp */; };
+		D4B4A4AD1B2C7D940057EA0E /* SimpleFlowField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4B4A4AB1B2C7D940057EA0E /* SimpleFlowField.cpp */; };
 		D4F936321B286F7800AC24FA /* PointGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4F9362E1B286F7800AC24FA /* PointGroup.cpp */; };
 		D4F936331B286F7800AC24FA /* PointGroupList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4F936301B286F7800AC24FA /* PointGroupList.cpp */; };
 		D4FE4CCD1B1611C200005A24 /* FlowField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4FE4CCB1B1611C200005A24 /* FlowField.cpp */; };
@@ -232,6 +232,8 @@
 		D44504F11AF00B0100D041D6 /* ftTemperatureFieldShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftTemperatureFieldShader.h; sourceTree = "<group>"; };
 		D44504F21AF00B0100D041D6 /* ftVelocityField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftVelocityField.h; sourceTree = "<group>"; };
 		D44504F31AF00B0100D041D6 /* ftVelocityFieldShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ftVelocityFieldShader.h; sourceTree = "<group>"; };
+		D458D5391B2959E5003B3B45 /* flow_settings.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = flow_settings.xml; sourceTree = "<group>"; };
+		D458D53A1B2959E5003B3B45 /* stylesettings.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = stylesettings.xml; sourceTree = "<group>"; };
 		D46053EB196C52640040C381 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		D4605408196C52650040C381 /* license.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.md; sourceTree = "<group>"; };
 		D4605409196C52650040C381 /* readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.md; sourceTree = "<group>"; };
@@ -274,15 +276,9 @@
 		D46A05011A12764D00AE3BB3 /* settings.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = settings.xml; sourceTree = "<group>"; };
 		D46CE3311A1656A100A84CBB /* 2014111_gframe_osc.touchosc */ = {isa = PBXFileReference; lastKnownFileType = file; path = 2014111_gframe_osc.touchosc; sourceTree = "<group>"; };
 		D46CE3321A1656A100A84CBB /* 20141114_gframe_osc.touchosc */ = {isa = PBXFileReference; lastKnownFileType = file; path = 20141114_gframe_osc.touchosc; sourceTree = "<group>"; };
-		D470DD471B2D7DE80023B792 /* SimpleFlowField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimpleFlowField.cpp; sourceTree = "<group>"; };
-		D470DD481B2D7DE80023B792 /* SimpleFlowField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleFlowField.h; sourceTree = "<group>"; };
-		D470DD4D1B2DA4660023B792 /* flow_settings.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = flow_settings.xml; sourceTree = "<group>"; };
-		D470DD4E1B2DA4660023B792 /* NewFlowSettings.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = NewFlowSettings.xml; sourceTree = "<group>"; };
-		D470DD4F1B2DA4660023B792 /* settings_.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = settings_.xml; sourceTree = "<group>"; };
-		D470DD501B2DA4660023B792 /* stroke_2.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = stroke_2.xml; sourceTree = "<group>"; };
-		D470DD511B2DA4660023B792 /* stroke.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = stroke.xml; sourceTree = "<group>"; };
-		D470DD521B2DA4660023B792 /* stylesettings.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = stylesettings.xml; sourceTree = "<group>"; };
-		D470DD531B2DA4660023B792 /* textwaiver.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = textwaiver.xml; sourceTree = "<group>"; };
+		D470DD551B2DB4460023B792 /* stroke_2.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = stroke_2.xml; sourceTree = "<group>"; };
+		D470DD561B2DB4460023B792 /* stroke.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = stroke.xml; sourceTree = "<group>"; };
+		D470DD571B2DB4460023B792 /* textwaiver.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = textwaiver.xml; sourceTree = "<group>"; };
 		D47F10E71A124B7000F558E8 /* gFrameIcon.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = gFrameIcon.iconset; sourceTree = "<group>"; };
 		D48625481A001C770076E13F /* BaseStyle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseStyle.cpp; sourceTree = "<group>"; };
 		D48625491A001C770076E13F /* BaseStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseStyle.h; sourceTree = "<group>"; };
@@ -340,6 +336,8 @@
 		D4A778B21976A26E005E4026 /* ofxEasingSine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxEasingSine.h; sourceTree = "<group>"; };
 		D4A778B31976A26E005E4026 /* ofxTween.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTween.cpp; sourceTree = "<group>"; };
 		D4A778B41976A26E005E4026 /* ofxTween.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTween.h; sourceTree = "<group>"; };
+		D4B4A4AB1B2C7D940057EA0E /* SimpleFlowField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimpleFlowField.cpp; sourceTree = "<group>"; };
+		D4B4A4AC1B2C7D940057EA0E /* SimpleFlowField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleFlowField.h; sourceTree = "<group>"; };
 		D4E4AD2D196F3D5300ECA630 /* gFrame_layout_2.touchosc */ = {isa = PBXFileReference; lastKnownFileType = file; path = gFrame_layout_2.touchosc; sourceTree = "<group>"; };
 		D4F9362C1B28556700AC24FA /* gFrameDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gFrameDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4F9362E1B286F7800AC24FA /* PointGroup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PointGroup.cpp; sourceTree = "<group>"; };
@@ -850,58 +848,15 @@
 		D46A05001A12764D00AE3BB3 /* data */ = {
 			isa = PBXGroup;
 			children = (
-				D470DD4D1B2DA4660023B792 /* flow_settings.xml */,
-				D470DD4E1B2DA4660023B792 /* NewFlowSettings.xml */,
-				D470DD4F1B2DA4660023B792 /* settings_.xml */,
-				D470DD501B2DA4660023B792 /* stroke_2.xml */,
-				D470DD511B2DA4660023B792 /* stroke.xml */,
-				D470DD521B2DA4660023B792 /* stylesettings.xml */,
-				D470DD531B2DA4660023B792 /* textwaiver.xml */,
+				D470DD551B2DB4460023B792 /* stroke_2.xml */,
+				D470DD561B2DB4460023B792 /* stroke.xml */,
+				D470DD571B2DB4460023B792 /* textwaiver.xml */,
+				D458D5391B2959E5003B3B45 /* flow_settings.xml */,
+				D458D53A1B2959E5003B3B45 /* stylesettings.xml */,
 				D46A05011A12764D00AE3BB3 /* settings.xml */,
 			);
 			name = data;
 			path = bin/data;
-			sourceTree = "<group>";
-		};
-		D470DD4A1B2D7DF40023B792 /* brushes */ = {
-			isa = PBXGroup;
-			children = (
-				D48625481A001C770076E13F /* BaseStyle.cpp */,
-				D48625491A001C770076E13F /* BaseStyle.h */,
-				D486254A1A001C770076E13F /* ScrizzleStyle.cpp */,
-				D486254B1A001C770076E13F /* ScrizzleStyle.h */,
-				6CEACF3919F957AD00EB7DE6 /* ProfileStyle.cpp */,
-				6CEACF3A19F957AD00EB7DE6 /* ProfileStyle.h */,
-				6CA424251A13BECD00A4F975 /* CaligraphyStyle.cpp */,
-				6CA424261A13BECD00A4F975 /* CaligraphyStyle.h */,
-			);
-			name = brushes;
-			sourceTree = "<group>";
-		};
-		D470DD4B1B2D7E040023B792 /* flow */ = {
-			isa = PBXGroup;
-			children = (
-				D4FE4CCB1B1611C200005A24 /* FlowField.cpp */,
-				D4FE4CCC1B1611C200005A24 /* FlowField.h */,
-				D470DD471B2D7DE80023B792 /* SimpleFlowField.cpp */,
-				D470DD481B2D7DE80023B792 /* SimpleFlowField.h */,
-			);
-			name = flow;
-			sourceTree = "<group>";
-		};
-		D470DD4C1B2D7E0A0023B792 /* drawing */ = {
-			isa = PBXGroup;
-			children = (
-				6CEACF3719F957AD00EB7DE6 /* GPoint.cpp */,
-				6CEACF3819F957AD00EB7DE6 /* GPoint.h */,
-				6CA504D919FA82590091B61A /* StrokeList.cpp */,
-				6CA504DA19FA82590091B61A /* StrokeList.h */,
-				D4F9362E1B286F7800AC24FA /* PointGroup.cpp */,
-				D4F9362F1B286F7800AC24FA /* PointGroup.h */,
-				D4F936301B286F7800AC24FA /* PointGroupList.cpp */,
-				D4F936311B286F7800AC24FA /* PointGroupList.h */,
-			);
-			name = drawing;
 			sourceTree = "<group>";
 		};
 		D486254E1A001C990076E13F /* ofxMSACore */ = {
@@ -1044,6 +999,47 @@
 			path = Easings;
 			sourceTree = "<group>";
 		};
+		D4B4A4AE1B2C7DDB0057EA0E /* brushes */ = {
+			isa = PBXGroup;
+			children = (
+				6CA424251A13BECD00A4F975 /* CaligraphyStyle.cpp */,
+				6CA424261A13BECD00A4F975 /* CaligraphyStyle.h */,
+				D48625481A001C770076E13F /* BaseStyle.cpp */,
+				D48625491A001C770076E13F /* BaseStyle.h */,
+				D486254A1A001C770076E13F /* ScrizzleStyle.cpp */,
+				D486254B1A001C770076E13F /* ScrizzleStyle.h */,
+				6CEACF3919F957AD00EB7DE6 /* ProfileStyle.cpp */,
+				6CEACF3A19F957AD00EB7DE6 /* ProfileStyle.h */,
+			);
+			name = brushes;
+			sourceTree = "<group>";
+		};
+		D4B4A4AF1B2C7DFC0057EA0E /* flow */ = {
+			isa = PBXGroup;
+			children = (
+				D4B4A4AB1B2C7D940057EA0E /* SimpleFlowField.cpp */,
+				D4B4A4AC1B2C7D940057EA0E /* SimpleFlowField.h */,
+				D4FE4CCB1B1611C200005A24 /* FlowField.cpp */,
+				D4FE4CCC1B1611C200005A24 /* FlowField.h */,
+			);
+			name = flow;
+			sourceTree = "<group>";
+		};
+		D4B4A4B01B2C7E170057EA0E /* drawing */ = {
+			isa = PBXGroup;
+			children = (
+				D4F9362E1B286F7800AC24FA /* PointGroup.cpp */,
+				D4F9362F1B286F7800AC24FA /* PointGroup.h */,
+				D4F936301B286F7800AC24FA /* PointGroupList.cpp */,
+				D4F936311B286F7800AC24FA /* PointGroupList.h */,
+				6CEACF3719F957AD00EB7DE6 /* GPoint.cpp */,
+				6CEACF3819F957AD00EB7DE6 /* GPoint.h */,
+				6CA504D919FA82590091B61A /* StrokeList.cpp */,
+				6CA504DA19FA82590091B61A /* StrokeList.h */,
+			);
+			name = drawing;
+			sourceTree = "<group>";
+		};
 		D4E4AD2C196F3D5300ECA630 /* touchosc */ = {
 			isa = PBXGroup;
 			children = (
@@ -1091,9 +1087,9 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				D470DD4C1B2D7E0A0023B792 /* drawing */,
-				D470DD4B1B2D7E040023B792 /* flow */,
-				D470DD4A1B2D7DF40023B792 /* brushes */,
+				D4B4A4B01B2C7E170057EA0E /* drawing */,
+				D4B4A4AF1B2C7DFC0057EA0E /* flow */,
+				D4B4A4AE1B2C7DDB0057EA0E /* brushes */,
 				6C51F02D1A093CE500066662 /* Network.cpp */,
 				6C51F02E1A093CE500066662 /* Network.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
@@ -1261,7 +1257,7 @@
 				D4F936331B286F7800AC24FA /* PointGroupList.cpp in Sources */,
 				D4605491196DC7480040C381 /* ofxOscParameterSync.cpp in Sources */,
 				D4605489196DC7480040C381 /* NetworkingUtilsWin.cpp in Sources */,
-				D470DD491B2D7DE80023B792 /* SimpleFlowField.cpp in Sources */,
+				D4B4A4AD1B2C7D940057EA0E /* SimpleFlowField.cpp in Sources */,
 				D4A778C61976A26E005E4026 /* ofxEasingSine.cpp in Sources */,
 				D40A14141A112C5D0067C957 /* ofxLabel.cpp in Sources */,
 				D4091B08196AB67B00F109F1 /* ofxSyphonServerDirectory.mm in Sources */,
@@ -1366,6 +1362,18 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_MODEL_TUNING = NONE;
 				HEADER_SEARCH_PATHS = (
+					"$(OF_CORE_HEADERS)",
+					src,
+					../../../addons/ofxOsc/libs,
+					../../../addons/ofxOsc/libs/oscpack,
+					../../../addons/ofxOsc/libs/oscpack/src,
+					../../../addons/ofxOsc/libs/oscpack/src/ip,
+					../../../addons/ofxOsc/libs/oscpack/src/ip/posix,
+					../../../addons/ofxOsc/libs/oscpack/src/ip/win32,
+					../../../addons/ofxOsc/libs/oscpack/src/osc,
+					../../../addons/ofxOsc/src,
+				);
+				"HEADER_SEARCH_PATHS[arch=*]" = (
 					"$(OF_CORE_HEADERS)",
 					src,
 					../../../addons/ofxOsc/libs,
