@@ -94,3 +94,20 @@ Anschlussbelegung am LED Treiber:
 	CH1 weiß
 	CH2 rot
 	CH3 braun
+
+Speakon Stecker
+
+	2+ -> +
+	1+ -> R
+	1- -> G
+	2- -> B
+
+Anschlußbelegung am Rahmen
+
+	KABEL	 LED
+	------------
+	blau	 +
+	rot		 grün
+	grün     rot
+	schwarz	 blau
+	
