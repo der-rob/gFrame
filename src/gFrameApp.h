@@ -15,17 +15,13 @@
 #include "StrokeList.h"
 #include "ScrizzleStyle.h"
 #include "CaligraphyStyle.h"
-#include "FlowField.h"
 #include "Network.h"
 #include "ofxGui.h"
-#include "ofxFlowTools.h"
-#include "SimpleFlowField.h"
+
 
 //#include "PointGroupList.h"
 
 //#define USE_NETWORK
-
-using namespace flowTools;
 
 enum OutputMode {SESI, LED1, LED2, PROJECTOR, PROJECTOR_PORTRAIT};
 
@@ -56,10 +52,6 @@ private:
     ScrizzleStyle scrizzleStyle;  
     CaligraphyStyle caligraphyStyle;
     
-    //flow
-    SimpleFlowField simple_flow;
-    SimpleFlowField simple_flow_2;
-
     //output
     bool draw_on_main_screen = true;
     bool fullscreen;
@@ -102,12 +94,8 @@ private:
     // GUI
     void guiSetup();
     void styleGuiSetup();
-    void flowGuiSetup();
-    void flow2GuiSetup();
     ofxPanel gui;
     ofxPanel style_gui;
-    ofxPanel flow_gui;
-    ofxPanel flow2_gui;
     bool draw_gui = true;
     
     ofParameterGroup parameters_osc;
@@ -126,10 +114,6 @@ private:
     void onSettingsReload();
     void onStyleSettingsSave();
     void onStyleSettingsreload();
-    void onFlowSettingsSave();
-    void onFlowSettingsReload();
-    void onFlow2SettingsSave();
-    void onFlow2SettingsReload();
     
     // current finger positions
     ofVec2f finger_positions[20];
