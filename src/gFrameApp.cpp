@@ -11,7 +11,10 @@ void gFrameApp::setup()
     ofSetFrameRate(30);
     ofSetVerticalSync(true);
     ofBackground(ofColor::black);
-
+    
+    //LEDFrame setup
+    ledFrame.setup();
+    
     //GUI setup
     guiSetup();
     styleGuiSetup();
@@ -36,7 +39,6 @@ void gFrameApp::setup()
     ofAddListener(flow_gui.loadPressedE, this, &gFrameApp::onFlowSettingsReload);
     ofAddListener(flow_gui.savePressedE, this, &gFrameApp::onFlowSettingsSave);
     
-    
     simple_flow_2.setup(outputRect.width/2, outputRect.height/2);
     flow2GuiSetup();
     flow2_gui.loadFromFile("textwaiver.xml");
@@ -56,18 +58,8 @@ void gFrameApp::setup()
 	ofAddListener(tuioClient.cursorUpdated,this,&gFrameApp::tuioUpdated);
     ofAddListener(tuioClient.cursorRemoved,this,&gFrameApp::tuioRemoved);
     
-    //DMX for controlling RGB LED Strips
-    dmx.connect(0);
-    setLEDColor(ofColor::fromHsb(0,255,10));
-    LED_pulsing = true;
-    LED_pulsing_time = 2000; //in milliseconds
-    LED_level = 0.0;
-    upper_pulsing_limit = 0.6;
-    lower_pulsing_limit = 0.05;
-    
     //OSC
     receiver.setup(local_osc_port);
-    
 
 #ifdef USE_NETWORK
     // NETWORK
@@ -88,8 +80,7 @@ void gFrameApp::setup()
 
 //--------------------------------------------------------------
 void gFrameApp::exit(){
-    setLEDColor(ofColor::black);
-    dmx.disconnect();
+    ledFrame.disconnect();
     network.disconnect();
 }
 
@@ -107,8 +98,11 @@ void gFrameApp::update()
     simple_flow.color = localBrushColor;
     
     // DMX UPDATE
-    if (dmx_on)
-        updateLEDpulsing();
+    if (ledFrame.getEnabled()) {
+        ledFrame.updateLevel();
+        ledFrame.setColor(localBrushColor);
+        ledFrame.update();
+    }
     
     canvasFBO.begin();
     ofBackground(0);
@@ -251,7 +245,7 @@ void gFrameApp::keyPressed(int key)
     else if(key == 'h')
         draw_gui = !draw_gui;
     else if (key == 'd')
-        dmx_on = !dmx_on;
+        ledFrame.toggleEnabled();
     else if(key == 'y')
         draw_on_main_screen = !draw_on_main_screen;
     else if (key == 'x') {
@@ -293,8 +287,8 @@ void gFrameApp::mouseMoved(int x, int y){
         the_point.setStyle(current_style);
         stroke_list.add(the_point);
         
-        stop_pulsing();
-        last_points_time = ofGetElapsedTimeMillis();
+        ledFrame.stopPulsing();
+        ledFrame.updateLastPointsTime();
         
         //flowfield
         simple_flow.inputUpdate(x, y);
@@ -335,8 +329,8 @@ void gFrameApp::tuioAdded(ofxTuioCursor &cursor)
         simple_flow.inputUpdate(x, y, cursor.getFingerId());
         simple_flow_2.inputUpdate(x, y, cursor.getFingerId());
         
-        stop_pulsing();
-        last_points_time = ofGetElapsedTimeMillis();
+        ledFrame.stopPulsing();
+        ledFrame.updateLastPointsTime();
     }
 }
 
@@ -363,8 +357,8 @@ void gFrameApp::tuioUpdated(ofxTuioCursor &cursor)
         simple_flow.inputUpdate(x, y, cursor.getFingerId());
         simple_flow_2.inputUpdate(x, y, cursor.getFingerId());
         
-        stop_pulsing();
-        last_points_time = ofGetElapsedTimeMillis();
+        ledFrame.stopPulsing();
+        ledFrame.updateLastPointsTime();
     }
 }
 
@@ -401,55 +395,6 @@ void gFrameApp::oscUpdate()
 }
 
 //--------------------------------------------------------------
-void gFrameApp::updateLEDpulsing(){
-    //create triangle wave for pulsing led lights
-    int time = abs(((int)ofGetElapsedTimeMillis() % (LED_pulsing_time*2)) - LED_pulsing_time);
-    
-    //check how long no point has been added
-    if (ofGetElapsedTimeMillis() - last_points_time > 500 && !LED_pulsing)
-    {
-        LED_level -= 0.01;
-        float new_level = ofMap(time, 0, LED_pulsing_time, lower_pulsing_limit, upper_pulsing_limit);
-        if (LED_level - new_level < 0)
-            start_pulsing();
-    }
-    float ledlevel2;
-    if (LED_pulsing) {
-        //int time = abs(((int)ofGetElapsedTimeMillis() % (LED_pulsing_time*2)) - LED_pulsing_time);
-        LED_level = ofMap(time, 0, LED_pulsing_time, lower_pulsing_limit, upper_pulsing_limit);
-    }
-    
-    setLEDColor(localBrushColor);
-}
-
-//--------------------------------------------------------------
-void gFrameApp::start_pulsing() {
-    //LED_level = 0.0;
-    LED_pulsing =true;
-}
-
-//--------------------------------------------------------------
-void gFrameApp::stop_pulsing() {
-    LED_pulsing = false;
-    LED_level = 1.0;
-}
-
-//--------------------------------------------------------------
-void gFrameApp::setLEDColor(ofColor color){
-    //send to color to the dmx device
-    int r,g,b;
-    float fr = 0,fg = 0,fb = 0;
-    r = (int)color.r; fr = (float)r * LED_level*LED_brightness;
-    g = (int)color.g; fg = (float)g * LED_level*LED_brightness;
-    b = (int)color.b; fb = (float)b * LED_level*LED_brightness;
-    //dmx channels are 2, 3 & 4
-    dmx.setLevel(2, (int)fr);     //red
-    dmx.setLevel(3, (int)fg);     //green
-    dmx.setLevel(4, (int)fb);     //blue
-    dmx.update();
-}
-
-//--------------------------------------------------------------
 void gFrameApp::guiSetup() {
     //GUI Setup
     gui.setup();
@@ -462,14 +407,6 @@ void gFrameApp::guiSetup() {
     parameters_output.add(outputwidth);
     outputheight.setName("height");
     parameters_output.add(outputheight);
-    
-    //DMX & LEDs
-    dmx_settings.setName("dmx settings");
-    dmx_settings.add(dmx_on.set("DMX on", false));
-    dmx_settings.add(upper_pulsing_limit.set("upper PL",0,0,1));
-    dmx_settings.add(lower_pulsing_limit.set("lower PL", 0,0,1));
-    dmx_settings.add(LED_brightness.set("LED brightness",1.0,0.0,1));
-    dmx_settings.add(LED_frequency.set("LED freqency",2000,500,5000));
     
     ///OSC
     parameters_osc.setName("osc");
@@ -507,7 +444,7 @@ void gFrameApp::guiSetup() {
     gui.add(parameters_finger);
     gui.add(parameters_brush);
     gui.add(parameters_output);
-    gui.add(dmx_settings);
+    gui.add(ledFrame.parameters);
     gui.add(parameters_network);
     gui.add(parameters_osc);
     gui.add(parameters_input);

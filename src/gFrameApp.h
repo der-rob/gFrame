@@ -7,7 +7,7 @@
 
 #include "ofMain.h"
 #include "ofxSyphon.h"
-#include "ofxDmx.h"
+#include "LEDFrame.h"
 #include "ofxOsc.h"
 #include "ofxTuio.h"
 #include "GPoint.h"
@@ -41,12 +41,6 @@ public:
     void mouseDragged(int x, int y, int button);
     void keyPressed(int key);
     void windowResized(int w, int h);
-
-    // DMX
-    void updateLEDpulsing();
-    void setLEDColor(ofColor ledColor);
-    void start_pulsing();
-    void stop_pulsing();
 
     //OSC
     void oscUpdate();
@@ -102,21 +96,11 @@ private:
     //ofParameter<bool> use_ipad = true;
     //ofxOscSender sender;
     //float last_ipad_update_time = 0;
+
+    //LEDFrame and lighting
+    LEDFrame ledFrame;
+
     
-    //DMX
-    ofParameterGroup dmx_settings;
-    ofParameter<bool> dmx_on = true;
-    ofxDmx dmx;
-    ofColor LEDstripColor;
-    ofParameter<float> upper_pulsing_limit, lower_pulsing_limit;
-    ofParameter<int> LED_pulsing_time;
-    ofParameter<float> LED_level;
-    ofParameter<float> LED_brightness;
-    ofParameter<float> LED_frequency;
-    
-    bool LED_pulsing;
-    float last_points_time;
-        
     //TUIO support
     ofxTuioClient   tuioClient;
     ofParameter<int> tuioPort = 3334;
