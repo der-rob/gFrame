@@ -50,27 +50,11 @@ private:
     
     // DRAWING
     StrokeList stroke_list;
-    int current_style = STYLE_FINGER;
+    int current_style = STYLE_SCRIZZLE;
     ofParameter<ofColor> localBrushColor;
     
-    ScrizzleStyle scrizzleStyle;
-    ofParameterGroup wild_parameters;
-    ofParameter<float> W_amplitude;
-    ofParameter<float> W_wavelength;
-    ofParameter<float> W_nervosity;
-    ofParameter<float> W_mainLine_thickness;
-    ofParameter<float> W_byLine_thicknes;
-    ofParameter<float> W_fadeout_time;
-    ofParameter<float> W_fadeduration;
-    ofParameter<int> W_new_pointdistance;
-    
+    ScrizzleStyle scrizzleStyle;  
     CaligraphyStyle caligraphyStyle;
-    ofParameterGroup caligraphy_parameters;
-    ofParameter<int> C_width_min;
-    ofParameter<int> C_width_max;
-    ofParameter<float> C_fadeout_time;
-    ofParameter<float> C_fadeduration;
-    ofParameter<int> C_new_pointdistance;
     
     //flow
     SimpleFlowField simple_flow;

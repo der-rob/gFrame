@@ -11,10 +11,19 @@
 
 CaligraphyStyle::CaligraphyStyle(){
     fill = true;
+    parameters.setName("caligraphy parameters");
+    parameters.add(new_point_distance.set("new point distance",60,10,100));
+    parameters.add(width_min.set("width min", 1, 0, 20));
+    parameters.add(width_max.set("width max", 20, 1, 60));
+    parameters.add(fadeouttime.set("fadeout time",10.0,2.0,60.0));
+    parameters.add(fadeduration.set("fade duration", 5.0, 0.0, 60));
 }
 
 void CaligraphyStyle::render(vector<GPoint> &points, int width, int height){
     if(points.size() > 1){
+        
+        endFadeAge = fadeouttime*1000;
+        startFadeAge = fadeouttime*1000 - fadeduration*1000;
         
         interpolator1.clear(); interpolator2.clear();
         
@@ -45,11 +54,11 @@ void CaligraphyStyle::render(vector<GPoint> &points, int width, int height){
             ofPoint v1, v2;
             
             v1 = ofPoint(-dy, dx);
-            v1.scale(ofMap(v1.length(), 0, 100, max_width, min_width, true));
+            v1.scale(ofMap(v1.length(), 0, 100, width_max, width_min, true));
             v1 += currentPoint;
             
             v2 = ofPoint(dy, -dx);
-            v2.scale(ofMap(v2.length(), 0, 100, max_width, min_width, true));
+            v2.scale(ofMap(v2.length(), 0, 100, width_max, width_min, true));
             v2+= currentPoint;
             
             interpolator1.push_back(v1);

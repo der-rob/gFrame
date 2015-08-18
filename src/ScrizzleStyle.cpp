@@ -8,7 +8,41 @@
 
 #include "ScrizzleStyle.h"
 
+ScrizzleStyle::ScrizzleStyle() {
+    parameters.setName("wild parameters");
+    
+    parameters.add(new_point_distance.set("new point distance",20,10,100));
+    parameters.add(amplitude.set("amplitude",8.0,0.0,20));
+    parameters.add(wavelength.set("wavelength", 4.0, 1.0, 10.0));
+    parameters.add(fadeouttime.set("fadeout time",10.0,2.0,60.0));
+    parameters.add(fadeduration.set("fade duration", 5.0, 0.0, 60));
+    parameters.add(nervosity.set("nervousity",1.0,0.5,20.0));
+    parameters.add(mainLineThickness.set("main line thickness", 4.0, 1.0, 10.0));
+    parameters.add(byLineThicknes.set("by line thickness", 0.5, 0.1, 5.0));
+}
+
 void ScrizzleStyle::render(vector<GPoint> &points) {
+    //amplitude
+    amplitude1 = 0.5 * amplitude;
+    amplitude2 = amplitude;
+    amplitude3 = 1.5 * amplitude;
+    
+    //line thickness
+    linewidth1 = mainLineThickness;
+    linewidth2 = byLineThicknes * mainLineThickness;
+    linewidth3 = byLineThicknes * mainLineThickness;
+    
+    //length
+    length1 = 0.8 * wavelength;
+    length2 = wavelength;
+    length3 = 1.2 * wavelength;
+    
+    //speed
+    speed1 = nervosity; speed2 = 0.6 * nervosity; speed3 = 0.4 * nervosity;
+    
+    //fadeouttime
+    endFadeAge = fadeouttime*1000;
+    startFadeAge = (fadeouttime - fadeduration)*1000;
     
     glDisable(GL_DEPTH_TEST);
     GPoint *last_used_point;
@@ -171,6 +205,29 @@ void ScrizzleStyle::render(vector<GPoint> &points) {
 
 void ScrizzleStyle::render(vector<GPoint> &points, int _width, int _height) {
     //point location is normalizid from 0 to 1
+    
+    //amplitude
+    amplitude1 = 0.5 * amplitude;
+    amplitude2 = amplitude;
+    amplitude3 = 1.5 * amplitude;
+    
+    //line thickness
+    linewidth1 = mainLineThickness;
+    linewidth2 = byLineThicknes * mainLineThickness;
+    linewidth3 = byLineThicknes * mainLineThickness;
+    
+    //length
+    length1 = 0.8 * wavelength;
+    length2 = wavelength;
+    length3 = 1.2 * wavelength;
+    
+    //speed
+    speed1 = nervosity; speed2 = 0.6 * nervosity; speed3 = 0.4 * nervosity;
+    
+    //fadeouttime
+    endFadeAge = fadeouttime*1000;
+    startFadeAge = (fadeouttime - fadeduration)*1000;
+    
     
     glDisable(GL_DEPTH_TEST);
     GPoint *last_used_point;

@@ -134,20 +134,6 @@ void gFrameApp::update()
     
     canvasFBO.end();
     
-    //update the brush settings
-    //scrizzle style
-    scrizzleStyle.setMainLineThickness(W_mainLine_thickness, W_byLine_thicknes);
-    scrizzleStyle.setAmplitude(W_amplitude);
-    scrizzleStyle.setLength(W_wavelength);
-    scrizzleStyle.setNervousity(W_nervosity);
-    scrizzleStyle.setFadeOutTime(W_fadeout_time*1000.0, W_fadeduration*1000.0);
-    scrizzleStyle.setNewPointDistance(W_new_pointdistance);
-    
-    //caligraphy style
-    caligraphyStyle.setWidth(C_width_min, C_width_max);
-    caligraphyStyle.setFadeOutTime(C_fadeout_time*1000.0, C_fadeduration*1000.0);
-    caligraphyStyle.setNewPointDistance(C_new_pointdistance);
-
     // lifetime
     stroke_list.setLifetime(point_lifetime * 1000);
 }
@@ -472,25 +458,8 @@ void gFrameApp::styleGuiSetup() {
     style_gui.setName("style settings");
     style_gui.setPosition(ofGetWidth() - 2*style_gui.getWidth() - 20, 10);
     
-    wild_parameters.setName("wild parameters");
-    wild_parameters.add(W_new_pointdistance.set("new point distance",20,10,100));
-    wild_parameters.add(W_amplitude.set("amplitude",8.0,0.0,20));
-    wild_parameters.add(W_wavelength.set("wavelength", 4.0, 1.0, 10.0));
-    wild_parameters.add(W_fadeout_time.set("fadeout time",10.0,2.0,60.0));
-    wild_parameters.add(W_fadeduration.set("fade duration", 5.0, 0.0, 60));
-    wild_parameters.add(W_nervosity.set("nervousity",1.0,0.5,20.0));
-    wild_parameters.add(W_mainLine_thickness.set("main line thickness", 4.0, 1.0, 10.0));
-    wild_parameters.add(W_byLine_thicknes.set("by line thickness", 0.5, 0.1, 5.0));
-    
-    caligraphy_parameters.setName("caligraphy parameters");
-    caligraphy_parameters.add(C_new_pointdistance.set("new point distance",60,10,100));
-    caligraphy_parameters.add(C_width_min.set("width min", 1, 0, 20));
-    caligraphy_parameters.add(C_width_max.set("width max", 20, 1, 60));
-    caligraphy_parameters.add(C_fadeout_time.set("fadeout time",10.0,2.0,60.0));
-    caligraphy_parameters.add(C_fadeduration.set("fade duration", 5.0, 0.0, 60));
-    
-    style_gui.add(caligraphy_parameters);
-    style_gui.add(wild_parameters);
+    style_gui.add(caligraphyStyle.parameters);
+    style_gui.add(scrizzleStyle.parameters);
     
     style_gui.minimizeAll();
 }

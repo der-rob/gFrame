@@ -25,21 +25,28 @@ class CaligraphyStyle : public BaseStyle {
     
 public:
     CaligraphyStyle();
+    
     void render(vector<GPoint> &points, int width, int height);
     void setFill(bool fill);
     void toggleFill();
-    void setWidth(int min, int max){min_width = min; max_width = max;}
-    void setFadeOutTime(float _fadeouttime, float _fadeduration) { endFadeAge = _fadeouttime; startFadeAge = _fadeouttime - _fadeduration; }
+//    void setWidth(int min, int max){min_width = min; max_width = max;}
+//    void setFadeOutTime(float _fadeouttime, float _fadeduration) { endFadeAge = _fadeouttime; startFadeAge = _fadeouttime - _fadeduration; }
     
 private:
     ofPath path;
     int stroke_width = 20;
-    bool fill;
-    int min_width = 1;
-    int max_width = 20;
+//    int min_width = 1;
+//    int max_width = 20;
     int startFadeAge = 5000;
     int endFadeAge = 10000;
     msa::InterpolatorT<ofPoint> interpolator1, interpolator2;
+    
+    ofParameter<bool> fill;
+    ofParameter<int> width_min;
+    ofParameter<int> width_max;
+    ofParameter<float> fadeouttime;
+    ofParameter<float> fadeduration;
+
 };
 
 #endif
