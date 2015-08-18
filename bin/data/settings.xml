@@ -7,32 +7,32 @@
 		<point_lifetime>100</point_lifetime>
 		<local_color>0, 255, 0, 255</local_color>
 	</brush_settings>
-	<fluid_brightness>255</fluid_brightness>
-	<fluid_alpha>255</fluid_alpha>
 	<output_settings>
 		<width>1024</width>
-		<height>512</height>
+		<height>768</height>
 	</output_settings>
-	<dmx_settings>
-		<DMX_on>1</DMX_on>
-		<upper_PL>0.6</upper_PL>
-		<lower_PL>0.05</lower_PL>
-		<LED_brightness>0.5</LED_brightness>
-		<LED_freqency>2000</LED_freqency>
-	</dmx_settings>
-	<network>
-		<host_port>9000</host_port>
-		<remote_ip>192.168.178.42</remote_ip>
-		<remote_port>9001</remote_port>
-	</network>
-	<osc>
-		<iPad_IP>192.168.178.42</iPad_IP>
-		<iPad_Port>4444</iPad_Port>
-		<local_OSC_port>4445</local_OSC_port>
-	</osc>
-	<input_selection>
-		<TUIO_port>3334</TUIO_port>
-		<mouse>1</mouse>
-		<tuio>1</tuio>
-	</input_selection>
+    <dmx_settings>
+        <DMX_on>1</DMX_on>
+        <upper_PL>0.6</upper_PL>
+        <lower_PL>0.05</lower_PL>
+        <LED_brightness>0.5</LED_brightness>
+        <LED_freqency>2000</LED_freqency>
+        <LED_pulsing_time>2000</LED_pulsing_time>
+    </dmx_settings>
+    <network>
+        <host_port>9000</host_port>
+        <remote_ip>192.168.178.42</remote_ip>
+        <remote_port>9001</remote_port>
+    </network>
+    <osc>
+        <iPad_IP>192.168.178.42</iPad_IP>
+        <iPad_Port>4444</iPad_Port>
+        <local_OSC_port>4445</local_OSC_port>
+    </osc>
+    <input_selection>
+        <TUIO_port>3334</TUIO_port>
+        <mouse>1</mouse>
+        <tuio>1</tuio>
+    </input_selection>
+<general_settings/>
 </general_settings>
