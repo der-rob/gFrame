@@ -283,14 +283,12 @@ void ScrizzleStyle::render(vector<GPoint> &points, int _width, int _height) {
         ofSetColor(color1);
         glVertex2f(v.x, v.y);
     }
+    
     glEnd();
 
     //second run through all points in this stroke
     interpolator.clear();
     last_used_point = &points[0];
-    glLineWidth(linewidth2);
-    ofSetColor(color2);
-    glBegin(GL_LINE_STRIP);
     for (int i = 1 ; i < points.size(); i++) {
         //check distance to last used point
         //check distance to last used point
@@ -319,6 +317,12 @@ void ScrizzleStyle::render(vector<GPoint> &points, int _width, int _height) {
         //get directtion
         ofVec2f this_point = ofVec2f(points[i].getLocation().x*_width,points[i].getLocation().y*_height);
         ofVec2f last_point = ofVec2f(points[i-1].getLocation().x*_width,points[i-1].getLocation().y*_height);
+        ///
+        ofSetColor(0,255,0,150);
+        ofCircle(last_point, 20);
+        ofSetColor(255,0,0);
+        ofCircle(this_point, 10);
+        ///
         ofVec2f dir = (this_point-last_point);
         ofVec2f unitDir = dir.normalize();
         //get normal
@@ -332,6 +336,9 @@ void ScrizzleStyle::render(vector<GPoint> &points, int _width, int _height) {
     //setcolor after calculating age
     ofSetColor(color2);
     
+    glLineWidth(linewidth2);
+    ofSetColor(color2);
+    glBegin(GL_LINE_STRIP);
     spacing = 1.0/(points.size()*isteps);
     for (float f = 0; f <= 1; f+=spacing) {
         ofVec3f v_with_alpha = interpolator.sampleAt(f);

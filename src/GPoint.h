@@ -17,6 +17,7 @@
 #define STYLE_SCRIZZLE 1
 #define STYLE_CALIGRAPHY 2
 #define STYLE_WAVER 3
+#define STYLE_IMAGE 4
 
 using Poco::RegularExpression;
 
@@ -36,6 +37,7 @@ public:
     void setStrokeId(int stroke_id){this->stroke_id = stroke_id;}
     void setStyle(int style){ this->style_id = style; }
     void setPointGroup (int _group) {this->point_group = _group;}
+    void setSizeScale(float _scale) {this->size_scale = _scale;}
     
     // getters
     ofVec2f getLocation(){return loc;}
@@ -46,6 +48,7 @@ public:
     long getStrokeId(){return stroke_id;}
     int getStyle(){return style_id;}
     int getPointGroup() {return this->point_group;}
+    float getSizeScale() {return size_scale;}
     
 private:
     ofVec2f loc;
@@ -56,6 +59,7 @@ private:
     long stroke_id;
     int style_id;
     int point_group;
+    float size_scale;
     
     static int instance_count;    
 };

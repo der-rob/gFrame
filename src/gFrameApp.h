@@ -15,8 +15,10 @@
 #include "StrokeList.h"
 #include "ScrizzleStyle.h"
 #include "CaligraphyStyle.h"
+#include "ImageBrush.h"
 #include "Network.h"
 #include "ofxGui.h"
+#include "SimpleAnimatable.h"
 
 
 //#include "PointGroupList.h"
@@ -35,6 +37,8 @@ public:
     void exit();
     void mouseMoved(int x, int y);
     void mouseDragged(int x, int y, int button);
+    void mousePressed(int x, int y, int button);
+    void mouseReleased(int x, int y, int button);
     void keyPressed(int key);
     void windowResized(int w, int h);
 
@@ -46,11 +50,15 @@ private:
     
     // DRAWING
     StrokeList stroke_list;
-    int current_style = STYLE_SCRIZZLE;
+    int current_style = STYLE_IMAGE;
     ofParameter<ofColor> localBrushColor;
+    //brush width grows when entering canvas
+    SimpleAnimatable brushSizeScale[13];
+    int currentBrushWidth;
     
     ScrizzleStyle scrizzleStyle;  
     CaligraphyStyle caligraphyStyle;
+    ImageBrush imageBrush;
     
     //output
     bool draw_on_main_screen = true;
@@ -83,6 +91,9 @@ private:
     void tuioAdded(ofxTuioCursor & tuioCursor);
 	void tuioRemoved(ofxTuioCursor & tuioCursor);
 	void tuioUpdated(ofxTuioCursor & tuioCursor);
+    
+    //mouse
+    int current_mouse_id;
     
     
     // NETWORK

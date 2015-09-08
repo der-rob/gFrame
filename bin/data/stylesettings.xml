@@ -17,4 +17,9 @@
 		<by_line_thickness>1</by_line_thickness>
 	</wild_parameters>
 <style_settings/>
+<ImageBrush_parameters>
+		<width>34</width>
+	<min_width>10</min_width>
+		<max_width>48</max_width>
+	</ImageBrush_parameters>
 </style_settings>

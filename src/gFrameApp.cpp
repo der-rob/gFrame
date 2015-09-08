@@ -45,6 +45,9 @@ void gFrameApp::setup()
 	ofAddListener(tuioClient.cursorUpdated,this,&gFrameApp::tuioUpdated);
     ofAddListener(tuioClient.cursorRemoved,this,&gFrameApp::tuioRemoved);
     
+    //mouse
+    current_mouse_id = 0;
+    
     //OSC
     receiver.setup(local_osc_port);
 
@@ -86,6 +89,14 @@ void gFrameApp::update()
         ledFrame.setColor(localBrushColor);
         ledFrame.update();
     }
+    float dt = ofGetLastFrameTime();
+    
+    //update brush scale animation
+    for (int i = 0; i < 13; i++) {
+        if (brushSizeScale[i].getAnimation() != NULL) {
+            brushSizeScale[i].updateAnimation(dt);
+        }
+    }
     
     canvasFBO.begin();
     ofBackground(0);
@@ -98,6 +109,9 @@ void gFrameApp::update()
                 break;
             case STYLE_CALIGRAPHY:
                 caligraphyStyle.render(stroke, (int)outputRect.width, (int)outputRect.height);
+                break;
+            case STYLE_IMAGE:
+                imageBrush.render(stroke, (int)outputRect.width, (int)outputRect.height);
                 break;
             default:
                 caligraphyStyle.render(stroke, (int)outputRect.width, (int)outputRect.height);
@@ -196,6 +210,7 @@ void gFrameApp::keyPressed(int key)
     }
     else if(key == 'c') {
         stroke_list.clear();
+        imageBrush.clear();
     }
     else if (key == 'p')
         draw_finger_positions = !draw_finger_positions;
@@ -228,36 +243,67 @@ void gFrameApp::keyPressed(int key)
 
 //--------------------------------------------------------------
 void gFrameApp::mouseMoved(int x, int y){
-    
-    if(input_mouse){
-        ofVec2f mouse;
+}
+
+//--------------------------------------------------------------
+void gFrameApp::mousePressed(int x, int y, int button)
+{
+    if(input_mouse && button == OF_MOUSE_BUTTON_1){
         
+        //rescale mouse position
+        ofVec2f mouse;
         mouse.set(x / (float)ofGetWindowWidth(), y / (float)ofGetWindowHeight());
         
-        GPoint the_point;
-        //rescale mouse position
-        //float x_norm = ofMap(x, 0, ofGetWidth(), 0.0, outputRect.width);
-        float x_norm = ofMap(x, 0, outputRect.width, 0.0, 1.0);
-        //float y_norm = ofMap(y, 0, ofGetHeight(), 0.0, outputRect.height);
-        float y_norm = ofMap(y, 0, outputRect.height, 0.0, 1.0);
+        //size scale animation
+        brushSizeScale[12].createAnimation(0, 1, 4, ZERO);
         
+        GPoint the_point;
+        the_point.setSizeScale(brushSizeScale[12].getValue());
         the_point.setLocation(ofVec2f(mouse.x,mouse.y));
         the_point.setId(0);
-        the_point.setStrokeId(0);
+        the_point.setStrokeId(current_mouse_id);
         the_point.setColor(localBrushColor);
         the_point.setStyle(current_style);
-        stroke_list.add(the_point);
+        stroke_list.addToNewStroke(the_point);
         
         ledFrame.stopPulsing();
         ledFrame.updateLastPointsTime();
-        
     }
 }
 
 //--------------------------------------------------------------
 void gFrameApp::mouseDragged(int x, int y, int button)
 {
+    if(input_mouse && button == OF_MOUSE_BUTTON_1) {
+        
+        //rescale mouse position
+        ofVec2f mouse;
+        mouse.set(x / (float)ofGetWindowWidth(), y / (float)ofGetWindowHeight());
+        
+        GPoint the_point;
+        the_point.setSizeScale(brushSizeScale[12].getValue());
+        the_point.setLocation(ofVec2f(mouse.x,mouse.y));
+        the_point.setId(0);
+        the_point.setStrokeId(current_mouse_id);
+        the_point.setColor(localBrushColor);
+        the_point.setStyle(current_style);
+        stroke_list.add(the_point);
+        
+        ledFrame.stopPulsing();
+        ledFrame.updateLastPointsTime();
+    }
 }
+
+//--------------------------------------------------------------
+void gFrameApp::mouseReleased(int x, int y, int button)
+{
+    
+    if (button == OF_MOUSE_BUTTON_1) {
+        brushSizeScale[12].stopAnimation();
+        current_mouse_id++;
+    }
+}
+
 
 //--------------------------------------------------------------
 void gFrameApp::windowResized(int w, int h)
@@ -275,6 +321,11 @@ void gFrameApp::tuioAdded(ofxTuioCursor &cursor)
         x = cursor.getX();
         y = cursor.getY();
 
+        //size scale animation
+        brushSizeScale[cursor.getFingerId()].createAnimation(0, 1, 4, ZERO);
+        the_point.setSizeScale(brushSizeScale[cursor.getFingerId()].getValue());
+        
+        
         the_point.setLocation(ofVec2f(x, y));
         the_point.setId(cursor.getFingerId());
         the_point.setStrokeId(cursor.getSessionId());
@@ -300,6 +351,7 @@ void gFrameApp::tuioUpdated(ofxTuioCursor &cursor)
         x = cursor.getX();
         y = cursor.getY();
         
+        the_point.setSizeScale(brushSizeScale[cursor.getFingerId()].getValue());
         the_point.setLocation(ofVec2f(x, y));
         the_point.setId(cursor.getFingerId());
         the_point.setStrokeId(cursor.getSessionId());
@@ -321,6 +373,7 @@ void gFrameApp::tuioRemoved(ofxTuioCursor & cursor)
     if(input_tuio)
     {
         finger_positions[cursor.getFingerId()] = ofVec2f(0, 0);
+        brushSizeScale[cursor.getFingerId()].stopAnimation();
     }
 }
 
@@ -427,6 +480,7 @@ void gFrameApp::styleGuiSetup() {
     
     style_gui.add(caligraphyStyle.parameters);
     style_gui.add(scrizzleStyle.parameters);
+    style_gui.add(imageBrush.parameters);
     
     style_gui.minimizeAll();
 }
