@@ -8,8 +8,8 @@
 		<local_color>0, 255, 0, 255</local_color>
 	</brush_settings>
 	<output_settings>
-		<width>1024</width>
-		<height>768</height>
+		<width>1280</width>
+		<height>309</height>
 	</output_settings>
     <dmx_settings>
         <DMX_on>1</DMX_on>

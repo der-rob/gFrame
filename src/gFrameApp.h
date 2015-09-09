@@ -59,6 +59,7 @@ private:
     //flow
     SimpleFlowField simple_flow;
     SimpleFlowField simple_flow_2;
+    ofImage obstacle;
 
     //output
     bool draw_on_main_screen = true;

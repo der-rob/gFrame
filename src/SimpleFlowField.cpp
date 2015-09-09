@@ -13,8 +13,8 @@ void SimpleFlowField::setup(int _width, int _height)
     drawWidth = _width;
     drawHeight = _height;
     // process all but the density on 16th resolution
-    flowWidth = drawWidth/8;
-    flowHeight = drawHeight/8;
+    flowWidth = drawWidth/4;
+    flowHeight = drawHeight/4;
     
     // Fluid
     fluid.setup(flowWidth, flowHeight, drawWidth, drawHeight, false);

@@ -33,17 +33,20 @@ void gFrameApp::setup()
     outputRect = ofRectangle(0,0,outputwidth, outputheight);
     
     //flowfield & gui
+    obstacle.loadImage("facade_only_white_windows.jpg");
     simple_flow.setup(outputRect.width/2, outputRect.height/2);
     flowGuiSetup();
     flow_gui.loadFromFile("stroke.xml");
     ofAddListener(flow_gui.loadPressedE, this, &gFrameApp::onFlowSettingsReload);
     ofAddListener(flow_gui.savePressedE, this, &gFrameApp::onFlowSettingsSave);
+    simple_flow.addObstacle(obstacle.getTextureReference());
     
     simple_flow_2.setup(outputRect.width/2, outputRect.height/2);
     flow2GuiSetup();
     flow2_gui.loadFromFile("textwaiver.xml");
     ofAddListener(flow2_gui.loadPressedE, this, &gFrameApp::onFlow2SettingsReload);
     ofAddListener(flow2_gui.savePressedE, this, &gFrameApp::onFlow2SettingsSave);
+    simple_flow_2.addObstacle(obstacle.getTextureReference());
     
     //need to call this here, otherwise would get a BAD ACCESS FAULT
     gui.draw();
@@ -112,7 +115,7 @@ void gFrameApp::update()
     simple_flow_2.draw();
     ofBlendMode(OF_BLENDMODE_ADD);
     simple_flow.draw();
-    
+    /*
     for(vector<GPoint> stroke : *stroke_list.getAllStrokes()){
         switch (stroke[0].getStyle())
         {
@@ -127,7 +130,7 @@ void gFrameApp::update()
                 break;
         }
     }
-    
+    */
     if(draw_finger_positions){
         drawFingerPositions((int)outputRect.width, (int)outputRect.height);
     }
