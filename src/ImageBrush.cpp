@@ -26,11 +26,16 @@ ImageBrush::ImageBrush() {
 
 void ImageBrush::render(vector<GPoint> &_points, int _width, int _height)
 {
+    /*
+     somehow i need to handle, that every points is drawn only once since the fbo is not cleared after every frame
+     */
+    
     if (_points.size() <2)
     {
         width_start.insert(pair<int,int>(_points[0].getStrokeId() ,0));
         return;
     }
+    
     else if (_points.size() > 2)
     {
         while (_points.size() > 2) {
@@ -54,6 +59,7 @@ void ImageBrush::render(vector<GPoint> &_points, int _width, int _height)
     ofVec2f dir = this_point-last_point;
     
     //fill points to draw array
+    points_to_draw.clear();
     if (dir.length() > max_distance) {
         ofVec2f unit_dir = dir.normalized();
         int steps = dir.length() / max_distance;
@@ -90,11 +96,10 @@ void ImageBrush::render(vector<GPoint> &_points, int _width, int _height)
         glRotated(angle, 0.0, 0.0, 1.0);
         ofSetColor(255,200,0);
         ofSetColor(_points[0].getColor());
-        brush_image.draw(0,0, brush_width, brush_width);
-        //        ofCircle(0,0,brush_width/2);
+//        brush_image.draw(0,0, brush_width, brush_width);
+        ofCircle(0,0,brush_width/2);
         ofPopMatrix();
     }
-    points_to_draw.clear();
     
     fbo.end();
     
@@ -105,12 +110,13 @@ void ImageBrush::render(vector<GPoint> &_points, int _width, int _height)
     catch (exception e) {
         cout << "2 " << e.what() << endl;
     }
-    _points.clear();
-  
     
+    //one "drawing round" is complete, delete the oldest point
+    _points.erase(_points.begin());
+  
     // the fbo is always affected by the current draw color
-    ofSetColor(255);
-    fbo.draw(0,0);
+//    ofSetColor(255);
+//    fbo.draw(0,0);
     
 //    non fbo version
 //    for (int i =1; i<_points.size();i++)
@@ -131,6 +137,11 @@ void ImageBrush::render(vector<GPoint> &_points, int _width, int _height)
 //        brush_image.draw(0,0, brush_width, brush_width);
 //        ofPopMatrix();
 //    }
+}
+
+void ImageBrush::renderFBO() {
+    ofSetColor(255);
+    fbo.draw(0,0);
 }
 
 void ImageBrush::clear() {

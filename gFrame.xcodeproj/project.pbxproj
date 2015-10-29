@@ -56,6 +56,7 @@
 		D48625711A001C9A0076E13F /* testApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D48625621A001C990076E13F /* testApp.cpp */; };
 		D48625721A001C9A0076E13F /* license.md in Sources */ = {isa = PBXBuildFile; fileRef = D48625641A001C990076E13F /* license.md */; };
 		D48625731A001C9A0076E13F /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = D48625651A001C990076E13F /* README.md */; };
+		D48898DB1BA9520700C3931B /* SimpleStencil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D48898D91BA9520700C3931B /* SimpleStencil.cpp */; };
 		D4A778BB1976A26E005E4026 /* ofxEasing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4A7789B1976A26E005E4026 /* ofxEasing.cpp */; };
 		D4A778BC1976A26E005E4026 /* ofxEasingBack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4A7789D1976A26E005E4026 /* ofxEasingBack.cpp */; };
 		D4A778BD1976A26E005E4026 /* ofxEasingBounce.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4A7789F1976A26E005E4026 /* ofxEasingBounce.cpp */; };
@@ -261,6 +262,8 @@
 		D486256A1A001C9A0076E13F /* MSAInterpolator2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAInterpolator2D.h; sourceTree = "<group>"; };
 		D486256B1A001C9A0076E13F /* MSAInterpolator3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAInterpolator3D.h; sourceTree = "<group>"; };
 		D486256C1A001C9A0076E13F /* MSAInterpolatorT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAInterpolatorT.h; sourceTree = "<group>"; };
+		D48898D91BA9520700C3931B /* SimpleStencil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimpleStencil.cpp; sourceTree = "<group>"; };
+		D48898DA1BA9520700C3931B /* SimpleStencil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleStencil.h; sourceTree = "<group>"; };
 		D4A778961976A26E005E4026 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		D4A778971976A26E005E4026 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		D4A7789A1976A26E005E4026 /* easing_terms_of_use.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = easing_terms_of_use.html; sourceTree = "<group>"; };
@@ -292,6 +295,11 @@
 		D4A778B41976A26E005E4026 /* ofxTween.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTween.h; sourceTree = "<group>"; };
 		D4BE77351B823793004A6904 /* LEDFrame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LEDFrame.cpp; sourceTree = "<group>"; };
 		D4BE77361B823793004A6904 /* LEDFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LEDFrame.h; sourceTree = "<group>"; };
+		D4E052D91BA983A300AB5EBC /* dev_notes.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = dev_notes.md; path = Doku/dev_notes.md; sourceTree = "<group>"; };
+		D4E052DB1BA986BE00AB5EBC /* alpha.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = alpha.frag; sourceTree = "<group>"; };
+		D4E052DC1BA986BE00AB5EBC /* alpha.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = alpha.vert; sourceTree = "<group>"; };
+		D4E052DD1BA986BE00AB5EBC /* mask.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = mask.frag; sourceTree = "<group>"; };
+		D4E052DE1BA986BE00AB5EBC /* mask.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = mask.vert; sourceTree = "<group>"; };
 		D4E4AD2D196F3D5300ECA630 /* gFrame_layout_2.touchosc */ = {isa = PBXFileReference; lastKnownFileType = file; path = gFrame_layout_2.touchosc; sourceTree = "<group>"; };
 		D4F9362E1B286F7800AC24FA /* PointGroup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PointGroup.cpp; sourceTree = "<group>"; };
 		D4F9362F1B286F7800AC24FA /* PointGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointGroup.h; sourceTree = "<group>"; };
@@ -671,6 +679,7 @@
 		D46A05001A12764D00AE3BB3 /* data */ = {
 			isa = PBXGroup;
 			children = (
+				D4E052DA1BA986BE00AB5EBC /* shader */,
 				D470DD551B2DB4460023B792 /* stroke_2.xml */,
 				D470DD561B2DB4460023B792 /* stroke.xml */,
 				D470DD571B2DB4460023B792 /* textwaiver.xml */,
@@ -825,6 +834,8 @@
 		D4B4A4AE1B2C7DDB0057EA0E /* brushes */ = {
 			isa = PBXGroup;
 			children = (
+				D48898D91BA9520700C3931B /* SimpleStencil.cpp */,
+				D48898DA1BA9520700C3931B /* SimpleStencil.h */,
 				6CA424251A13BECD00A4F975 /* CaligraphyStyle.cpp */,
 				6CA424261A13BECD00A4F975 /* CaligraphyStyle.h */,
 				D48625481A001C770076E13F /* BaseStyle.cpp */,
@@ -867,6 +878,17 @@
 			name = utils;
 			sourceTree = "<group>";
 		};
+		D4E052DA1BA986BE00AB5EBC /* shader */ = {
+			isa = PBXGroup;
+			children = (
+				D4E052DB1BA986BE00AB5EBC /* alpha.frag */,
+				D4E052DC1BA986BE00AB5EBC /* alpha.vert */,
+				D4E052DD1BA986BE00AB5EBC /* mask.frag */,
+				D4E052DE1BA986BE00AB5EBC /* mask.vert */,
+			);
+			path = shader;
+			sourceTree = "<group>";
+		};
 		D4E4AD2C196F3D5300ECA630 /* touchosc */ = {
 			isa = PBXGroup;
 			children = (
@@ -897,6 +919,7 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
+				D4E052D91BA983A300AB5EBC /* dev_notes.md */,
 				D46A05001A12764D00AE3BB3 /* data */,
 				D47F10E71A124B7000F558E8 /* gFrameIcon.iconset */,
 				D4091B2B196AF5B900F109F1 /* .gitignore */,
@@ -1052,6 +1075,7 @@
 				D4164D8D1B905859007DDCD4 /* SimpleAnimatable.cpp in Sources */,
 				D40A14111A112C5D0067C957 /* ofxBaseGui.cpp in Sources */,
 				D4F936321B286F7800AC24FA /* PointGroup.cpp in Sources */,
+				D48898DB1BA9520700C3931B /* SimpleStencil.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* gFrameApp.cpp in Sources */,
 				D40A14181A112C5D0067C957 /* ofxToggle.cpp in Sources */,
 				6C51F02F1A093CE500066662 /* Network.cpp in Sources */,

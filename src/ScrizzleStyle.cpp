@@ -319,9 +319,9 @@ void ScrizzleStyle::render(vector<GPoint> &points, int _width, int _height) {
         ofVec2f last_point = ofVec2f(points[i-1].getLocation().x*_width,points[i-1].getLocation().y*_height);
         ///
         ofSetColor(0,255,0,150);
-        ofCircle(last_point, 20);
+        //ofCircle(last_point, 20);
         ofSetColor(255,0,0);
-        ofCircle(this_point, 10);
+        //ofCircle(this_point, 10);
         ///
         ofVec2f dir = (this_point-last_point);
         ofVec2f unitDir = dir.normalize();

@@ -7,8 +7,8 @@
 //--------------------------------------------------------------
 void gFrameApp::setup()
 {
-    //just set up the openFrameworks stuff
-    ofSetFrameRate(30);
+    //set up the openFrameworks stuff
+    ofSetFrameRate(60);
     ofSetVerticalSync(true);
     ofBackground(ofColor::black);
     
@@ -29,8 +29,10 @@ void gFrameApp::setup()
     
     //dimensions for final output
     //after settings are loaded from file
-    ofSetWindowShape(outputwidth, outputheight);
-    outputRect = ofRectangle(0,0,outputwidth, outputheight);
+    ofSetWindowShape(outputWidth, outputHeight);
+    outputRect = ofRectangle(0,0,outputWidth, outputHeight);
+    
+    stencil.setup(outputWidth, outputHeight);
     
     //need to call this here, otherwise would get a BAD ACCESS FAULT
     gui.draw();
@@ -57,19 +59,25 @@ void gFrameApp::setup()
     stroke_list.setupSync(&network);
 #endif
 
-    //syphonFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 16);
-    canvasFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 16);
-    //syphonFBO.begin(); ofClear(0); syphonFBO.end();
+    syphonFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 4);
+    canvasFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 4);
+    brushFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 4);
+    syphonFBO.begin(); ofClear(0); syphonFBO.end();
     canvasFBO.begin(); ofClear(0); canvasFBO.end();
+    brushFBO.begin(); ofClear(0); brushFBO.end();
 
     // initialize finger positions
     for(ofVec2f finger : finger_positions){
         finger = ofVec2f(0,0);
     }
+    
+    draw_gui = true;
+    
+    strokelist_status = "";
 }
 
 //--------------------------------------------------------------
-void gFrameApp::exit(){
+void gFrameApp::exit() {
     ledFrame.disconnect();
     network.disconnect();
 }
@@ -77,7 +85,14 @@ void gFrameApp::exit(){
 //--------------------------------------------------------------
 void gFrameApp::update()
 {
+    
     stroke_list.update();
+    
+    //collect and display some iformation about the strokelist
+    strokelist_status = "";
+    for(vector<GPoint> stroke : *stroke_list.getAllStrokes()){
+        strokelist_status += ofToString(stroke[0].getId(),2)+ " Style: " + ofToString(stroke[0].getStyle()) + " size: " + ofToString(stroke.size()) + "\n";
+    }
     
     oscUpdate();
     
@@ -100,8 +115,11 @@ void gFrameApp::update()
     
     canvasFBO.begin();
     ofBackground(0);
-    
-    for(vector<GPoint> stroke : *stroke_list.getAllStrokes()){
+    ofDisableDepthTest();
+    ofEnableAlphaBlending();
+    ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+
+    for(vector<GPoint> &stroke : *stroke_list.getAllStrokes()) {
         switch (stroke[0].getStyle())
         {
             case STYLE_SCRIZZLE:
@@ -113,16 +131,33 @@ void gFrameApp::update()
             case STYLE_IMAGE:
                 imageBrush.render(stroke, (int)outputRect.width, (int)outputRect.height);
                 break;
+            case STYLE_STENCIL:
+                stencil.startCanvas();
+                stencilBrush.render(stroke, (int)outputRect.width, (int) outputRect.height);
+                stencilBrush.renderFBO();
+                stencil.finishCanvas();
+                break;
             default:
                 caligraphyStyle.render(stroke, (int)outputRect.width, (int)outputRect.height);
                 break;
         }
     }
     
-    if(draw_finger_positions){
-        drawFingerPositions((int)outputRect.width, (int)outputRect.height);
-    }
+    ofPushStyle();
+    ofSetColor(255);
+    imageBrush.renderFBO();
+    ofPopStyle();
     
+    ofPushStyle();
+    ofSetColor(255);
+    stencil.drawLastStencilPrints();
+    stencil.draw();
+    ofPopStyle();
+    
+//    if(draw_finger_positions) {
+//        drawFingerPositions((int)outputRect.width, (int)outputRect.height);
+//    }
+//    
     canvasFBO.end();
     
     // lifetime
@@ -130,13 +165,14 @@ void gFrameApp::update()
 }
 
 //--------------------------------------------------------------
-void gFrameApp::draw(){
-    
+void gFrameApp::draw()
+{
     ofBackground(0);
     ofSetColor(255);
 
-    syphonMainOut.publishTexture(&canvasFBO.getTextureReference());
-    
+//    syphonMainOut.publishTexture(&canvasFBO.getTextureReference());
+    syphonMainOut.publishTexture(&stencil.getCanvasTex());
+
     //switching of the main screen might improve the performance
     if (draw_on_main_screen)
     {
@@ -150,6 +186,8 @@ void gFrameApp::draw(){
         ofSetColor(255);
         ofDrawBitmapString("fps: " + ofToString(ofGetFrameRate(), 2), ofGetWidth()-120, ofGetHeight()-10 );
     }
+ 
+    ofDrawBitmapString(strokelist_status, 10, 10);
 }
 
 //--------------------------------------------------------------
@@ -211,6 +249,8 @@ void gFrameApp::keyPressed(int key)
     else if(key == 'c') {
         stroke_list.clear();
         imageBrush.clear();
+        stencil.clearFBOs();
+        brushFBO.begin(); ofClear(0); brushFBO.end();
     }
     else if (key == 'p')
         draw_finger_positions = !draw_finger_positions;
@@ -239,6 +279,12 @@ void gFrameApp::keyPressed(int key)
     else if (key == 'm') {
         draw_on_main_screen = !draw_on_main_screen;
     }
+    
+    if (key == 't')
+    {
+        stencil.setPlaceMode(true);
+        stencil.updateText(ofSystemTextBoxDialog("Enter Stencil Text"));
+    }
 }
 
 //--------------------------------------------------------------
@@ -263,7 +309,7 @@ void gFrameApp::mousePressed(int x, int y, int button)
         the_point.setId(0);
         the_point.setStrokeId(current_mouse_id);
         the_point.setColor(localBrushColor);
-        the_point.setStyle(current_style);
+        the_point.setStyle(STYLE_IMAGE);
         stroke_list.addToNewStroke(the_point);
         
         ledFrame.stopPulsing();
@@ -285,8 +331,8 @@ void gFrameApp::mouseDragged(int x, int y, int button)
         the_point.setLocation(ofVec2f(mouse.x,mouse.y));
         the_point.setId(0);
         the_point.setStrokeId(current_mouse_id);
-        the_point.setColor(localBrushColor);
-        the_point.setStyle(current_style);
+        the_point.setColor(ofColor::red);
+        the_point.setStyle(STYLE_IMAGE);
         stroke_list.add(the_point);
         
         ledFrame.stopPulsing();
@@ -316,28 +362,45 @@ void gFrameApp::windowResized(int w, int h)
 void gFrameApp::tuioAdded(ofxTuioCursor &cursor)
 {
     if(input_tuio){
-        GPoint the_point;
-        float x,y;
-        x = cursor.getX();
-        y = cursor.getY();
+        if (stencil.getPlaceMode()){
+            stencil.addNewPrint();
+            
+            //clear all points related to stencil
+            //ToDo: rethink this
+            for(vector<GPoint> stroke : *stroke_list.getAllStrokes()){
+                if (stroke[0].getStyle() == STYLE_STENCIL) {
+                    stroke.clear();
+                    cout << "cleared stroke" << endl;
+                }
+            }
+            
+            stencil.clearFBOs();
+            stencilBrush.clear(); //the imagebrush has it own fbo, which must be cleared to!
+            stencil.updateStencil(cursor.getX()*outputRect.width,cursor.getY()*outputRect.height);
+        }
+            //        } else {
+            GPoint the_point;
+            float x,y;
+            x = cursor.getX();
+            y = cursor.getY();
 
-        //size scale animation
-        brushSizeScale[cursor.getFingerId()].createAnimation(0, 1, 4, ZERO);
-        the_point.setSizeScale(brushSizeScale[cursor.getFingerId()].getValue());
+            //size scale animation
+            brushSizeScale[cursor.getFingerId()].createAnimation(0, 1, 4, ZERO);
+            the_point.setSizeScale(brushSizeScale[cursor.getFingerId()].getValue());
+            
+            the_point.setLocation(ofVec2f(x, y));
+            the_point.setId(cursor.getFingerId());
+            the_point.setStrokeId(cursor.getSessionId());
+            the_point.setColor(localBrushColor);
+            the_point.setType(TUIO);
+            the_point.setStyle(STYLE_STENCIL);
+            stroke_list.addToNewStroke(the_point);
+            
+            finger_positions[cursor.getFingerId()] = ofVec2f(x, y);
         
-        
-        the_point.setLocation(ofVec2f(x, y));
-        the_point.setId(cursor.getFingerId());
-        the_point.setStrokeId(cursor.getSessionId());
-        the_point.setColor(localBrushColor);
-        the_point.setType(TUIO);
-        the_point.setStyle(current_style);
-        stroke_list.addToNewStroke(the_point);
-        
-        finger_positions[cursor.getFingerId()] = ofVec2f(x, y);
-    
-        ledFrame.stopPulsing();
-        ledFrame.updateLastPointsTime();
+            ledFrame.stopPulsing();
+            ledFrame.updateLastPointsTime();
+//        }
     }
 }
 
@@ -357,7 +420,7 @@ void gFrameApp::tuioUpdated(ofxTuioCursor &cursor)
         the_point.setStrokeId(cursor.getSessionId());
         the_point.setColor(localBrushColor);
         the_point.setType(TUIO);
-        the_point.setStyle(current_style);
+        the_point.setStyle(STYLE_STENCIL);
         stroke_list.add(the_point);
         
         finger_positions[cursor.getFingerId()] = ofVec2f(x, y);
@@ -384,7 +447,6 @@ void gFrameApp::oscUpdate()
     {
         ofxOscMessage m;
         receiver.getNextMessage(&m);
-        cout << m.getAddress() << " " << m.getArgAsString(0) << endl;
         
         //style color
         if (m.getAddress() == "/col_red") localBrushColor = ofColor::red;
@@ -394,9 +456,32 @@ void gFrameApp::oscUpdate()
         else if (m.getAddress() == "/col_orange") localBrushColor = ofColor::orange;
         else if (m.getAddress() == "/col_pink") localBrushColor = ofColor::pink;
         else if (m.getAddress() == "/clearcanvas") stroke_list.clear();
+        //brush size
+        
         //brush style
-        else if (m.getAddress() == "/style_wild") current_style = STYLE_SCRIZZLE;
-        else if (m.getAddress() == "/style_cali") current_style = STYLE_CALIGRAPHY;
+//        else if (m.getAddress() == "/style_wild") current_style = STYLE_SCRIZZLE;
+//        else if (m.getAddress() == "/style_cali") current_style = STYLE_CALIGRAPHY;
+//        
+        ////
+        // STENCIL
+        ////
+        /// text
+        else if (m.getAddress() == "/stencilText") {
+            stencil.setPlaceMode(true);
+            stencil.updateText(m.getArgAsString(0));
+        }
+        /// size
+        else if (m.getAddress() == "/size_m")
+            stencil.setStencilSize(MEDIUM);
+        else if (m.getAddress() == "/size_l")
+            stencil.setStencilSize(LARGE);
+        else if (m.getAddress() == "/size_xl")
+            stencil.setStencilSize(XTRALARGE);
+        /// inverted
+        else if (m.getAddress() == "/sten_str")
+            stencil.setInvert(false);
+        else if (m.getAddress() == "/sten_inv")
+            stencil.setInvert(true);
     }
 }
 
@@ -409,10 +494,10 @@ void gFrameApp::guiSetup() {
     
     ///output settings
     parameters_output.setName("output settings");
-    outputwidth.setName("width");
-    parameters_output.add(outputwidth);
-    outputheight.setName("height");
-    parameters_output.add(outputheight);
+    outputWidth.setName("width");
+    parameters_output.add(outputWidth);
+    outputHeight.setName("height");
+    parameters_output.add(outputHeight);
     
     ///OSC
     parameters_osc.setName("osc");
@@ -498,7 +583,7 @@ void gFrameApp::onSettingsReload() {
     //clean stroklist
     stroke_list.clear();
     
-    cout << "New settings loaded" << endl;
+    ofLog() << "New settings loaded";
 }
 
 //--------------------------------------------------------------

@@ -23,6 +23,8 @@ public:
     ImageBrush();
     ofParameterGroup parameters;
     void render(vector<GPoint> &points, int width, int height);
+    void renderFBO();
+    
     void clear();
 
 private:

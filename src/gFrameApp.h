@@ -19,13 +19,12 @@
 #include "Network.h"
 #include "ofxGui.h"
 #include "SimpleAnimatable.h"
+#include "SimpleStencil.h"
 
 
 //#include "PointGroupList.h"
 
 //#define USE_NETWORK
-
-enum OutputMode {SESI, LED1, LED2, PROJECTOR, PROJECTOR_PORTRAIT};
 
 class gFrameApp : public ofBaseApp{
 
@@ -47,7 +46,6 @@ public:
     //void oscupdate_interface();
 
 private:
-    
     // DRAWING
     StrokeList stroke_list;
     int current_style = STYLE_IMAGE;
@@ -59,14 +57,17 @@ private:
     ScrizzleStyle scrizzleStyle;  
     CaligraphyStyle caligraphyStyle;
     ImageBrush imageBrush;
+    ImageBrush stencilBrush;
+    SimpleStencil stencil;
     
     //output
     bool draw_on_main_screen = true;
     bool fullscreen;
     ofFbo canvasFBO;
-    //ofFbo syphonFBO;
-    ofParameter<int> outputwidth = 1024;
-    ofParameter<int> outputheight = 768;
+    ofFbo syphonFBO;
+    ofFbo brushFBO;
+    ofParameter<int> outputWidth = 1024;
+    ofParameter<int> outputHeight = 768;
     ofRectangle outputRect;
     
     ofxSyphonServer syphonMainOut;
@@ -135,6 +136,9 @@ private:
     ofParameter<float> point_lifetime = 10;
 
     ofParameter<bool> input_mouse, input_tuio;
+    
+    //helper
+    string strokelist_status;
 };
 
 

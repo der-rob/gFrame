@@ -48,7 +48,6 @@ private:
     
     Network *network;
     bool enableSync = false;
-    
 };
 
 #endif /* defined(__gFrame__PointList__) */

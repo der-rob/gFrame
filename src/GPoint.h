@@ -18,6 +18,7 @@
 #define STYLE_CALIGRAPHY 2
 #define STYLE_WAVER 3
 #define STYLE_IMAGE 4
+#define STYLE_STENCIL 5
 
 using Poco::RegularExpression;
 
@@ -61,7 +62,7 @@ private:
     int point_group;
     float size_scale;
     
-    static int instance_count;    
+    static int instance_count;
 };
 
 #endif /* defined(__NetworkTest__GPoint__) */
