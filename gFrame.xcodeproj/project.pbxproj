@@ -340,7 +340,6 @@
 		D4B4A4AB1B2C7D940057EA0E /* SimpleFlowField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimpleFlowField.cpp; sourceTree = "<group>"; };
 		D4B4A4AC1B2C7D940057EA0E /* SimpleFlowField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleFlowField.h; sourceTree = "<group>"; };
 		D4BBBF0D1B832AA000565430 /* gFrameDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gFrameDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D4BBBF0F1B833BB400565430 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/CoreVideo.framework; sourceTree = DEVELOPER_DIR; };
 		D4BE77351B823793004A6904 /* LEDFrame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LEDFrame.cpp; sourceTree = "<group>"; };
 		D4BE77361B823793004A6904 /* LEDFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LEDFrame.h; sourceTree = "<group>"; };
 		D4E4AD2D196F3D5300ECA630 /* gFrame_layout_2.touchosc */ = {isa = PBXFileReference; lastKnownFileType = file; path = gFrame_layout_2.touchosc; sourceTree = "<group>"; };
@@ -1085,7 +1084,6 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
-				D4BBBF0F1B833BB400565430 /* CoreVideo.framework */,
 				D46A05001A12764D00AE3BB3 /* data */,
 				D47F10E71A124B7000F558E8 /* gFrameIcon.iconset */,
 				D4091B2B196AF5B900F109F1 /* .gitignore */,

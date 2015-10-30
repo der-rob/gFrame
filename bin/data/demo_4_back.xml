@@ -1,0 +1,32 @@
+<flow_settings>
+	<fluid_solver>
+		<reset>0</reset>
+		<speed>0.510204</speed>
+		<cell_size>0.0612245</cell_size>
+		<iterations>7</iterations>
+		<viscosity>0</viscosity>
+		<vorticity>0.178571</vorticity>
+		<dissipation>0</dissipation>
+		<advanced_dissipation>
+			<velocity_offset>-0.000620575</velocity_offset>
+			<density_offset>0.000733027</density_offset>
+			<temperature_offset>-0.00197418</temperature_offset>
+		</advanced_dissipation>
+		<smoke_buoyancy>
+			<sigma>0.791753</sigma>
+			<weight>0.791753</weight>
+			<ambient_temperature>1</ambient_temperature>
+			<gravity>0, 0</gravity>
+		</smoke_buoyancy>
+		<maximum>
+			<clampForce>0.1</clampForce>
+			<density>5</density>
+			<velocity>0</velocity>
+			<temperature>5</temperature>
+		</maximum>
+		<density_from_pressure>-0.0142857</density_from_pressure>
+		<density_from_vorticity>-0.158163</density_from_vorticity>
+	</fluid_solver>
+	<brightness>255</brightness>
+	<alpha>255</alpha>
+</flow_settings>
