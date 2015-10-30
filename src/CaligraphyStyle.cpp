@@ -12,7 +12,7 @@
 CaligraphyStyle::CaligraphyStyle(){
     fill = true;
     parameters.setName("caligraphy parameters");
-    parameters.add(new_point_distance.set("new point distance",60,10,100));
+    parameters.add(new_point_distance.set("new point distance",5,1,50));
     parameters.add(width_min.set("width min", 1, 0, 20));
     parameters.add(width_max.set("width max", 20, 1, 60));
     parameters.add(fadeouttime.set("fadeout time",10.0,2.0,60.0));
@@ -53,13 +53,21 @@ void CaligraphyStyle::render(vector<GPoint> &points, int width, int height){
             
             ofPoint v1, v2;
             
-            v1 = ofPoint(-dy, dx);
+//            v1 = ofPoint(-dy, dx);
+//            v1.scale(ofMap(v1.length(), 0, 100, width_max, width_min, true));
+//            v1 += currentPoint;
+//            
+//            v2 = ofPoint(dy, -dx);
+//            v2.scale(ofMap(v2.length(), 0, 100, width_max, width_min, true));
+//            v2+= currentPoint;
+
+            v1 =  ofPoint(-10,10);
             v1.scale(ofMap(v1.length(), 0, 100, width_max, width_min, true));
             v1 += currentPoint;
             
-            v2 = ofPoint(dy, -dx);
+            v2 =  ofPoint(10,-10);
             v2.scale(ofMap(v2.length(), 0, 100, width_max, width_min, true));
-            v2+= currentPoint;
+            v2 += currentPoint;
             
             interpolator1.push_back(v1);
             interpolator2.push_back(v2);
