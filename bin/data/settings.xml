@@ -1,15 +1,18 @@
 <general_settings>
 	<finger_positions>
 		<draw_finger_positions>1</draw_finger_positions>
-		<finger_circle_radius>47</finger_circle_radius>
+		<finger_circle_radius>40</finger_circle_radius>
 	</finger_positions>
 	<brush_settings>
-		<point_lifetime>100</point_lifetime>
-		<local_color>0, 255, 0, 255</local_color>
+		<point_lifetime>80.8061</point_lifetime>
+		<local_color>58, 123, 180, 255</local_color>
 	</brush_settings>
 	<output_settings>
-		<width>1024</width>
-		<height>768</height>
+		<width>1280</width>
+		<height>720</height>
+	<Flow_Scale>4</Flow_Scale>
+	<stroke_to_obstacle>0</stroke_to_obstacle>
+	<render_stroke>1</render_stroke>
 	</output_settings>
     <dmx_settings>
         <DMX_on>1</DMX_on>
