@@ -17,6 +17,7 @@ CaligraphyStyle::CaligraphyStyle(){
     parameters.add(width_max.set("width max", 20, 1, 60));
     parameters.add(fadeouttime.set("fadeout time",10.0,2.0,60.0));
     parameters.add(fadeduration.set("fade duration", 5.0, 0.0, 60));
+    parameters.add(tip_angle.set("tip angle",60.0,0.0,180.0));
 }
 
 void CaligraphyStyle::render(vector<GPoint> &points, int width, int height){
@@ -60,13 +61,18 @@ void CaligraphyStyle::render(vector<GPoint> &points, int width, int height){
 //            v2 = ofPoint(dy, -dx);
 //            v2.scale(ofMap(v2.length(), 0, 100, width_max, width_min, true));
 //            v2+= currentPoint;
+            
+            float start_scale = ofMap(i, 5, 1, 1,10, true);
+            float end_scale = ofMap(i,points.size(), points.size()-5, 10,1, true);
+            float tempx = cos(tip_angle*PI/180)*start_scale*end_scale;
+            float tempy = sin(tip_angle*PI/180)*start_scale*end_scale;
 
-            v1 =  ofPoint(-10,10);
-            v1.scale(ofMap(v1.length(), 0, 100, width_max, width_min, true));
+            v1 =  ofPoint(-tempx,tempy);
+            v1.scale(ofMap(v1.length(), 0, 10, width_max, width_min, true));
             v1 += currentPoint;
             
-            v2 =  ofPoint(10,-10);
-            v2.scale(ofMap(v2.length(), 0, 100, width_max, width_min, true));
+            v2 =  ofPoint(tempx,-tempy);
+            v2.scale(ofMap(v2.length(), 0, 10, width_max, width_min, true));
             v2 += currentPoint;
             
             interpolator1.push_back(v1);
@@ -76,7 +82,7 @@ void CaligraphyStyle::render(vector<GPoint> &points, int width, int height){
         float step = 1.0/(points.size()*5.0);
         for(float f=0; f<1; f+=step){
             ofColor c = points[(int) ((f/step)/5.0)].getColor();
-            c.a = 255 - ofMap(ofGetElapsedTimeMillis() - points[(int) ((f/step)/5.0)].getTimestamp(), startFadeAge, endFadeAge, 0, 255, true);
+            c.a = c.a - ofMap(ofGetElapsedTimeMillis() - points[(int) ((f/step)/5.0)].getTimestamp(), startFadeAge, endFadeAge, 0, 255, true);
             m.addVertex(interpolator1.sampleAt(f));
             m.addColor(c);
             m.addVertex(interpolator2.sampleAt(f));

@@ -46,6 +46,7 @@ private:
     ofParameter<int> width_max;
     ofParameter<float> fadeouttime;
     ofParameter<float> fadeduration;
+    ofParameter<float> tip_angle;
 
 };
 
