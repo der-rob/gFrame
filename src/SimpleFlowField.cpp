@@ -8,13 +8,13 @@
 
 #include "SimpleFlowField.h"
 
-void SimpleFlowField::setup(int _width, int _height)
+void SimpleFlowField::setup(int _width, int _height, int flow_sclale)
 {
     drawWidth = _width;
     drawHeight = _height;
     // process all but the density on 16th resolution
-    flowWidth = drawWidth/4;
-    flowHeight = drawHeight/4;
+    flowWidth = drawWidth/flow_sclale;
+    flowHeight = drawHeight/flow_sclale;
     
     // Fluid
     fluid.setup(flowWidth, flowHeight, drawWidth, drawHeight, false);
@@ -43,6 +43,9 @@ void SimpleFlowField::setup(int _width, int _height)
         vec.set(0,0);
     }
     
+    options.setName("other options");
+    options.add(use_seperate_fluid_color.set("sep. fluid color",false));
+    options.add(fluid_color.set("Fluid Color", ofColor(255,255,255,255), ofColor(0,0,0,0), ofColor(255,255,255,255)));
     alpha.set("alpha",255,0,255);
     brightness.set("brightness",255,0,255);
     
@@ -90,10 +93,17 @@ void SimpleFlowField::draw() {
     
     int windowWidth = ofGetWindowWidth();
     int windowHeight = ofGetWindowHeight();
+
+//    color.setBrightness(brightness);
     
     
-    color.setBrightness(brightness);
-    color.a = alpha;
+    if(use_seperate_fluid_color) {
+        color = fluid_color;
+    } else {
+        ofColor temp_color = fluid_color;
+        color.a = temp_color.a;
+    }
+    
     ofSetColor(color);
     fluid.draw(0, 0, windowWidth, windowHeight);
 }
@@ -110,6 +120,7 @@ void SimpleFlowField::inputUpdate(int x, int y)
             flexDrawForces[i].setForce(velocity);
         flexDrawForces[i].applyForce(mouse);
     }
+    
     /*
      for (int i=3; i<numDrawForces; i++) {
      if (flexDrawForces[i].getType() == FT_VELOCITY)

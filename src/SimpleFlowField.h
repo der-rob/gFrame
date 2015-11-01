@@ -8,7 +8,7 @@ using namespace flowTools;
 
 class SimpleFlowField {
 public:
-    void setup(int _width, int _height);
+    void setup(int _width, int _height, int flow_scale = 4);
     void update();
     void draw();
     void inputUpdate(int x, int y);
@@ -34,9 +34,17 @@ public:
     int					numDrawForces;
     ftDrawForce*		flexDrawForces;
     
-    ofColor             color;
-    ofParameter<int>    brightness;
-    ofParameter<int>    alpha;
+    //color helper
+    ofColor color;
+    
+    //the actual fluid color
+    ofParameter<ofColor> fluid_color;
+    ofParameter<int>     brightness;
+    ofParameter<int>     alpha;
+    ofParameter<bool>    use_seperate_fluid_color;
+    
+    ofParameterGroup options;
+
 };
 
 #endif /* defined(__flowtest__SimpleFlowField__) */
