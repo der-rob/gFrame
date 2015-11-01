@@ -37,6 +37,8 @@ public:
     void draw();
     void drawFingerPositions(int _width, int _height);
     void exit();
+    void mousePressed(int x, int y, int button);
+    void mouseReleased(int x, int y, int button);
     void mouseMoved(int x, int y);
     void mouseDragged(int x, int y, int button);
     void keyPressed(int key);
@@ -50,7 +52,7 @@ private:
     
     // DRAWING
     StrokeList stroke_list;
-    int current_style = STYLE_SCRIZZLE;
+    int current_style = STYLE_CALIGRAPHY;
     ofParameter<ofColor> localBrushColor;
     
     ScrizzleStyle scrizzleStyle;  
@@ -59,7 +61,8 @@ private:
     //flow
     SimpleFlowField simple_flow;
     SimpleFlowField simple_flow_2;
-    ofImage obstacle;
+    ofImage obstacle, mapping_aid;
+    ofFbo obstacleFBO;
 
     //output
     bool draw_on_main_screen = true;
@@ -93,6 +96,8 @@ private:
 	void tuioRemoved(ofxTuioCursor & tuioCursor);
 	void tuioUpdated(ofxTuioCursor & tuioCursor);
     
+    //mouse
+    int current_mouse_id;
     
     // NETWORK
     Network network;
@@ -140,7 +145,16 @@ private:
     
     ofParameter<float> point_lifetime = 10;
 
-    ofParameter<bool> input_mouse, input_tuio;
+    ofParameter<bool> input_mouse, input_tuio, render_stroke, render_mapping_aid;
+    ofParameter<bool> stroke_to_obstacle;
+    
+    //set the resolution for the fluid simulation, needs app restart
+    ofParameter<int> flow_scale;
+    
+    ofShader convert2GrayShader;
+    void setupConvert2GrayShader();
+    
+    
 };
 
 

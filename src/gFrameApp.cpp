@@ -1,14 +1,11 @@
 #pragma once
 #include "gFrameApp.h"
 
-#define USE_PROGRAMMABLE_GL     // Maybe there is a reason you would want to
-
-
 //--------------------------------------------------------------
 void gFrameApp::setup()
 {
     //just set up the openFrameworks stuff
-    ofSetFrameRate(30);
+    ofSetFrameRate(60);
     ofSetVerticalSync(true);
     ofBackground(ofColor::black);
     
@@ -24,6 +21,7 @@ void gFrameApp::setup()
     ofAddListener(style_gui.loadPressedE, this, &gFrameApp::onStyleSettingsreload);
     ofAddListener(style_gui.savePressedE, this, &gFrameApp::onStyleSettingsSave);
     
+    //load settings and stylesettings
     gui.loadFromFile("settings.xml");
     style_gui.loadFromFile("stylesettings.xml");
     
@@ -32,18 +30,25 @@ void gFrameApp::setup()
     ofSetWindowShape(outputwidth, outputheight);
     outputRect = ofRectangle(0,0,outputwidth, outputheight);
     
+    //set positions for style and normal gui
+    style_gui.setPosition(ofGetWidth() - 2*style_gui.getWidth() - 20, 10);
+    gui.setPosition(ofGetWidth() - gui.getWidth() - 10, 10);
+    
     //flowfield & gui
-    //obstacle.loadImage("facade_only_white_windows.jpg");
-    simple_flow.setup(outputRect.width/2, outputRect.height/2);
+    obstacle.loadImage("obstacle_fullheight.jpg");
+    obstacle.loadImage("obstacle.jpg");
+    mapping_aid.loadImage("obstacle_mapping_aid.jpg");
+    
+    simple_flow.setup(outputRect.width, outputRect.height, flow_scale);
     flowGuiSetup();
-    flow_gui.loadFromFile("stroke.xml");
+    flow_gui.loadFromFile("demo_4.xml");
     ofAddListener(flow_gui.loadPressedE, this, &gFrameApp::onFlowSettingsReload);
     ofAddListener(flow_gui.savePressedE, this, &gFrameApp::onFlowSettingsSave);
     //simple_flow.addObstacle(obstacle.getTextureReference());
     
-    simple_flow_2.setup(outputRect.width/2, outputRect.height/2);
+    simple_flow_2.setup(outputRect.width, outputRect.height, flow_scale);
     flow2GuiSetup();
-    flow2_gui.loadFromFile("demo_5_back.xml");
+    flow2_gui.loadFromFile("demo_4_back.xml");
     ofAddListener(flow2_gui.loadPressedE, this, &gFrameApp::onFlow2SettingsReload);
     ofAddListener(flow2_gui.savePressedE, this, &gFrameApp::onFlow2SettingsSave);
     //simple_flow_2.addObstacle(obstacle.getTextureReference());
@@ -74,17 +79,29 @@ void gFrameApp::setup()
     canvasFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 16);
     //syphonFBO.begin(); ofClear(0); syphonFBO.end();
     canvasFBO.begin(); ofClear(0); canvasFBO.end();
+    
+    obstacleFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 16);
+    obstacleFBO.begin(); ofClear(0); obstacleFBO.end();
+    
 
     // initialize finger positions
     for(ofVec2f finger : finger_positions){
         finger = ofVec2f(0,0);
     }
+    
+    render_stroke = false;
+    render_mapping_aid = false;
+    
+    //shader for converting the obstaclefbo to bw image for the obstacle buffer
+    setupConvert2GrayShader();
 }
 
 //--------------------------------------------------------------
 void gFrameApp::exit(){
     ledFrame.disconnect();
+#ifdef USE_NETWORK
     network.disconnect();
+#endif
 }
 
 //--------------------------------------------------------------
@@ -110,32 +127,76 @@ void gFrameApp::update()
     canvasFBO.begin();
     ofBackground(0);
     
+    //generate obstacle on the fly
+    //the stroke is drawn to an extra fbo
+    //a simple shader converts the drawing into a black/white image which is then
+    //feed into the obstacle buffers of the to fluids or only one fluid
+    
+    if (stroke_to_obstacle)
+    {
+        obstacleFBO.begin();
+        
+        convert2GrayShader.begin();
+        
+        ofClear(0);
+        for(vector<GPoint> stroke : *stroke_list.getAllStrokes()){
+            switch (stroke[0].getStyle())
+            {
+                case STYLE_SCRIZZLE:
+                    scrizzleStyle.render(stroke, (int)outputRect.width, (int)outputRect.height);
+                    break;
+                case STYLE_CALIGRAPHY:
+                    caligraphyStyle.render(stroke, (int)outputRect.width, (int)outputRect.height);
+                    break;
+                default:
+                    caligraphyStyle.render(stroke, (int)outputRect.width, (int)outputRect.height);
+                    break;
+            }
+        }
+        convert2GrayShader.end();
+        
+        obstacleFBO.end();
 
+        simple_flow.addObstacle(obstacleFBO.getTextureReference());
+        //simple_flow_2.addObstacle(obstacleFBO.getTextureReference());
+    }
+    
     ofBlendMode(OF_BLENDMODE_ALPHA);
+    //the white background fluid
     simple_flow_2.draw();
-    ofBlendMode(OF_BLENDMODE_ADD);
-    simple_flow.draw();
     
-    
-    for(vector<GPoint> stroke : *stroke_list.getAllStrokes()){
-        switch (stroke[0].getStyle())
-        {
-            case STYLE_SCRIZZLE:
-                scrizzleStyle.render(stroke, (int)outputRect.width, (int)outputRect.height);
-                break;
-            case STYLE_CALIGRAPHY:
-                caligraphyStyle.render(stroke, (int)outputRect.width, (int)outputRect.height);
-                break;
-            default:
-                caligraphyStyle.render(stroke, (int)outputRect.width, (int)outputRect.height);
-                break;
+    if (render_stroke) {
+        for(vector<GPoint> stroke : *stroke_list.getAllStrokes()){
+            switch (stroke[0].getStyle())
+            {
+                case STYLE_SCRIZZLE:
+                    scrizzleStyle.render(stroke, (int)outputRect.width, (int)outputRect.height);
+                    break;
+                case STYLE_CALIGRAPHY:
+                    caligraphyStyle.render(stroke, (int)outputRect.width, (int)outputRect.height);
+                    break;
+                default:
+                    caligraphyStyle.render(stroke, (int)outputRect.width, (int)outputRect.height);
+                    break;
+            }
         }
     }
     
+    //the colored foreground fluid
+    simple_flow.draw();
+
     if(draw_finger_positions){
         drawFingerPositions((int)outputRect.width, (int)outputRect.height);
     }
-    
+
+    if (render_mapping_aid)
+    {
+        ofPushStyle();
+        ofSetColor(255,255);
+        mapping_aid.draw(0,0,outputwidth, outputheight);
+        ofPopStyle();
+    }
+
     canvasFBO.end();
     
     // lifetime
@@ -146,7 +207,7 @@ void gFrameApp::update()
 void gFrameApp::draw(){
     
     ofBackground(0);
-    ofSetColor(255);
+    ofSetColor(255,255);
 
     syphonMainOut.publishTexture(&canvasFBO.getTextureReference());
     
@@ -162,9 +223,12 @@ void gFrameApp::draw(){
         style_gui.draw();
         flow_gui.draw();
         flow2_gui.draw();
-        ofSetColor(255);
+        ofSetColor(255,255);
         ofDrawBitmapString("fps: " + ofToString(ofGetFrameRate(), 2), ofGetWidth()-120, ofGetHeight()-10 );
     }
+    
+    //for debugging/testing, render the obstacle fbo to screen
+//    obstacleFBO.draw(ofGetWidth() - ofGetWidth()/10 - 10, ofGetHeight() -ofGetHeight()/10 -10, ofGetWidth()/10, ofGetHeight()/10);
 }
 
 //--------------------------------------------------------------
@@ -246,6 +310,7 @@ void gFrameApp::keyPressed(int key)
         outputRect.width = ofGetWidth();
         outputRect.height = ofGetHeight();
         canvasFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 16);
+        obstacleFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 16);
         //syphonFBO.allocate(outputRect.width, outputRect.height, GL_RGBA, 16);
         cout << outputRect.width << " x " << outputRect.height << endl;
     }
@@ -253,29 +318,39 @@ void gFrameApp::keyPressed(int key)
     else if (key == 'm') {
         draw_on_main_screen = !draw_on_main_screen;
     }
+    else if (key == 'o') {
+        render_stroke = !render_stroke;
+    }
+    else if (key == 'q')
+    {
+        render_mapping_aid = !render_mapping_aid;
+    }
 }
 
 //--------------------------------------------------------------
-void gFrameApp::mouseMoved(int x, int y){
-    
-    if(input_mouse){
-        ofVec2f mouse;
+void gFrameApp::mouseMoved(int x, int y)
+{
+}
+
+//--------------------------------------------------------------
+void gFrameApp::mousePressed(int button, int x, int y) {
+    if(input_mouse && button == OF_MOUSE_BUTTON_1){
         
+        //rescale mouse position
+        ofVec2f mouse;
         mouse.set(x / (float)ofGetWindowWidth(), y / (float)ofGetWindowHeight());
         
-        GPoint the_point;
-        //rescale mouse position
-        //float x_norm = ofMap(x, 0, ofGetWidth(), 0.0, outputRect.width);
-        float x_norm = ofMap(x, 0, outputRect.width, 0.0, 1.0);
-        //float y_norm = ofMap(y, 0, ofGetHeight(), 0.0, outputRect.height);
-        float y_norm = ofMap(y, 0, outputRect.height, 0.0, 1.0);
+        //size scale animation
+        //brushSizeScale[12].createAnimation(0, 1, 4, ZERO);
         
+        GPoint the_point;
+        //the_point.setSizeScale(brushSizeScale[12].getValue());
         the_point.setLocation(ofVec2f(mouse.x,mouse.y));
         the_point.setId(0);
-        the_point.setStrokeId(0);
+        the_point.setStrokeId(current_mouse_id);
         the_point.setColor(localBrushColor);
         the_point.setStyle(current_style);
-        stroke_list.add(the_point);
+        stroke_list.addToNewStroke(the_point);
         
         ledFrame.stopPulsing();
         ledFrame.updateLastPointsTime();
@@ -289,6 +364,32 @@ void gFrameApp::mouseMoved(int x, int y){
 //--------------------------------------------------------------
 void gFrameApp::mouseDragged(int x, int y, int button)
 {
+    if(input_mouse && button == OF_MOUSE_BUTTON_1) {
+        
+        //rescale mouse position
+        ofVec2f mouse;
+        mouse.set(x / (float)ofGetWindowWidth(), y / (float)ofGetWindowHeight());
+        
+        GPoint the_point;
+        the_point.setLocation(ofVec2f(mouse.x,mouse.y));
+        the_point.setId(0);
+        the_point.setStrokeId(current_mouse_id);
+        the_point.setColor(localBrushColor);
+        the_point.setStyle(current_style);
+        stroke_list.add(the_point);
+        
+        ledFrame.stopPulsing();
+        ledFrame.updateLastPointsTime();
+        
+        //flowfield
+        simple_flow.inputUpdate(x, y);
+        simple_flow_2.inputUpdate(x, y);
+    }
+}
+void gFrameApp::mouseReleased(int x, int y, int button) {
+    if (button == OF_MOUSE_BUTTON_1) {
+        current_mouse_id++;
+    }
 }
 
 //--------------------------------------------------------------
@@ -398,6 +499,10 @@ void gFrameApp::guiSetup() {
     parameters_output.add(outputwidth);
     outputheight.setName("height");
     parameters_output.add(outputheight);
+    parameters_output.add(flow_scale.set("Flow Scale", 4, 1, 64));
+    parameters_output.add(render_stroke.set("render stroke", true));
+    parameters_output.add(stroke_to_obstacle.set("stroke to obstacle", false));
+
     
     ///OSC
     parameters_osc.setName("osc");
@@ -418,7 +523,7 @@ void gFrameApp::guiSetup() {
     parameters_brush.setName("brush settings");
     parameters_brush.add(point_lifetime.set("point lifetime", 10, 1, 100));
     localBrushColor.setName("color");
-    parameters_brush.add(localBrushColor.set("local color", ofColor(255, 255, 255), ofColor(0,0,0), ofColor(255,255,255)));
+    parameters_brush.add(localBrushColor.set("local color", ofColor(255, 255, 255, 255), ofColor(0,0,0,0), ofColor(255,255,255,255)));
     
     // finger positions
     parameters_finger.setName("finger positions");
@@ -505,11 +610,12 @@ void gFrameApp::onStyleSettingsSave() {
 //--------------------------------------------------------------
 void gFrameApp::flowGuiSetup() {
     flow_gui.setup();
-    flow_gui.setName("flow settings");
+    flow_gui.setName("foreground fluid");
     flow_gui.setPosition(10, 10);
     flow_gui.add(simple_flow.fluid.parameters);
-    flow_gui.add(simple_flow.brightness);
-    flow_gui.add(simple_flow.alpha);
+    flow_gui.add(simple_flow.options);
+//    flow_gui.add(simple_flow.brightness);
+//    flow_gui.add(simple_flow.alpha);
     flow_gui.minimizeAll();
 }
 
@@ -533,11 +639,12 @@ void gFrameApp::onFlowSettingsReload() {
 //--------------------------------------------------------------
 void gFrameApp::flow2GuiSetup() {
     flow2_gui.setup();
-    flow2_gui.setName("flow settings");
+    flow2_gui.setName("background fluid");
     flow2_gui.setPosition(220, 10);
     flow2_gui.add(simple_flow_2.fluid.parameters);
-    flow2_gui.add(simple_flow_2.brightness);
-    flow2_gui.add(simple_flow_2.alpha);
+    flow2_gui.add(simple_flow_2.options);
+//    flow2_gui.add(simple_flow_2.brightness);
+//    flow2_gui.add(simple_flow_2.alpha);
     flow2_gui.minimizeAll();
 }
 
@@ -556,4 +663,10 @@ void gFrameApp::onFlow2SettingsReload() {
     string load_filename = load_result.getPath();
     if (load_filename != "")
         flow2_gui.loadFromFile(load_filename);
+}
+
+//--------------------------------------------------------------
+void gFrameApp::setupConvert2GrayShader() {
+    convert2GrayShader.load("shader/convert2bw.vert", "shader/convert2bw.frag");
+    
 }
