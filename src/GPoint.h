@@ -24,7 +24,7 @@ class GPoint {
     
 public:
     GPoint();
-    GPoint(int x, int y, int point_id, int color_r, int color_g, int color_b, int type, int stroke_id);
+    GPoint(int x, int y, int point_id, int color_r, int color_g, int color_b, int color_a, int type, int stroke_id);
     void serialize(string* s);
     bool unserialize(string s);
     

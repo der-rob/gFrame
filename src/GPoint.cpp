@@ -13,13 +13,14 @@ GPoint::GPoint(){
     timestamp = ofGetElapsedTimeMillis();
     finger_id = instance_count;
     instance_count++;
+    color = ofColor(255,255,255,255);
 }
 
-GPoint::GPoint(int x, int y, int finger_id, int color_r, int color_g, int color_b, int type, int stroke_id){
+GPoint::GPoint(int x, int y, int finger_id, int color_r, int color_g, int color_b, int color_a, int type, int stroke_id){
     loc = ofVec2f(x, y);
     this->finger_id = finger_id;
     this->timestamp = ofGetElapsedTimeMillis();
-    this->color = ofColor(color_r, color_g, color_b);
+    this->color = ofColor(color_r, color_g, color_b, color_a);
     this->type = type;
     this->stroke_id = stroke_id;
 }
