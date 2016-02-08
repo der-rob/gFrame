@@ -47,6 +47,7 @@ private:
     ofParameter<float> fadeouttime;
     ofParameter<float> fadeduration;
     ofParameter<float> tip_angle;
+    ofParameter<float> zSpeed;
 
 };
 
