@@ -5,7 +5,7 @@
 //  Created by Robert Albert on 24.10.14.
 //
 //
-#include <iostream.h>
+#include <iostream>
 #include "ofMain.h"
 #include "GPoint.h"
 
