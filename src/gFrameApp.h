@@ -15,11 +15,10 @@
 #include "StrokeList.h"
 #include "ScrizzleStyle.h"
 #include "CaligraphyStyle.h"
-#include "FlowField.h"
 #include "Network.h"
 #include "ofxGui.h"
-#include "ofxFlowTools.h"
 #include "SimpleFlowField.h"
+#include "ofxXmlSettings.h"
 
 //#include "PointGroupList.h"
 
@@ -55,12 +54,12 @@ private:
     int current_style = STYLE_CALIGRAPHY;
     ofParameter<ofColor> localBrushColor;
     
-    ScrizzleStyle scrizzleStyle;  
     CaligraphyStyle caligraphyStyle;
     
     //flow
     SimpleFlowField simple_flow;
     SimpleFlowField simple_flow_2;
+    ofColor fluidColor;
     ofImage obstacle, mapping_aid;
     ofFbo obstacleFBO;
 
@@ -68,7 +67,6 @@ private:
     bool draw_on_main_screen = true;
     bool fullscreen;
     ofFbo canvasFBO;
-    //ofFbo syphonFBO;
     ofParameter<int> outputwidth = 1024;
     ofParameter<int> outputheight = 768;
     ofRectangle outputRect;
@@ -88,7 +86,6 @@ private:
     //LEDFrame and lighting
     LEDFrame ledFrame;
 
-    
     //TUIO support
     ofxTuioClient   tuioClient;
     ofParameter<int> tuioPort = 3334;
@@ -121,10 +118,6 @@ private:
     ofParameterGroup parameters_output;
     ofParameterGroup parameters_profile_style;
     ofParameterGroup parameters_input;
-    
-    ofParameter<string> gui_outputmode;
-    ofParameter<string> gui_direction;
-    
     ofParameterGroup parameters_brush;
     
     //eventhandlers for gui inputs
@@ -143,18 +136,38 @@ private:
     ofParameter<bool> draw_finger_positions = true;
     ofParameter<int> finger_position_size = 20;
     
-    ofParameter<float> point_lifetime = 10;
+    ofParameter<int> point_lifetime = 10;
 
     ofParameter<bool> input_mouse, input_tuio, render_stroke, render_mapping_aid;
     ofParameter<bool> stroke_to_obstacle;
+    ofParameter<bool> vertical_obstacle;
+    ofParameter<bool> stroke_first;
+    
+    //some more eventhandlers
+    void onSepFluidColorChanged(bool &state);
+    void onVerticalObstacleChanged(bool &state);
+    void onStrokeToObstacleChanged(bool &state);
     
     //set the resolution for the fluid simulation, needs app restart
     ofParameter<int> flow_scale;
     
-    ofShader convert2GrayShader;
-    void setupConvert2GrayShader();
+    //shader for obstacleFBO(this needs to be BW image)
+    ofShader convert2BWShader;
+    void setupConvert2BWShader();
     
     
+    //all the stuff for setting up the color which can bei chosen via ipad
+    ofColor colorLUT[5][2];
+    ofParameter<bool> use_lut;
+    //void initLUTFile();
+    void loadLUTFile(string filename);
+    void setColor(int colorLUTIndex, bool use_lut);
+
+    //experimental
+    ofVideoPlayer obstacle_video;
+    ofVideoGrabber vidGrabber;
+    ofPixels videoInverted;
+    ofTexture videoTexture;
 };
 
 
