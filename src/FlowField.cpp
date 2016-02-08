@@ -14,8 +14,8 @@ void FlowField::setup(int _width, int _height) {
     drawHeight = _height;
     
     // process all but the density on 16th resolution
-    flowWidth = drawWidth/8;
-    flowHeight = drawHeight/8;
+    flowWidth = drawWidth/4;
+    flowHeight = drawHeight/4;
     
     // Flow & Mask
     opticalFlow.setup(flowWidth, flowHeight);
@@ -25,9 +25,9 @@ void FlowField::setup(int _width, int _height) {
     fluid.setup(flowWidth, flowHeight, drawWidth, drawHeight, false);
     
     // Visualisation
-    displayScalar.allocate(flowWidth, flowHeight);
-    velocityField.allocate(flowWidth / 4, flowHeight / 4);
-    temperatureField.allocate(flowWidth / 4, flowHeight / 4);
+    displayScalar.setup(flowWidth, flowHeight);
+    velocityField.setup(flowWidth / 4, flowHeight / 4);
+    temperatureField.setup(flowWidth / 4, flowHeight / 4);
     
     //Draw Forces
     numDrawForces = 6;
@@ -80,19 +80,19 @@ void FlowField::update(ofTexture &tex) {
                 strength *=deltaTime;
             switch (flexDrawForces[i].getType()) {
                 case FT_DENSITY:
-                    fluid.addDensity(flexDrawForces[i].getTextureReference(), strength);
+                    fluid.addDensity(flexDrawForces[i].getTexture(), strength);
                     break;
                 case FT_VELOCITY:
-                    fluid.addVelocity(flexDrawForces[i].getTextureReference(), strength);
+                    fluid.addVelocity(flexDrawForces[i].getTexture(), strength);
                     break;
                 case FT_TEMPERATURE:
-                    fluid.addTemperature(flexDrawForces[i].getTextureReference(), strength);
+                    fluid.addTemperature(flexDrawForces[i].getTexture(), strength);
                     break;
                 case FT_PRESSURE:
-                    fluid.addPressure(flexDrawForces[i].getTextureReference(), strength);
+                    fluid.addPressure(flexDrawForces[i].getTexture(), strength);
                     break;
                 case FT_OBSTACLE:
-                    fluid.addTempObstacle(flexDrawForces[i].getTextureReference());
+                    fluid.addTempObstacle(flexDrawForces[i].getTexture());
                 default:
                     break;
             }
