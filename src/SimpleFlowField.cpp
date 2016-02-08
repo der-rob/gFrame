@@ -15,9 +15,11 @@ void SimpleFlowField::setup(int _width, int _height, int flow_sclale)
     // process all but the density on 16th resolution
     flowWidth = drawWidth/flow_sclale;
     flowHeight = drawHeight/flow_sclale;
+    pressureFieldScale.addListener(this, &SimpleFlowField::setPressureFieldScale);
     
     // Fluid
     fluid.setup(flowWidth, flowHeight, drawWidth, drawHeight, false);
+    pressureField.setup(flowWidth / 4, flowHeight / 4);
     
     // Draw Forces
     numDrawForces = 6;
@@ -44,10 +46,10 @@ void SimpleFlowField::setup(int _width, int _height, int flow_sclale)
     }
     
     options.setName("other options");
+    options.add(draw_pressure.set("draw pressure", false));
+    options.add(pressureFieldScale.set("Pressure field scale",0.5,0.01,1.0));
     options.add(use_seperate_fluid_color.set("sep. fluid color",false));
     options.add(fluid_color.set("Fluid Color", ofColor(255,255,255,255), ofColor(0,0,0,0), ofColor(255,255,255,255)));
-    alpha.set("alpha",255,0,255);
-    brightness.set("brightness",255,0,255);
     
     color = ofColor::white;
 }
@@ -70,39 +72,42 @@ void SimpleFlowField::draw() {
             switch (flexDrawForces[i].getType())
             {
                 case FT_DENSITY:
-                    fluid.addDensity(flexDrawForces[i].getTextureReference(), strength);
+                    fluid.addDensity(flexDrawForces[i].getTexture(), strength);
                     break;
                 case FT_VELOCITY:
-                    fluid.addVelocity(flexDrawForces[i].getTextureReference(), strength);
+                    fluid.addVelocity(flexDrawForces[i].getTexture(), strength);
                     break;
                 case FT_TEMPERATURE:
-                    fluid.addTemperature(flexDrawForces[i].getTextureReference(), strength);
+                    fluid.addTemperature(flexDrawForces[i].getTexture(), strength);
                     break;
                 case FT_PRESSURE:
-                    fluid.addPressure(flexDrawForces[i].getTextureReference(), strength);
+                    fluid.addPressure(flexDrawForces[i].getTexture(), strength);
                     break;
                 case FT_OBSTACLE:
-                    fluid.addTempObstacle(flexDrawForces[i].getTextureReference());
+                    fluid.addTempObstacle(flexDrawForces[i].getTexture());
                 default:
                     break;
             }
         }
     }
     
+    if (draw_pressure) {
+        ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+        pressureField.setPressure(fluid.getPressure());
+        pressureField.draw(0, 0, ofGetWidth(), ofGetHeight());
+    }
     fluid.update();
     
     int windowWidth = ofGetWindowWidth();
     int windowHeight = ofGetWindowHeight();
-
-//    color.setBrightness(brightness);
-    
     
     if(use_seperate_fluid_color) {
         color = fluid_color;
-    } else {
-        ofColor temp_color = fluid_color;
-        color.a = temp_color.a;
     }
+//    else {
+//        ofColor temp_color = fluid_color;
+//        color.a = temp_color.a;
+//    }
     
     ofSetColor(color);
     fluid.draw(0, 0, windowWidth, windowHeight);
@@ -156,4 +161,8 @@ void SimpleFlowField::inputUpdate(float x, float y, int ID)
 void SimpleFlowField::addObstacle(ofTexture &obstacle) {
     fluid.reset_obstacle();
     fluid.addObstacle(obstacle);
+}
+
+void SimpleFlowField::resetObstacle() {
+    fluid.reset_obstacle();
 }

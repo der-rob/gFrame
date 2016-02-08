@@ -14,6 +14,7 @@ public:
     void inputUpdate(int x, int y);
     void inputUpdate(float x, float y, int ID);
     void addObstacle(ofTexture &obstacle);
+    void resetObstacle();
     
     // Time
     float				lastTime;
@@ -30,6 +31,7 @@ public:
     int					drawHeight;
     
     ftFluidSimulation	fluid;
+    ftPressureField     pressureField;
     
     int					numDrawForces;
     ftDrawForce*		flexDrawForces;
@@ -39,9 +41,10 @@ public:
     
     //the actual fluid color
     ofParameter<ofColor> fluid_color;
-    ofParameter<int>     brightness;
-    ofParameter<int>     alpha;
     ofParameter<bool>    use_seperate_fluid_color;
+    ofParameter<bool>   draw_pressure;
+    ofParameter<float>	pressureFieldScale;
+    void				setPressureFieldScale(float& _value) { pressureField.setPressureScale(_value); }
     
     ofParameterGroup options;
 
